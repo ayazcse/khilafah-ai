@@ -280,3 +280,60 @@ pre, code { overflow-wrap: anywhere; }
     scroll-behavior: auto !important;
   }
 }
+
+
+/* Clear account entry points and welcoming authentication screens. */
+.nav-signin {
+  color: #e7f2f8;
+  border: 1px solid rgba(197,213,223,.42);
+  background: rgba(16,43,60,.78);
+}
+.nav-signin:hover { color: #fff; border-color: #78c7f4; background: rgba(75,155,213,.18); }
+.nav-cta {
+  color: #061b27;
+  background: #78c7f4;
+  border: 1px solid #78c7f4;
+  box-shadow: 0 4px 18px rgba(75,155,213,.18);
+}
+.nav-cta:hover { color: #061b27; background: #a2dcfa; border-color: #a2dcfa; }
+.auth-page {
+  background: radial-gradient(ellipse at 50% 0%, rgba(24,111,112,.2), transparent 48%), #0b1722;
+}
+.auth-mark {
+  display: grid;
+  place-items: center;
+  width: 58px;
+  height: 58px;
+  border: 1px solid rgba(117,217,189,.55);
+  border-radius: 18px;
+  color: #75d9bd;
+  background: linear-gradient(145deg,rgba(24,167,127,.2),rgba(75,155,213,.16));
+  font-family: Georgia,serif;
+  font-size: 30px;
+}
+.auth-kicker {
+  color: #75d9bd;
+  font-size: .75rem;
+  font-weight: 750;
+  letter-spacing: .16em;
+}
+.auth-subtitle { color: #c5d5df; font-size: 1rem; line-height: 1.65; }
+.auth-card {
+  padding: clamp(22px,5vw,32px);
+  border: 1px solid rgba(139,200,239,.25);
+  border-radius: 20px;
+  background: linear-gradient(145deg,rgba(23,56,75,.96),rgba(16,36,51,.98));
+  box-shadow: 0 24px 70px rgba(0,0,0,.24);
+}
+.auth-card .label-text { color: #e0edf4; font-size: 1rem; font-weight: 650; }
+.auth-card .input-field { min-height: 52px; padding: 13px 15px; border-radius: 10px; }
+.auth-submit { min-height: 52px; border-radius: 10px; font-size: 1rem; font-weight: 750; }
+.auth-footnote { color: #d0dfe8; font-size: .95rem; }
+.auth-link { color: #8bd5ff; text-decoration: underline; text-underline-offset: 3px; }
+.auth-link:hover { color: #c0eaff; }
+.auth-free-note { color: #9fb8c7; font-size: .85rem; }
+@media (max-width: 420px) {
+  .site-nav .brand-wordmark { font-size: .72rem; letter-spacing: .06em; }
+  .site-nav .brand-symbol { width: 36px; height: 36px; }
+  .site-nav .nav-signin, .site-nav .nav-cta { min-height: 42px; padding-left: 10px; padding-right: 10px; font-size: .78rem; }
+}
