@@ -1,6 +1,6 @@
 """Tests for the Research Studio document pipeline.
 
-The test environment runs with a placeholder OPENAI_API_KEY (see
+The test environment runs with a placeholder GEMINI_API_KEY (see
 tests/conftest.py), so embedding calls raise LLMNotConfiguredError. This
 exercises the real graceful-degradation path: uploads must still succeed
 (status="error_processing") rather than crashing, and search must return a
@@ -39,7 +39,7 @@ def test_upload_txt_degrades_gracefully_without_api_key(registered_user, client)
     )
     assert resp.status_code == 201
     body = resp.json()
-    # No real OPENAI_API_KEY in the test environment -> embedding fails ->
+    # No real GEMINI_API_KEY in the test environment -> embedding fails ->
     # the upload must still succeed, just marked as not fully processed.
     assert body["status"] == "error_processing"
     assert "document_id" in body

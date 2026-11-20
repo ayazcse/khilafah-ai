@@ -165,6 +165,7 @@ def search_documents(
         results = search_chunks(
             db,
             query=payload.query,
+            user_id=str(current_user.id),
             document_id=str(payload.document_id) if payload.document_id else None,
             top_k=payload.top_k,
         )

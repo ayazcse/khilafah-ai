@@ -1,13 +1,13 @@
 """AI evaluation harness for KHILAFAH AI.
 
 Runs a small, reproducible test dataset of questions against the RAG
-pipeline (and, where an OpenAI key is configured, the live agent workflow),
+pipeline (and, where a Gemini API key is configured, the live agent workflow),
 measuring the metrics required by the spec: Retrieval Recall@5, retrieval
 relevance, answer faithfulness, citation correctness, answer relevance,
 response latency, token usage, and estimated cost per query.
 
 IMPORTANT: this harness reports REAL measured numbers from whatever is
-actually configured when it runs. If no OPENAI_API_KEY is set, LLM-dependent
+actually configured when it runs. If no GEMINI_API_KEY is set, LLM-dependent
 metrics (faithfulness, answer relevance, token usage, cost) are reported as
 "not measured (no API key configured)" rather than invented. This script
 never fabricates a passing score.
@@ -67,7 +67,7 @@ def run_retrieval_eval(db) -> dict:
     if not is_configured():
         return {
             "status": "skipped",
-            "reason": "OPENAI_API_KEY not configured — embedding-based retrieval cannot run.",
+            "reason": "GEMINI_API_KEY not configured — embedding-based retrieval cannot run.",
         }
 
     if not check_sample_documents_loaded(db):
@@ -83,7 +83,7 @@ def run_retrieval_eval(db) -> dict:
         try:
             results = search_chunks(db, query=case["question"], top_k=5)
         except LLMNotConfiguredError:
-            return {"status": "skipped", "reason": "OPENAI_API_KEY not configured."}
+            return {"status": "skipped", "reason": "GEMINI_API_KEY not configured."}
         latencies.append((time.monotonic() - start) * 1000)
         retrieved_titles = {r["document_title"] for r in results}
         if case["expected_document_title"] in retrieved_titles:
@@ -120,7 +120,7 @@ def run_agent_eval(db) -> dict:
         except LLMNotConfiguredError:
             return {
                 "status": "skipped",
-                "reason": "OPENAI_API_KEY not configured — cannot run the live agent workflow.",
+                "reason": "GEMINI_API_KEY not configured — cannot run the live agent workflow.",
             }
         except Exception as exc:  # noqa: BLE001
             results.append({"question": case["question"], "error": str(exc)})
@@ -156,7 +156,7 @@ def main() -> None:
             "which is out of scope for this MVP. Raw answers are captured so a human reviewer can score them.",
             "Citation correctness is checked structurally (citations are present and reference real "
             "source titles from the retrieval step) but not verified sentence-by-sentence against source text.",
-            "Token usage and estimated cost per query are only available when OPENAI_API_KEY is configured; "
+            "Token usage and estimated cost per query are only available when GEMINI_API_KEY is configured; "
             "see ai_engine/llm_client.py's returned `usage` dict on live runs.",
             "This is a small, 4-question reproducible dataset for pipeline verification, not a comprehensive benchmark.",
         ],

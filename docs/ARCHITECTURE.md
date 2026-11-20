@@ -32,7 +32,7 @@ KHILAFAH AI runs as three deployable units:
                                               │
                                               ▼ HTTPS
                                       ┌──────────────┐
-                                      │  OpenAI API  │
+                                      │  Gemini API  │
                                       └──────────────┘
 ```
 
@@ -58,7 +58,7 @@ KHILAFAH AI runs as three deployable units:
    reasoning).
 5. The assistant's `Message` and an `AIRequestLog` row are saved.
 
-If `OPENAI_API_KEY` isn't configured, step 3 raises `LLMNotConfiguredError`
+If `GEMINI_API_KEY` isn't configured, step 3 raises `LLMNotConfiguredError`
 immediately (checked before any LLM call), and the router returns a clean
 HTTP 503 with an actionable message — the request never reaches a half-done
 state or a 500 error.
@@ -70,7 +70,7 @@ state or a 500 error.
 3. `ai_engine.chunking.extract_and_chunk()` extracts text (PDF via `pypdf`,
    or plain text) and splits it into overlapping ~1200-character chunks,
    tracking page numbers for PDFs.
-4. `ai_engine.embeddings.embed_texts()` calls OpenAI's embeddings API.
+4. `ai_engine.embeddings.embed_texts()` calls Gemini's embeddings API.
 5. Chunks + embeddings are stored as `DocumentChunk` rows with a pgvector
    `Vector(1536)` column.
 6. If either step 3 or 4 fails (bad PDF, no API key, etc.), the document is

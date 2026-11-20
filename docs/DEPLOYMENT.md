@@ -60,8 +60,7 @@ once DNS resolves — no manual certificate work needed for this stack.
 
 ### 6. Environment variables checklist (production)
 - `SECRET_KEY` — a long, random, unique value (never reuse the example)
-- `OPENAI_API_KEY` — your real key, with billing/quota alerts set up on the
-  OpenAI dashboard
+- `GEMINI_API_KEY` — your Google AI Studio key; monitor usage and quota in the Google AI dashboard
 - `CORS_ORIGINS` — your real frontend domain(s), not `*`
 - `DATABASE_URL`, `NEO4J_*` — your managed instances' real credentials
 - Never commit `.env` to git — `.gitignore` already excludes it

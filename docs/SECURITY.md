@@ -21,7 +21,7 @@
 - **CORS**: explicit origin allowlist via `CORS_ORIGINS` env var — never `*`
   in combination with credentials.
 - **Environment variable protection**: all secrets (`SECRET_KEY`,
-  `OPENAI_API_KEY`, `NEO4J_PASSWORD`, `DATABASE_URL`) are read from `.env`,
+  `GEMINI_API_KEY`, `NEO4J_PASSWORD`, `DATABASE_URL`) are read from `.env`,
   which is gitignored. `.env.example` ships with placeholder values only.
 - **SQL injection protection**: all database access goes through SQLAlchemy's
   ORM / parameterized queries — no raw string-interpolated SQL anywhere in
@@ -42,7 +42,7 @@
 - **Logging**: Python's standard `logging` module, server-side only.
 - **Health-check endpoint**: `GET /api/health`, reporting real DB and Neo4j
   connectivity (not just "the process is running").
-- **Secrets never reach the frontend**: `OPENAI_API_KEY`, `SECRET_KEY`, and
+- **Secrets never reach the frontend**: `GEMINI_API_KEY`, `SECRET_KEY`, and
   database credentials exist only in the backend's environment; the
   frontend only ever receives a short-lived JWT it stores in
   `localStorage`.
