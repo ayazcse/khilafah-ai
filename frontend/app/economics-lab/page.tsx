@@ -150,9 +150,11 @@ function Field({ label, value, onChange }: { label: string; value: string; onCha
 }
 
 function WaqfInfo() {
-  const [info, setInfo] = useState<{ title: string; summary: string; description: string; disclaimer: string } | null>(null);
+  const [info, setInfo] = useState<{ title: string; summary: string; description: string; disclaimer: string; sources?: string[] } | null>(null);
   const [failed, setFailed] = useState(false);
-  useState(() => { api.get<typeof info>("/economics/waqf-info").then(setInfo).catch(() => setFailed(true)); });
+  useEffect(() => {
+    api.get<typeof info>("/economics/waqf-info").then(setInfo).catch(() => setFailed(true));
+  }, []);
   if (!info) return <article className="economics-panel waqf-panel"><span className="lab-kicker">INSTITUTIONAL HISTORY</span><h2>Waqf & enduring public benefit</h2><p>{failed ? "Waqf reference information is temporarily unavailable." : "Loading waqf research…"}</p></article>;
-  return <article className="economics-panel waqf-panel"><div className="waqf-illustration" aria-hidden="true">۞</div><span className="lab-kicker">INSTITUTIONAL HISTORY</span><h2>{info.title}</h2><p className="waqf-summary">{info.summary}</p><p>{info.description}</p><div className="waqf-note">{info.disclaimer}</div></article>;
+  return <article className="economics-panel waqf-panel"><div className="waqf-illustration" aria-hidden="true">۞</div><span className="lab-kicker">INSTITUTIONAL HISTORY</span><h2>{info.title}</h2><p className="waqf-summary">{info.summary}</p><p>{info.description}</p>{info.sources?.length ? <div className="waqf-note"><strong>Further reading</strong><ul>{info.sources.map((source, i) => <li key={i}>{source}</li>)}</ul></div> : null}<div className="waqf-note">{info.disclaimer}</div></article>;
 }
