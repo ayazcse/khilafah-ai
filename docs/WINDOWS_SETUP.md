@@ -74,7 +74,7 @@ notepad .env
 In the opened file, set at minimum:
 
 ```
-OPENAI_API_KEY=sk-...your real key...
+GEMINI_API_KEY=...your Gemini API key...
 SECRET_KEY=<any long random string>
 NEO4J_PASSWORD=<match what you set when starting Neo4j; Docker default below>
 ```
@@ -83,9 +83,7 @@ If you used `docker compose up -d neo4j` as above, the default password is
 `change-me` (set in `docker-compose.yml`) — update it there and in `.env` if
 you want something else before first start.
 
-Get an OpenAI API key at https://platform.openai.com/api-keys — without one,
-the app still runs, but chat and document search return a clear "AI features
-require an OpenAI API key" message instead of crashing.
+Get a Gemini API key from Google AI Studio. Without it, the app still runs, but AI chat and document embeddings are unavailable and return a clear setup error.
 
 ## 6. Run database migrations and seed data
 
