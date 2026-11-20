@@ -88,3 +88,89 @@ nav { border-color: rgba(211,173,98,.16) !important; }
   .feature-card { min-height:270px; }
   .site-footer { align-items:flex-start; flex-direction:column; }
 }
+
+
+/* KHILAFAH AI visual refresh: emerald + midnight blue */
+:root {
+  color-scheme: dark;
+  --ink: #f2f8f6;
+  --muted: #b6c9c8;
+  --green: #087f62;
+  --accent: #18a77f;
+  --blue: #4b9bd5;
+  --surface: #112433;
+  --page: #0b1722;
+  --line: rgba(151,190,190,.18);
+}
+:root[data-theme="light"] {
+  color-scheme: light;
+  --ink: #142b28;
+  --muted: #526b66;
+  --green: #087f62;
+  --accent: #087f62;
+  --blue: #287db8;
+  --surface: #ffffff;
+  --page: #f3f8f6;
+  --line: rgba(22,75,62,.14);
+}
+html { scroll-behavior: smooth; }
+body { background: var(--page); color: var(--ink); font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: 16px; line-height: 1.65; transition: background-color .25s ease,color .25s ease; }
+:focus-visible { outline: 3px solid #42d6ae; outline-offset: 3px; }
+.site-nav { background: color-mix(in srgb,var(--page) 93%,transparent); border-color: var(--line) !important; }
+.brand-symbol { border:1px solid rgba(24,167,127,.55); color:#42d6ae; background:rgba(24,167,127,.08); }
+.brand-wordmark { color:var(--ink); }
+.brand-wordmark span { color:#42d6ae; }
+.nav-link { color:var(--muted); }
+.nav-link:hover { color:var(--ink); background:rgba(24,167,127,.09); }
+.nav-link.active { color:#42d6ae; background:rgba(24,167,127,.13); border-color:rgba(24,167,127,.35); }
+.nav-utility { color:var(--muted); transition:color .2s ease; }
+.nav-utility:hover { color:#42d6ae; }
+.nav-cta { color:#fff; background:#087f62; border-radius:10px; transition:background .2s ease; }
+.nav-cta:hover { background:#0b9874; }
+.theme-toggle { display:inline-flex; align-items:center; justify-content:center; gap:7px; min-height:40px; padding:0 12px; border:1px solid var(--line); border-radius:999px; color:var(--ink); background:var(--surface); font-size:13px; font-weight:650; transition:border-color .2s ease,background .2s ease; }
+.theme-toggle:hover { border-color:#18a77f; background:rgba(24,167,127,.09); }
+.theme-toggle span:first-child { color:#42d6ae; font-size:17px; line-height:1; }
+
+/* Keep the mosque hero, with a contemporary Al Jabbar mosque photograph. */
+.hero { background:#102b3c; }
+.hero-image { background-image:url("https://images.unsplash.com/photo-1757034056566-a61fe495ede3?auto=format&fit=crop&fm=jpg&ixlib=rb-4.1.0&q=85&w=2400"); background-position:center 48%; }
+.hero-shade { background:linear-gradient(90deg,rgba(5,19,29,.96) 0%,rgba(5,19,29,.83) 43%,rgba(5,19,29,.28) 100%),linear-gradient(0deg,rgba(5,19,29,.66),transparent 48%); }
+.hero-ornament { border-color:rgba(66,214,174,.18); }
+.hero-ornament-two { border-color:rgba(75,155,213,.18); }
+.eyebrow,.section-kicker { color:#6ce0bd; font-size:12px; letter-spacing:.15em; }
+.hero-title { font-size:clamp(2.8rem,6.7vw,6.1rem); line-height:1.04; font-weight:650; }
+.hero-title span { color:#65dfbd; font-style:normal; }
+.hero-copy { color:rgba(246,252,250,.88); font-size:clamp(1.08rem,1.55vw,1.25rem); }
+.hero-cta { background:#087f62; border:1px solid #18a77f; color:#fff; border-radius:10px; font-size:15px; }
+.hero-cta:hover { background:#0b9874; border-color:#42d6ae; }
+.hero-cta-secondary { border-radius:10px; font-size:15px; }
+.section-title { color:var(--ink); }
+.section-title em,.feature-link,.principle-arrow { color:#18a77f; }
+.section-intro,.feature-desc,.principle-desc { color:var(--muted); font-size:15px; }
+.feature-card { background:linear-gradient(145deg,#173244,#112433); border:1px solid var(--line); border-radius:18px; }
+.feature-card:hover { border-color:rgba(24,167,127,.55); box-shadow:0 18px 48px rgba(0,0,0,.12); }
+.feature-icon { color:#42d6ae; background:rgba(24,167,127,.1); border-color:rgba(24,167,127,.32); border-radius:14px; }
+.feature-tag,.principle-number { color:#42d6ae; font-size:12px; }
+.feature-title,.principle-title { color:var(--ink); }
+.principles-section { background:linear-gradient(120deg,#112433,#173244 55%,#112433); border-color:var(--line); }
+.principle-row { border-color:var(--line); }
+.closing-panel { background:linear-gradient(110deg,#0e604d,#123b50); border:1px solid rgba(66,214,174,.25); border-radius:24px; }
+.site-footer { color:var(--muted); font-size:13px; }
+:root[data-theme="light"] body { background:#f3f8f6; color:#142b28; }
+:root[data-theme="light"] .landing-shell { background:#f3f8f6; }
+:root[data-theme="light"] .feature-card { background:linear-gradient(145deg,#fff,#edf6f2); border-color:rgba(22,75,62,.14); box-shadow:0 8px 28px rgba(15,50,40,.05); }
+:root[data-theme="light"] .feature-title,:root[data-theme="light"] .section-title,:root[data-theme="light"] .principle-title { color:#142b28; }
+:root[data-theme="light"] .section-intro,:root[data-theme="light"] .feature-desc,:root[data-theme="light"] .principle-desc { color:#526b66; }
+:root[data-theme="light"] .principles-section { background:linear-gradient(120deg,#edf5f1,#e5f1ed 55%,#edf5f1); }
+:root[data-theme="light"] .card { background:#fff; border-color:rgba(22,75,62,.14); box-shadow:0 8px 24px rgba(15,50,40,.06); }
+:root[data-theme="light"] .input-field { background:#fff; color:#142b28; border-color:rgba(22,75,62,.2); }
+:root[data-theme="light"] .label-text { color:#34524b; }
+@media (max-width:640px) {
+  body { font-size:16px; }
+  .hero { min-height:650px; }
+  .hero-image { background-position:58% center; }
+  .hero-shade { background:linear-gradient(90deg,rgba(5,19,29,.94),rgba(5,19,29,.67)),linear-gradient(0deg,rgba(5,19,29,.65),transparent 60%); }
+  .feature-card { min-height:260px; padding:24px; }
+  .theme-toggle { min-width:40px; padding:0 10px; }
+  .mobile-nav-links { scrollbar-width:thin; }
+}
