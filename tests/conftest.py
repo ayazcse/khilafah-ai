@@ -52,6 +52,9 @@ app.dependency_overrides[deps.get_db] = _override_get_db
 
 @pytest.fixture()
 def client():
+    # Rate limits are process-local in the MVP. Reset between tests so one
+    # test's requests cannot cause unrelated tests to fail due to ordering.
+    app.state.limiter._storage.reset()
     return TestClient(app)
 
 
