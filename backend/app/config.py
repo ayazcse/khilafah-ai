@@ -45,6 +45,12 @@ class Settings(BaseSettings):
     OPENAI_CHAT_MODEL: str = "gpt-4o-mini"
     OPENAI_EMBEDDING_MODEL: str = "text-embedding-3-small"
 
+        # Gemini
+    GEMINI_API_KEY: str = ""
+    GEMINI_CHAT_MODEL: str = "gemini-2.5-flash"
+    GEMINI_EMBEDDING_MODEL: str = "gemini-embedding-001"
+    GEMINI_EMBEDDING_DIM: int = 1536
+
     # Uploads
     MAX_UPLOAD_MB: int = 20
     UPLOAD_DIR: str = "./data/uploads"
