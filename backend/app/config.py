@@ -1,9 +1,7 @@
 """Application configuration.
 
-Reads settings from the repo-root `.env` file via pydantic-settings. This is
-the single source of config truth: `ai_engine` and `knowledge_graph` must
-import `backend.app.config.settings` rather than parsing the environment
-themselves.
+Reads settings from the repo-root .env file via pydantic-settings. This is
+the single source of config truth for the backend, AI engine and graph.
 """
 from __future__ import annotations
 
@@ -12,7 +10,6 @@ from pathlib import Path
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
-# Repo root is two levels above this file: backend/app/config.py -> backend/app -> backend -> repo root
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 ENV_FILE = REPO_ROOT / ".env"
 
@@ -39,13 +36,7 @@ class Settings(BaseSettings):
     NEO4J_PASSWORD: str = "change-me"
     NEO4J_ENABLED: bool = True
 
-    # OpenAI
-    OPENAI_API_KEY: str = "sk-your-key-here"
-    OPENAI_BASE_URL: str = "https://api.openai.com/v1"
-    OPENAI_CHAT_MODEL: str = "gpt-4o-mini"
-    OPENAI_EMBEDDING_MODEL: str = "text-embedding-3-small"
-
-        # Gemini
+    # Gemini AI
     GEMINI_API_KEY: str = ""
     GEMINI_CHAT_MODEL: str = "gemini-3.5-flash-lite"
     GEMINI_EMBEDDING_MODEL: str = "gemini-embedding-001"
@@ -60,7 +51,7 @@ class Settings(BaseSettings):
 
     @property
     def cors_origins_list(self) -> list[str]:
-        return [o.strip() for o in self.CORS_ORIGINS.split(",") if o.strip()]
+        return [origin.strip() for origin in self.CORS_ORIGINS.split(",") if origin.strip()]
 
 
 @lru_cache
