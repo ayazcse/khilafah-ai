@@ -32,7 +32,7 @@ KHILAFAH AI runs as three deployable units:
                                               │
                                               ▼ HTTPS
                                       ┌──────────────┐
-                                      │  OpenAI API  │
+                                      │  Gemini API  │
                                       └──────────────┘
 ```
 
@@ -70,7 +70,7 @@ state or a 500 error.
 3. `ai_engine.chunking.extract_and_chunk()` extracts text (PDF via `pypdf`,
    or plain text) and splits it into overlapping ~1200-character chunks,
    tracking page numbers for PDFs.
-4. `ai_engine.embeddings.embed_texts()` calls OpenAI's embeddings API.
+4. `ai_engine.embeddings.embed_texts()` calls Gemini's embeddings API.
 5. Chunks + embeddings are stored as `DocumentChunk` rows with a pgvector
    `Vector(1536)` column.
 6. If either step 3 or 4 fails (bad PDF, no API key, etc.), the document is
