@@ -1,11 +1,6 @@
 """Query Router Agent: classifies the user's question into a domain."""
 from __future__ import annotations
 
-from ai_engine.llm_client import chat
-from ai_engine.prompts import ROUTER_PROMPT
-
-VALID_CATEGORIES = {"history", "economics", "governance", "education", "general"}
-
 _KEYWORD_FALLBACK = {
     "economics": ["zakat", "waqf", "trade", "tax", "budget", "revenue", "finance", "economy"],
     "governance": ["diwan", "shura", "governance", "administration", "caliph", "government", "qadi", "wali"],
