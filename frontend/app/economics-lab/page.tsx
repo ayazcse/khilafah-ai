@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { api, ApiError, ZakatResponse } from "@/lib/api";
 import { ErrorBanner } from "@/components/StateViews";
 
+const money = (value: number) => new Intl.NumberFormat("en-IN", { maximumFractionDigits: 2 }).format(value);
+
 export default function EconomicsLabPage() {
   const [cash, setCash] = useState("");
   const [goldGrams, setGoldGrams] = useState("");
@@ -13,178 +15,146 @@ export default function EconomicsLabPage() {
   const [nisabStandard, setNisabStandard] = useState<"gold" | "silver">("silver");
   const [goldPrice, setGoldPrice] = useState("1");
   const [silverPrice, setSilverPrice] = useState("1");
-
   const [result, setResult] = useState<ZakatResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [calculating, setCalculating] = useState(false);
+  const [soundEnabled, setSoundEnabled] = useState(false);
 
-  async function handleCalculate(e: React.FormEvent) {
-    e.preventDefault();
-    setCalculating(true);
-    setError(null);
-    try {
-      const res = await api.post<ZakatResponse>("/economics/zakat", {
-        cash: parseFloat(cash) || 0,
-        gold_grams: parseFloat(goldGrams) || 0,
-        silver_grams: parseFloat(silverGrams) || 0,
-        trade_goods_value: parseFloat(tradeGoods) || 0,
-        liabilities: parseFloat(liabilities) || 0,
-        nisab_standard: nisabStandard,
-        gold_price_per_gram: parseFloat(goldPrice) || 1,
-        silver_price_per_gram: parseFloat(silverPrice) || 1,
-      });
-      setResult(res);
-    } catch (err) {
-      setError(err instanceof ApiError ? String(err.detail) : "Calculation failed.");
-    } finally {
-      setCalculating(false);
-    }
-  }
-
-  return (
-    <div className="max-w-4xl mx-auto px-6 py-10 space-y-10">
-      <div>
-        <h1 className="text-2xl font-serif font-semibold text-white mb-1">Islamic Economics Lab</h1>
-        <p className="text-white/50 text-sm">
-          Educational tools for zakat calculation, waqf research, and illustrative public-finance simulation.
-        </p>
-      </div>
-
-      <section className="card">
-        <h2 className="text-gold font-medium mb-4">Zakat Calculator</h2>
-        <form onSubmit={handleCalculate} className="grid sm:grid-cols-2 gap-4">
-          <Field label="Cash" value={cash} onChange={setCash} />
-          <Field label="Gold (grams)" value={goldGrams} onChange={setGoldGrams} />
-          <Field label="Silver (grams)" value={silverGrams} onChange={setSilverGrams} />
-          <Field label="Trade goods value" value={tradeGoods} onChange={setTradeGoods} />
-          <Field label="Liabilities (debts)" value={liabilities} onChange={setLiabilities} />
-          <div>
-            <label className="label-text">Nisab standard</label>
-            <select
-              value={nisabStandard}
-              onChange={(e) => setNisabStandard(e.target.value as "gold" | "silver")}
-              className="input-field"
-            >
-              <option value="silver">Silver (595g reference)</option>
-              <option value="gold">Gold (85g reference)</option>
-            </select>
-          </div>
-          <Field label="Gold price per gram" value={goldPrice} onChange={setGoldPrice} />
-          <Field label="Silver price per gram" value={silverPrice} onChange={setSilverPrice} />
-          <div className="sm:col-span-2">
-            <button type="submit" disabled={calculating} className="btn-primary w-full">
-              {calculating ? "Calculating..." : "Calculate Zakat"}
-            </button>
-          </div>
-        </form>
-
-        {error && <div className="mt-4"><ErrorBanner message={error} /></div>}
-
-        {result && (
-          <div className="mt-6 bg-charcoal rounded-lg p-4 space-y-2">
-            <p className="text-white">
-              Zakatable wealth: <span className="font-medium">{result.zakatable_wealth}</span>
-            </p>
-            <p className="text-white">
-              Nisab threshold: <span className="font-medium">{result.nisab_threshold}</span> — meets nisab:{" "}
-              <span className={result.meets_nisab ? "text-emerald-400" : "text-amber-400"}>
-                {result.meets_nisab ? "Yes" : "No"}
-              </span>
-            </p>
-            <p className="text-xl text-gold font-semibold">Zakat due: {result.zakat_due}</p>
-            <div className="text-white/40 text-xs pt-2 border-t border-white/10">
-              <p className="font-medium mb-1">Assumptions:</p>
-              <ul className="list-disc list-inside space-y-0.5">
-                {result.assumptions.map((a, i) => (
-                  <li key={i}>{a}</li>
-                ))}
-              </ul>
-              <p className="mt-2 italic">{result.disclaimer}</p>
-            </div>
-          </div>
-        )}
-      </section>
-
-      <WaqfInfo />
-      <BudgetSimulator />
-    </div>
-  );
-}
-
-function Field({ label, value, onChange }: { label: string; value: string; onChange: (v: string) => void }) {
-  return (
-    <div>
-      <label className="label-text">{label}</label>
-      <input
-        type="number"
-        step="any"
-        min="0"
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        className="input-field"
-        placeholder="0"
-      />
-    </div>
-  );
-}
-
-function WaqfInfo() {
-  const [info, setInfo] = useState<{ title: string; summary: string; description: string; disclaimer: string } | null>(null);
-  useEffect(() => {
-    api.get<typeof info>("/economics/waqf-info").then(setInfo);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-  if (!info) return null;
-  return (
-    <section className="card">
-      <h2 className="text-gold font-medium mb-2">{info.title}</h2>
-      <p className="text-white/70 text-sm mb-3">{info.description}</p>
-      <p className="text-white/40 text-xs italic">{info.disclaimer}</p>
-    </section>
-  );
-}
-
-function BudgetSimulator() {
   const [kharaj, setKharaj] = useState("600");
   const [zakatRevenue, setZakatRevenue] = useState("400");
   const [stipends, setStipends] = useState("500");
   const [infrastructure, setInfrastructure] = useState("300");
-  const [result, setResult] = useState<{
-    total_revenue: number;
-    total_allocated: number;
-    unallocated: number;
-    disclaimer: string;
-  } | null>(null);
+  const [simulation, setSimulation] = useState<{ total_revenue: number; total_allocated: number; unallocated: number; disclaimer: string } | null>(null);
+  const [simulating, setSimulating] = useState(false);
 
-  async function handleSimulate(e: React.FormEvent) {
-    e.preventDefault();
-    const res = await api.post<typeof result>("/economics/budget-simulation", {
-      revenue_sources: { kharaj: parseFloat(kharaj) || 0, zakat: parseFloat(zakatRevenue) || 0 },
-      allocations: { stipends: parseFloat(stipends) || 0, infrastructure: parseFloat(infrastructure) || 0 },
-    });
-    setResult(res);
+  function playCoinChime() {
+    if (!soundEnabled || typeof window === "undefined") return;
+    try {
+      const AudioContextClass = window.AudioContext || (window as typeof window & { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
+      if (!AudioContextClass) return;
+      const context = new AudioContextClass();
+      [880, 1174].forEach((frequency, index) => {
+        const oscillator = context.createOscillator();
+        const gain = context.createGain();
+        oscillator.type = "sine";
+        oscillator.frequency.value = frequency;
+        gain.gain.setValueAtTime(0.0001, context.currentTime + index * 0.09);
+        gain.gain.exponentialRampToValueAtTime(0.055, context.currentTime + index * 0.09 + 0.015);
+        gain.gain.exponentialRampToValueAtTime(0.0001, context.currentTime + index * 0.09 + 0.22);
+        oscillator.connect(gain); gain.connect(context.destination);
+        oscillator.start(context.currentTime + index * 0.09);
+        oscillator.stop(context.currentTime + index * 0.09 + 0.24);
+      });
+      window.setTimeout(() => void context.close(), 600);
+    } catch { /* Audio is an optional enhancement; calculations never depend on it. */ }
   }
 
+  async function handleCalculate(e: React.FormEvent) {
+    e.preventDefault(); setCalculating(true); setError(null);
+    try {
+      const res = await api.post<ZakatResponse>("/economics/zakat", {
+        cash: parseFloat(cash) || 0, gold_grams: parseFloat(goldGrams) || 0,
+        silver_grams: parseFloat(silverGrams) || 0, trade_goods_value: parseFloat(tradeGoods) || 0,
+        liabilities: parseFloat(liabilities) || 0, nisab_standard: nisabStandard,
+        gold_price_per_gram: parseFloat(goldPrice) || 1, silver_price_per_gram: parseFloat(silverPrice) || 1,
+      });
+      setResult(res); playCoinChime();
+    } catch (err) { setError(err instanceof ApiError ? String(err.detail) : "Calculation failed. Please try again."); }
+    finally { setCalculating(false); }
+  }
+
+  async function handleSimulate(e: React.FormEvent) {
+    e.preventDefault(); setSimulating(true); setError(null);
+    try {
+      const res = await api.post<typeof simulation>("/economics/budget-simulation", {
+        revenue_sources: { kharaj: parseFloat(kharaj) || 0, zakat: parseFloat(zakatRevenue) || 0 },
+        allocations: { stipends: parseFloat(stipends) || 0, infrastructure: parseFloat(infrastructure) || 0 },
+      });
+      setSimulation(res); playCoinChime();
+    } catch (err) { setError(err instanceof ApiError ? String(err.detail) : "Simulation failed. Please try again."); }
+    finally { setSimulating(false); }
+  }
+
+  const revenue = simulation?.total_revenue ?? ((parseFloat(kharaj) || 0) + (parseFloat(zakatRevenue) || 0));
+  const allocated = simulation?.total_allocated ?? ((parseFloat(stipends) || 0) + (parseFloat(infrastructure) || 0));
+  const safeRevenue = Math.max(0, revenue);
+  const revenueWidth = safeRevenue > 0 ? Math.min(100, (Math.max(0, parseFloat(kharaj) || 0) / safeRevenue) * 100) : 0;
+  const allocationWidth = allocated > 0 ? Math.min(100, ((parseFloat(stipends) || 0) / allocated) * 100) : 0;
+
   return (
-    <section className="card">
-      <h2 className="text-gold font-medium mb-4">Budget Simulation (Illustrative)</h2>
-      <form onSubmit={handleSimulate} className="grid sm:grid-cols-2 gap-4">
-        <Field label="Revenue: Kharaj (land tax)" value={kharaj} onChange={setKharaj} />
-        <Field label="Revenue: Zakat" value={zakatRevenue} onChange={setZakatRevenue} />
-        <Field label="Allocation: Stipends" value={stipends} onChange={setStipends} />
-        <Field label="Allocation: Infrastructure" value={infrastructure} onChange={setInfrastructure} />
-        <div className="sm:col-span-2">
-          <button type="submit" className="btn-primary w-full">Simulate</button>
-        </div>
-      </form>
-      {result && (
-        <div className="mt-4 bg-charcoal rounded-lg p-4">
-          <p className="text-white">Total revenue: {result.total_revenue}</p>
-          <p className="text-white">Total allocated: {result.total_allocated}</p>
-          <p className="text-white">Unallocated: {result.unallocated}</p>
-          <p className="text-white/40 text-xs italic mt-2">{result.disclaimer}</p>
-        </div>
-      )}
-    </section>
+    <main className="economics-page">
+      <div className="economics-shell">
+        <header className="economics-hero">
+          <div className="economics-hero-art" aria-hidden="true"><span className="coin coin-one">◉</span><span className="coin coin-two">◉</span><span className="coin coin-three">◉</span><span className="coin coin-four">◉</span><div className="coin-orbit" /></div>
+          <div className="economics-hero-content">
+            <div className="lab-kicker"><span className="lab-kicker-dot" /> KHILAFAH AI · RESEARCH DOMAIN 02</div>
+            <h1>Islamic <span>Economics</span> Lab</h1>
+            <p>Explore zakat principles, waqf institutions and historical public-finance ideas through interactive, clearly labelled educational tools.</p>
+            <div className="economics-hero-tags"><span>01 · Zakat calculator</span><span>02 · Public finance</span><span>03 · Waqf research</span></div>
+          </div>
+        </header>
+
+        <div className="economics-section-heading"><div><span className="lab-kicker">INTERACTIVE RESEARCH TOOLS</span><h2>Wealth, responsibility & public good</h2><p>Enter your own values to explore the calculations. Nothing here replaces qualified scholarly or financial advice.</p></div><button className={`sound-toggle ${soundEnabled ? "is-on" : ""}`} onClick={() => setSoundEnabled((v) => !v)} aria-pressed={soundEnabled}><span>{soundEnabled ? "♫" : "♪"}</span> Sound {soundEnabled ? "On" : "Off"}</button></div>
+        {error && <div className="mb-5"><ErrorBanner message={error} /></div>}
+
+        <section className="economics-feature-grid">
+          <article className="economics-feature-card"><span className="economics-feature-icon">✧</span><strong>2.5%</strong><h3>Common zakat rate</h3><p>Often applied to qualifying zakatable wealth after relevant conditions are met. Individual cases can differ.</p></article>
+          <article className="economics-feature-card"><span className="economics-feature-icon">◈</span><strong>85g</strong><h3>Gold nisab reference</h3><p>A commonly used gold-weight reference. The selected standard and valuation method matter.</p></article>
+          <article className="economics-feature-card"><span className="economics-feature-icon">◎</span><strong>595g</strong><h3>Silver nisab reference</h3><p>A commonly used silver-weight reference. Consult a trusted scholar for your circumstances.</p></article>
+        </section>
+
+        <section className="economics-tool-grid">
+          <article className="economics-panel">
+            <div className="economics-panel-heading"><div><span className="lab-kicker">PERSONAL WEALTH TOOL</span><h2>Zakat calculator</h2><p>Enter amounts in one consistent currency.</p></div><span className="economics-panel-symbol">ز</span></div>
+            <form onSubmit={handleCalculate} className="economics-form-grid">
+              <Field label="Cash & bank balance" value={cash} onChange={setCash} />
+              <Field label="Gold owned (grams)" value={goldGrams} onChange={setGoldGrams} />
+              <Field label="Silver owned (grams)" value={silverGrams} onChange={setSilverGrams} />
+              <Field label="Trade inventory value" value={tradeGoods} onChange={setTradeGoods} />
+              <Field label="Eligible short-term liabilities" value={liabilities} onChange={setLiabilities} />
+              <div><label className="label-text">Nisab reference</label><select value={nisabStandard} onChange={(e) => setNisabStandard(e.target.value as "gold" | "silver")} className="input-field"><option value="silver">Silver · 595g reference</option><option value="gold">Gold · 85g reference</option></select></div>
+              <Field label="Gold price / gram" value={goldPrice} onChange={setGoldPrice} />
+              <Field label="Silver price / gram" value={silverPrice} onChange={setSilverPrice} />
+              <button type="submit" disabled={calculating} className="btn-primary economics-submit">{calculating ? "Calculating…" : "Calculate zakat →"}</button>
+            </form>
+            {result && <div className="zakat-result"><div className="zakat-result-top"><span>ESTIMATED ZAKAT DUE</span><strong>{money(result.zakat_due)}</strong></div><div className="zakat-result-stats"><div><span>Zakatable wealth</span><b>{money(result.zakatable_wealth)}</b></div><div><span>Nisab threshold</span><b>{money(result.nisab_threshold)}</b></div><div><span>Nisab status</span><b className={result.meets_nisab ? "status-positive" : "status-caution"}>{result.meets_nisab ? "Threshold met" : "Below threshold"}</b></div></div><details className="economics-assumptions"><summary>Calculation assumptions & notes</summary><ul>{result.assumptions.map((a, i) => <li key={i}>{a}</li>)}</ul><p>{result.disclaimer}</p></details></div>}
+          </article>
+
+          <WaqfInfo />
+        </section>
+
+        <section className="economics-panel budget-panel">
+          <div className="economics-panel-heading"><div><span className="lab-kicker">HISTORICAL PUBLIC FINANCE · ILLUSTRATIVE</span><h2>Public budget simulator</h2><p>Model how sample revenue could be distributed across public needs.</p></div><span className="economics-panel-symbol">▥</span></div>
+          <form onSubmit={handleSimulate} className="economics-form-grid budget-form">
+            <Field label="Kharaj · land-tax revenue" value={kharaj} onChange={setKharaj} />
+            <Field label="Zakat · revenue" value={zakatRevenue} onChange={setZakatRevenue} />
+            <Field label="Stipends · allocation" value={stipends} onChange={setStipends} />
+            <Field label="Infrastructure · allocation" value={infrastructure} onChange={setInfrastructure} />
+            <button type="submit" disabled={simulating} className="btn-primary economics-submit">{simulating ? "Running simulation…" : "Run budget simulation →"}</button>
+          </form>
+          <div className="budget-visual">
+            <div className="budget-summary"><div><span>TOTAL REVENUE</span><strong>{money(revenue)}</strong></div><div><span>ALLOCATED</span><strong>{money(allocated)}</strong></div><div><span>UNALLOCATED</span><strong>{money(simulation?.unallocated ?? revenue - allocated)}</strong></div></div>
+            <div className="budget-flow-row"><div className="budget-flow-label"><span>Revenue mix</span><b>{money(safeRevenue)}</b></div><div className="budget-track"><span className="budget-bar revenue-bar" style={{ width: `${revenueWidth}%` }} /></div><div className="budget-legend"><span><i className="legend-dot kharaj-dot" /> Kharaj {money(parseFloat(kharaj) || 0)}</span><span><i className="legend-dot zakat-dot" /> Zakat {money(parseFloat(zakatRevenue) || 0)}</span></div></div>
+            <div className="budget-flow-row"><div className="budget-flow-label"><span>Allocation mix</span><b>{money(allocated)}</b></div><div className="budget-track"><span className="budget-bar allocation-bar" style={{ width: `${allocationWidth}%` }} /></div><div className="budget-legend"><span><i className="legend-dot stipend-dot" /> Stipends {money(parseFloat(stipends) || 0)}</span><span><i className="legend-dot infra-dot" /> Infrastructure {money(parseFloat(infrastructure) || 0)}</span></div></div>
+            {simulation && <p className="simulation-disclaimer">{simulation.disclaimer}</p>}
+          </div>
+        </section>
+        <p className="economics-disclaimer">Educational research only. Zakat rulings can vary by school, asset type, ownership period, debt treatment and local scholarly guidance. Verify current precious-metal prices yourself; the calculator does not fetch live market rates. Budget figures are illustrative and are not a reconstruction of any specific historical treasury.</p>
+      </div>
+    </main>
   );
+}
+
+function Field({ label, value, onChange }: { label: string; value: string; onChange: (v: string) => void }) {
+  return <div className="economics-field"><label className="label-text">{label}</label><input type="number" step="any" min="0" value={value} onChange={(e) => onChange(e.target.value)} className="input-field" placeholder="0" /></div>;
+}
+
+function WaqfInfo() {
+  const [info, setInfo] = useState<{ title: string; summary: string; description: string; disclaimer: string; sources?: string[] } | null>(null);
+  const [failed, setFailed] = useState(false);
+  useEffect(() => {
+    api.get<typeof info>("/economics/waqf-info").then(setInfo).catch(() => setFailed(true));
+  }, []);
+  if (!info) return <article className="economics-panel waqf-panel"><span className="lab-kicker">INSTITUTIONAL HISTORY</span><h2>Waqf & enduring public benefit</h2><p>{failed ? "Waqf reference information is temporarily unavailable." : "Loading waqf research…"}</p></article>;
+  return <article className="economics-panel waqf-panel"><div className="waqf-illustration" aria-hidden="true">۞</div><span className="lab-kicker">INSTITUTIONAL HISTORY</span><h2>{info.title}</h2><p className="waqf-summary">{info.summary}</p><p>{info.description}</p>{info.sources?.length ? <div className="waqf-note"><strong>Further reading</strong><ul>{info.sources.map((source, i) => <li key={i}>{source}</li>)}</ul></div> : null}<div className="waqf-note">{info.disclaimer}</div></article>;
 }
