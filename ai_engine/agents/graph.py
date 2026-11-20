@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import logging
+from uuid import UUID
 
 from langgraph.graph import END, StateGraph
 
@@ -54,7 +55,7 @@ def _run_domain_agent(state: WorkflowState) -> WorkflowState:
         has_ready_documents = (
             db is not None
             and db.query(Document.id)
-            .filter(Document.owner_id == user_id, Document.status == "ready")
+            .filter(Document.owner_id == UUID(str(user_id)), Document.status == "ready")
             .first()
             is not None
         )
@@ -136,25 +137,6 @@ def _run_domain_agent(state: WorkflowState) -> WorkflowState:
         "agent_trace": trace,
     }
 
-
-def _node_verify(state: WorkflowState) -> WorkflowState:
-    trace = state.get("agent_trace", [])
-
-    verification = verification_agent.run(
-        state["draft_answer"],
-        state.get("category", "history"),
-    )
-
-    trace.append({
-        "agent": "source_verification_agent",
-        "summary": verification["trace_summary"],
-    })
-
-    return {
-        **state,
-        "final_answer": verification["final_answer"],
-        "agent_trace": trace,
-    }
 
 
 _graph = StateGraph(WorkflowState)
