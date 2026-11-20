@@ -9,17 +9,17 @@ const config: Config = {
     extend: {
       colors: {
         emerald: {
-          deep: "#0B6E4F",
-          dark: "#064E3B",
+          deep: "#087F62",
+          dark: "#075B49",
         },
         charcoal: {
-          DEFAULT: "#1A1D1F",
-          light: "#24282B",
-          lighter: "#2E3336",
+          DEFAULT: "#0B1722",
+          light: "#112433",
+          lighter: "#173244",
         },
         gold: {
-          DEFAULT: "#C9A24B",
-          light: "#DEC180",
+          DEFAULT: "#4B9BD5",
+          light: "#8BC8EF",
         },
       },
       fontFamily: {
@@ -28,7 +28,7 @@ const config: Config = {
       },
       backgroundImage: {
         "geo-pattern":
-          "radial-gradient(circle at 1px 1px, rgba(201,162,75,0.15) 1px, transparent 0)",
+          "radial-gradient(circle at 1px 1px, rgba(24,167,127,0.16) 1px, transparent 0)",
       },
     },
   },
