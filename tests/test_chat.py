@@ -68,3 +68,10 @@ def test_chat_history_empty_for_new_user(client):
     resp = client.get("/api/chat/history", headers=headers)
     assert resp.status_code == 200
     assert resp.json() == []
+
+
+def test_chat_schema_accepts_urdu_language():
+    from backend.app.schemas import ChatRequest
+
+    payload = ChatRequest(message="خلافت عباسیہ کے بارے میں بتائیں", language="ur")
+    assert payload.language == "ur"
