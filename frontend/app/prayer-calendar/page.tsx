@@ -80,7 +80,16 @@ function minutesUntil(time: string, now: Date) {
   if (!match) return null;
   const target = new Date(now);
   target.setHours(Number(match[1]), Number(match[2]), 0, 0);
-  if (target <= now) target.setDate(target.getDate() + 1);
+  if (target <= now) return null;
+  return Math.max(0, Math.floor((target.getTime() - now.getTime()) / 1000));
+}
+
+function minutesUntilTomorrow(time: string, now: Date) {
+  const match = time.match(/^(\\d{1,2}):(\\d{2})/);
+  if (!match) return null;
+  const target = new Date(now);
+  target.setDate(target.getDate() + 1);
+  target.setHours(Number(match[1]), Number(match[2]), 0, 0);
   return Math.max(0, Math.floor((target.getTime() - now.getTime()) / 1000));
 }
 
@@ -92,8 +101,7 @@ function countdownLabel(seconds: number) {
 }
 
 export default function PrayerCalendarPage() {
-  const [location, setLocation] = useState<LocationChoice | null>(null);
-  const [locationLabel, setLocationLabel] = useState("");
+    const [locationLabel, setLocationLabel] = useState("");
   const [timings, setTimings] = useState<Timings | null>(null);
   const [tomorrowFajr, setTomorrowFajr] = useState("05:00");
   const [hijri, setHijri] = useState<HijriDate | null>(null);
@@ -111,7 +119,6 @@ export default function PrayerCalendarPage() {
   const loadPrayerTimes = useCallback(async (place: LocationChoice, label: string) => {
     setLoading(true);
     setError("");
-    setLocation(place);
     setLocationLabel(label);
     try {
       const today = new Date();
@@ -123,6 +130,7 @@ export default function PrayerCalendarPage() {
           longitude: String(place.longitude),
           method: "1",
           school: "1",
+          calendarMethod: "UAQ",
         });
         return `https://api.aladhan.com/v1/timings/${localDateString(date)}?${query.toString()}`;
       };
@@ -179,7 +187,7 @@ export default function PrayerCalendarPage() {
       const seconds = minutesUntil(timings[prayer.key], now);
       if (seconds !== null) return { ...prayer, time: timings[prayer.key], seconds };
     }
-    const seconds = minutesUntil(tomorrowFajr, now);
+    const seconds = minutesUntilTomorrow(tomorrowFajr, now);
     return { key: "Fajr" as keyof Timings, label: "Fajr", time: tomorrowFajr, seconds: seconds ?? 0, tomorrow: true };
   }, [timings, tomorrowFajr, now]);
 
