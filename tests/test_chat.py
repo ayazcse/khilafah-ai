@@ -1,9 +1,4 @@
-"""Tests for the chat endpoint.
-
-Covers both the real graceful-degradation path (no OpenAI key configured ->
-clean 503) and the happy path, where ai_engine.agents.graph.run_query is
-mocked so the test suite never needs a real API key or network access.
-"""
+"""Tests for the chat endpoint and its graceful no-key behavior."""
 from __future__ import annotations
 
 
@@ -19,16 +14,14 @@ def test_chat_returns_503_without_api_key(registered_user, client):
         headers=registered_user["headers"],
     )
     assert resp.status_code == 503
-    assert "OPENAI_API_KEY" in resp.json()["detail"]
+    assert "GEMINI_API_KEY" in resp.json()["detail"]
 
 
 def test_chat_happy_path_with_mocked_agent_graph(registered_user, client, monkeypatch):
     def fake_run_query(message, language, user_id, db):
         return {
             "answer": "The diwan was an administrative register introduced under 'Umar ibn al-Khattab.",
-            "citations": [
-                {"source_id": "diwan", "title": "Encyclopaedia of Islam, entry: 'Diwan'", "source_type": "established"}
-            ],
+            "citations": [{"source_id": "diwan", "title": "Encyclopaedia of Islam, entry: 'Diwan'", "source_type": "established"}],
             "agent_trace": [
                 {"agent": "query_router", "summary": "Classified query as 'governance'."},
                 {"agent": "governance_research_agent", "summary": "Produced a draft answer."},
@@ -37,13 +30,6 @@ def test_chat_happy_path_with_mocked_agent_graph(registered_user, client, monkey
             "uncertainty_note": None,
         }
 
-    import backend.app.routers.chat as chat_module
-
-    monkeypatch.setattr(
-        "ai_engine.agents.graph.run_query", fake_run_query, raising=False
-    )
-
-    # Patch the import target directly since chat.py imports inside the function body.
     import sys
     import types
 
@@ -75,15 +61,10 @@ def test_chat_history_requires_auth(client):
 
 
 def test_chat_history_empty_for_new_user(client):
-    # Uses its own freshly-registered user rather than the shared
-    # `registered_user` fixture, since other tests in this module may have
-    # already created chat history for that fixture's user within the same
-    # test-session database.
     payload = {"email": "history-empty-user@example.com", "password": "StrongPass123", "full_name": "History Empty"}
     client.post("/api/auth/register", json=payload)
     login = client.post("/api/auth/login", json={"email": payload["email"], "password": payload["password"]})
     headers = {"Authorization": f"Bearer {login.json()['access_token']}"}
-
     resp = client.get("/api/chat/history", headers=headers)
     assert resp.status_code == 200
     assert resp.json() == []
