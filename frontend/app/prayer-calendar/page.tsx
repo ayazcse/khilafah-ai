@@ -101,7 +101,7 @@ function countdownLabel(seconds: number) {
 }
 
 export default function PrayerCalendarPage() {
-    const [locationLabel, setLocationLabel] = useState("");
+  const [locationLabel, setLocationLabel] = useState("");
   const [timings, setTimings] = useState<Timings | null>(null);
   const [tomorrowFajr, setTomorrowFajr] = useState("05:00");
   const [hijri, setHijri] = useState<HijriDate | null>(null);
