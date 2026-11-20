@@ -39,7 +39,7 @@ class Token(BaseModel):
 class ChatRequest(BaseModel):
     message: str = Field(min_length=1, max_length=4000)
     conversation_id: uuid.UUID | None = None
-    language: Literal["en", "hi", "ar"] = "en"
+    language: Literal["en", "hi", "ur"] = "en"
 
 
 class Citation(BaseModel):
