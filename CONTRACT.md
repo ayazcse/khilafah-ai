@@ -35,7 +35,7 @@ khilafah-ai/
     Dockerfile              <- runs `uvicorn backend.app.main:app` from repo root (WORKDIR /app, COPY whole repo)
   ai_engine/                 <- plain importable Python package, NOT a service
     __init__.py
-    llm_client.py            <- OpenAI client wrapper, model/base_url from config
+    llm_client.py            <- Gemini client wrapper, model/base_url from config
     embeddings.py
     chunking.py
     rag.py
@@ -115,11 +115,11 @@ NEO4J_USER=neo4j
 NEO4J_PASSWORD=change-me
 NEO4J_ENABLED=true
 
-# OpenAI
-OPENAI_API_KEY=sk-your-key-here
-OPENAI_BASE_URL=https://api.openai.com/v1
-OPENAI_CHAT_MODEL=gpt-4o-mini
-OPENAI_EMBEDDING_MODEL=text-embedding-3-small
+# Gemini
+GEMINI_API_KEY=sk-your-key-here
+GEMINI_API_BASE_URL=https://api.openai.com/v1
+GEMINI_CHAT_MODEL=gpt-4o-mini
+GEMINI_EMBEDDING_MODEL=text-embedding-3-small
 
 # Uploads
 MAX_UPLOAD_MB=20
@@ -236,9 +236,9 @@ def run_query(message: str, language: str, user_id: str, db) -> dict:
 
 Every agent/LLM call must go through `ai_engine.llm_client.chat()` so there is
 one place that implements retries, timeouts (default 30s), and error handling.
-`ai_engine.llm_client` must work when `OPENAI_API_KEY` is a placeholder (raise
+`ai_engine.llm_client` must work when `GEMINI_API_KEY` is a placeholder (raise
 a clear, caught `LLMNotConfiguredError` that routers turn into a friendly
-`503 {"detail": "AI features require an OpenAI API key. Add OPENAI_API_KEY to your .env file."}`)
+`503 {"detail": "AI features require an Gemini API key. Add GEMINI_API_KEY to your .env file."}`)
 rather than crashing the whole app at import time.
 
 ## knowledge_graph function signatures
