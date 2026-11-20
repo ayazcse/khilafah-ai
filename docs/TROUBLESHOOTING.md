@@ -1,14 +1,11 @@
 # Troubleshooting Guide
 
-### "AI features require an OpenAI API key. Add OPENAI_API_KEY to your .env file." (503)
-You haven't set a real `OPENAI_API_KEY` in `.env` (it's still the placeholder
-`sk-your-key-here`). Get a key at https://platform.openai.com/api-keys, set
-it in `.env`, and restart the backend. This is a graceful, intentional
-response — not a bug — so the rest of the app keeps working without a key.
+### "AI features require Gemini. Add GEMINI_API_KEY" (503)
+Set a valid `GEMINI_API_KEY` in the backend environment (or local `.env`) and restart the backend. The key is available through Google AI Studio. Keep it private and never commit it.
 
 ### Document upload succeeds but status is "error_processing"
 This means text extraction worked but embedding failed — almost always a
-missing/invalid `OPENAI_API_KEY`, or an exhausted OpenAI quota. Check the
+a missing/invalid `GEMINI_API_KEY`, or an exhausted Gemini quota. Check the
 backend logs (`uvicorn` terminal output) for the specific error. The document
 itself is safely stored; re-upload after fixing the key, or wait for a
 future "reprocess" admin action (not yet implemented in this MVP).
@@ -57,9 +54,8 @@ asks for it.
 
 ### Tests fail locally
 Run `pytest tests/ -v` from the repo root with the virtual environment
-activated. The test suite uses an isolated SQLite database and a placeholder
-API key by design (see `tests/conftest.py`) — it does not need Postgres,
-Neo4j, or a real OpenAI key to pass. If tests fail, read the specific
+activated. The test suite uses an isolated SQLite database and a blank Gemini API key by design (see `tests/conftest.py`) — it does not need Postgres,
+Neo4j, or a real Gemini key to pass. If tests fail, read the specific
 assertion error; it's almost always either a stale `.venv` (recreate it) or a
 port conflict from a previous `uvicorn` process still running.
 
