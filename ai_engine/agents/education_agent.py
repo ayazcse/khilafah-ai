@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 from ai_engine.llm_client import chat
-from ai_engine.prompts import EDUCATION_AGENT_PROMPT
+from ai_engine.prompts import EDUCATION_AGENT_PROMPT, language_instruction
 from ai_engine.safety import sanitize_user_message
 
 
@@ -18,7 +18,7 @@ def run(message: str, language: str, db=None) -> dict:
 
     result = chat(
         messages=[
-            {"role": "system", "content": EDUCATION_AGENT_PROMPT + extra},
+            {"role": "system", "content": EDUCATION_AGENT_PROMPT + extra + " " + language_instruction(language)},
             {"role": "user", "content": sanitize_user_message(message)},
         ]
     )

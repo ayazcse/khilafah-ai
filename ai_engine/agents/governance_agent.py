@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 from ai_engine.llm_client import chat
-from ai_engine.prompts import GOVERNANCE_AGENT_PROMPT
+from ai_engine.prompts import GOVERNANCE_AGENT_PROMPT, language_instruction
 from ai_engine.safety import fence_context, sanitize_user_message
 from simulations.governance_models import GOVERNANCE_TOPICS
 
@@ -15,7 +15,7 @@ def run(message: str, language: str, db=None) -> dict:
 
     result = chat(
         messages=[
-            {"role": "system", "content": GOVERNANCE_AGENT_PROMPT},
+            {"role": "system", "content": GOVERNANCE_AGENT_PROMPT + " " + language_instruction(language)},
             {
                 "role": "user",
                 "content": f"{context}\n\nUse the reference data above where relevant, and otherwise answer with appropriate caution. Question: {sanitize_user_message(message)}",

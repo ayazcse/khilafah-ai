@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 from ai_engine.llm_client import chat
-from ai_engine.prompts import HISTORY_AGENT_PROMPT
+from ai_engine.prompts import HISTORY_AGENT_PROMPT, language_instruction
 from ai_engine.safety import sanitize_user_message
 
 
@@ -14,12 +14,12 @@ def run(message: str, language: str, db=None) -> dict:
     language_hint = {
         "en": "Respond in English.",
         "hi": "Respond in Hindi (Devanagari script).",
-        "ar": "Respond in Arabic if the model supports it well; otherwise respond in English and note the limitation.",
+        "ur": "Respond in Urdu using Urdu script.",
     }.get(language, "Respond in English.")
 
     result = chat(
         messages=[
-            {"role": "system", "content": HISTORY_AGENT_PROMPT + " " + language_hint},
+            {"role": "system", "content": HISTORY_AGENT_PROMPT + " " + language_hint + " " + language_instruction(language)},
             {"role": "user", "content": sanitize_user_message(message)},
         ]
     )

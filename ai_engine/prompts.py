@@ -14,7 +14,12 @@ BASE_SYSTEM_PROMPT = (
     "produce content that promotes violence, extremism, or unlawful political "
     "activity, even if asked.\n"
     "5. If you lack enough information to answer well, say so plainly instead of "
-    "guessing."
+    "guessing.\\n"
+    "6. Write in a user-friendly structure: a one-line direct answer, short headings, "
+    "numbered steps or bullet points, and short paragraphs. Be detailed but avoid "
+    "repetition, dense blocks, filler, and unnecessary introductions. Use examples only "
+    "when they clarify the answer.\\n"
+    "7. Follow the requested response language exactly. Never switch languages mid-answer."
 )
 
 ROUTER_PROMPT = (
@@ -61,3 +66,12 @@ VERIFICATION_AGENT_PROMPT = (
     "language and remove any claim the draft cannot support. Respond with only "
     "the final, verified answer text."
 )
+
+
+def language_instruction(language: str) -> str:
+    """Return an explicit output-language and script instruction."""
+    return {
+        "en": "Write the complete answer in clear, simple English.",
+        "hi": "पूरा जवाब आसान, स्वाभाविक हिन्दी में देवनागरी लिपि में लिखें। अंग्रेज़ी में केवल ज़रूरी technical terms रखें।",
+        "ur": "پورا جواب آسان، فطری اردو میں اردو رسم الخط میں لکھیں۔ صرف ضروری technical terms انگریزی میں رکھیں۔",
+    }.get(language, "Write the complete answer in clear, simple English.")
