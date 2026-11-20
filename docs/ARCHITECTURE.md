@@ -58,7 +58,7 @@ KHILAFAH AI runs as three deployable units:
    reasoning).
 5. The assistant's `Message` and an `AIRequestLog` row are saved.
 
-If `OPENAI_API_KEY` isn't configured, step 3 raises `LLMNotConfiguredError`
+If `GEMINI_API_KEY` isn't configured, step 3 raises `LLMNotConfiguredError`
 immediately (checked before any LLM call), and the router returns a clean
 HTTP 503 with an actionable message — the request never reaches a half-done
 state or a 500 error.
