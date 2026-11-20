@@ -171,6 +171,6 @@ def search_documents(
     except LLMNotConfiguredError:
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-            detail="Document search requires an OpenAI API key. Add OPENAI_API_KEY to your .env file.",
+            detail="Document search requires a Gemini API key. Add GEMINI_API_KEY to your environment variables.",
         )
     return [DocumentSearchResult(**r) for r in results]
