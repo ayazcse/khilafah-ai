@@ -185,7 +185,7 @@ export default function PrayerCalendarPage() {
     if (!timings) return null;
     for (const prayer of PRAYERS) {
       const seconds = minutesUntil(timings[prayer.key], now);
-      if (seconds !== null) return { ...prayer, time: timings[prayer.key], seconds };
+      if (seconds !== null) return { ...prayer, time: timings[prayer.key], seconds, tomorrow: false };
     }
     const seconds = minutesUntilTomorrow(tomorrowFajr, now);
     return { key: "Fajr" as keyof Timings, label: "Fajr", time: tomorrowFajr, seconds: seconds ?? 0, tomorrow: true };
@@ -214,10 +214,12 @@ export default function PrayerCalendarPage() {
   }, [now]);
 
   const ramadanCountdown = useMemo(() => {
+    const current = hijriParts(now);
+    if (current.month === 9) return { days: 0, day: current.day };
     for (let offset = 0; offset < 370; offset++) {
       const date = new Date(now.getFullYear(), now.getMonth(), now.getDate() + offset);
       const parts = hijriParts(date);
-      if (parts.month === 9 && parts.day === 1) return offset;
+      if (parts.month === 9 && parts.day === 1) return { days: offset, day: 0 };
     }
     return null;
   }, [now]);
@@ -323,7 +325,7 @@ export default function PrayerCalendarPage() {
           <section className="prayer-panel ramadan-panel">
             <div className="prayer-section-kicker">A MONTH OF MERCY</div>
             <h2>Ramadan countdown</h2>
-            <strong className="ramadan-number">{ramadanCountdown === null ? "—" : ramadanCountdown === 0 ? "Ramadan Mubarak" : `${ramadanCountdown} days`}</strong>
+            <strong className="ramadan-number">{ramadanCountdown === null ? "—" : ramadanCountdown.day ? `Day ${ramadanCountdown.day} of Ramadan` : ramadanCountdown.days === 0 ? "Ramadan Mubarak" : `${ramadanCountdown.days} days`}</strong>
             <p className="prayer-muted">Estimated from the calculated Hijri calendar. The official start depends on local moon sighting.</p>
           </section>
           <section className="prayer-panel events-panel">
