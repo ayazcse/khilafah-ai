@@ -116,10 +116,10 @@ NEO4J_PASSWORD=change-me
 NEO4J_ENABLED=true
 
 # Gemini
-GEMINI_API_KEY=sk-your-key-here
-GEMINI_API_BASE_URL=https://api.openai.com/v1
-GEMINI_CHAT_MODEL=gpt-4o-mini
-GEMINI_EMBEDDING_MODEL=text-embedding-3-small
+GEMINI_API_KEY=your-gemini-api-key
+GEMINI_CHAT_MODEL=gemini-3.5-flash-lite
+GEMINI_EMBEDDING_MODEL=gemini-embedding-001
+GEMINI_EMBEDDING_DIM=1536
 
 # Uploads
 MAX_UPLOAD_MB=20
@@ -238,7 +238,7 @@ Every agent/LLM call must go through `ai_engine.llm_client.chat()` so there is
 one place that implements retries, timeouts (default 30s), and error handling.
 `ai_engine.llm_client` must work when `GEMINI_API_KEY` is a placeholder (raise
 a clear, caught `LLMNotConfiguredError` that routers turn into a friendly
-`503 {"detail": "AI features require an Gemini API key. Add GEMINI_API_KEY to your .env file."}`)
+`503 {"detail": "AI features require Gemini. Add GEMINI_API_KEY to your .env file."}`)
 rather than crashing the whole app at import time.
 
 ## knowledge_graph function signatures
