@@ -1,7 +1,8 @@
+
 """Shared state object passed between agent nodes in the LangGraph workflow."""
 from __future__ import annotations
 
-from typing import Annotated, TypedDict
+from typing import Any, TypedDict
 
 
 class AgentTraceEntry(TypedDict):
@@ -20,3 +21,6 @@ class WorkflowState(TypedDict, total=False):
     agent_trace: list[AgentTraceEntry]
     uncertainty_note: str | None
     error: str | None
+
+    # Database session passed to the research node for document retrieval.
+    _db: Any
