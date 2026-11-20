@@ -12,11 +12,11 @@ from ai_engine.agents import (
     governance_agent,
     history_agent,
     router_agent,
-    verification_agent,
 )
 from ai_engine.agents.state import WorkflowState
 from ai_engine.llm_client import LLMNotConfiguredError, is_configured
 from ai_engine.rag import answer_from_documents
+from backend.app.models import Document
 
 logger = logging.getLogger("khilafah_ai.ai_engine.agents")
 
@@ -51,12 +51,21 @@ def _run_domain_agent(state: WorkflowState) -> WorkflowState:
         # regardless of the question category.
         rag_result = None
 
-        if db is not None:
+        has_ready_documents = (
+            db is not None
+            and db.query(Document.id)
+            .filter(Document.owner_id == user_id, Document.status == "ready")
+            .first()
+            is not None
+        )
+
+        if has_ready_documents:
             try:
                 rag_result = answer_from_documents(
                     db=db,
                     query=message,
                     user_id=user_id,
+                    language=language,
                 )
             except LLMNotConfiguredError:
                 raise
@@ -152,12 +161,10 @@ _graph = StateGraph(WorkflowState)
 
 _graph.add_node("route", _node_route)
 _graph.add_node("research", _run_domain_agent)
-_graph.add_node("verify", _node_verify)
 
 _graph.set_entry_point("route")
 _graph.add_edge("route", "research")
-_graph.add_edge("research", "verify")
-_graph.add_edge("verify", END)
+_graph.add_edge("research", END)
 
 _compiled_graph = _graph.compile()
 
@@ -186,10 +193,7 @@ def run_query(
     final_state = _compiled_graph.invoke(initial_state)
 
     return {
-        "answer": (
-            final_state.get("final_answer")
-            or final_state.get("draft_answer", "")
-        ),
+        "answer": final_state.get("draft_answer", ""),
         "citations": final_state.get("citations", []),
         "agent_trace": final_state.get("agent_trace", []),
         "uncertainty_note": final_state.get("uncertainty_note"),
