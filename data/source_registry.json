@@ -1,0 +1,31 @@
+{
+  "sources": [
+    {
+      "title": "Sample Governance Overview (Platform Test Document)",
+      "author": "KHILAFAH AI (platform-authored summary, not a primary source)",
+      "publication_details": "Generated for this project as pipeline sample data",
+      "language": "en",
+      "historical_period": "N/A (modern summary)",
+      "source_type": "sample_test_document",
+      "edition": "1.0",
+      "page_references": "N/A",
+      "copyright_status": "Original content authored for this project; free to use/modify",
+      "verification_status": "unverified_sample_only",
+      "filename": "sample_governance_overview.txt"
+    },
+    {
+      "title": "Sample Economics Overview (Platform Test Document)",
+      "author": "KHILAFAH AI (platform-authored summary, not a primary source)",
+      "publication_details": "Generated for this project as pipeline sample data",
+      "language": "en",
+      "historical_period": "N/A (modern summary)",
+      "source_type": "sample_test_document",
+      "edition": "1.0",
+      "page_references": "N/A",
+      "copyright_status": "Original content authored for this project; free to use/modify",
+      "verification_status": "unverified_sample_only",
+      "filename": "sample_economics_overview.txt"
+    }
+  ],
+  "note": "This registry ships with only sample/test entries. Add genuine, properly-licensed public-domain or cleared sources via the Research Studio upload flow and the Admin Dashboard's source approval workflow before relying on the platform for real research."
+}

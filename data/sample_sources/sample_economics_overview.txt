@@ -1,0 +1,27 @@
+SAMPLE TEST DOCUMENT — Platform-authored summary for pipeline testing.
+This is NOT a verified primary source or scholarly citation. It exists only
+to give the Research Studio upload/chunking/embedding pipeline something
+real to process out of the box. Replace it with genuine, properly-cited
+sources before relying on the platform for research.
+
+Overview of Zakat and Waqf as Economic Institutions
+
+Zakat is a mandatory form of almsgiving on qualifying wealth above a
+minimum threshold known as nisab, commonly cited as the value of 85 grams
+of gold or 595 grams of silver, at a standard rate of 2.5% for cash, gold,
+silver, and trade goods. The specific rulings on what counts as zakatable
+wealth, how liabilities are treated, and which nisab standard applies
+differ between schools of Islamic jurisprudence (fiqh); the platform's
+Economics Lab clearly labels these as configurable assumptions, not a
+universal ruling.
+
+Waqf is a permanent charitable endowment: once an asset is dedicated as
+waqf, it cannot be sold or inherited, and its revenue must fund the stated
+charitable purpose indefinitely, administered by a trustee (mutawalli).
+Historically, waqf endowments funded a significant share of public
+institutions across the Islamic world, including mosques, schools,
+hospitals, and public infrastructure, because the inalienability of the
+underlying asset made it a durable mechanism for long-term civic funding.
+
+For the platform's zakat calculator and additional economic reference
+material, see the Islamic Economics Lab.

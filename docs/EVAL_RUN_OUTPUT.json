@@ -1,0 +1,16 @@
+{
+  "retrieval_eval": {
+    "status": "skipped",
+    "reason": "OPENAI_API_KEY not configured \u2014 embedding-based retrieval cannot run."
+  },
+  "agent_workflow_eval": {
+    "status": "skipped",
+    "reason": "OPENAI_API_KEY not configured \u2014 cannot run the live agent workflow."
+  },
+  "known_limitations": [
+    "Answer faithfulness and answer relevance are not scored numerically in this harness \u2014 doing so correctly requires either human annotation or a separate LLM-as-judge pipeline, which is out of scope for this MVP. Raw answers are captured so a human reviewer can score them.",
+    "Citation correctness is checked structurally (citations are present and reference real source titles from the retrieval step) but not verified sentence-by-sentence against source text.",
+    "Token usage and estimated cost per query are only available when OPENAI_API_KEY is configured; see ai_engine/llm_client.py's returned `usage` dict on live runs.",
+    "This is a small, 4-question reproducible dataset for pipeline verification, not a comprehensive benchmark."
+  ]
+}

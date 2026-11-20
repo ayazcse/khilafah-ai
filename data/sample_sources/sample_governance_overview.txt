@@ -1,0 +1,31 @@
+SAMPLE TEST DOCUMENT — Platform-authored summary for pipeline testing.
+This is NOT a verified primary source or scholarly citation. It exists only
+to give the Research Studio upload/chunking/embedding pipeline something
+real to process out of the box. Replace it with genuine, properly-cited
+sources before relying on the platform for research.
+
+Overview of Early Islamic Administrative Institutions
+
+The early Islamic polity developed several administrative institutions as it
+grew from a small community in Medina into a state spanning a large
+territory. The diwan, introduced as a formal register under the caliph
+'Umar ibn al-Khattab, tracked stipends owed to soldiers and their families
+from the public treasury. Over subsequent decades, 'diwan' broadened to
+describe entire government bureaus handling land tax, correspondence, and
+payroll.
+
+The bayt al-mal, or public treasury, collected revenue from zakat, kharaj
+(land tax), and jizya, and disbursed funds for stipends and public works.
+Provincial governors, known as wulat, administered distant regions on
+behalf of the caliph, combining military command with tax collection and
+often leading communal prayer.
+
+The office of qadi (judge) developed as the polity expanded, with judges
+appointed to resolve disputes according to emerging Islamic legal norms.
+This formalization of judicial practice is closely connected to the
+broader development of Islamic jurisprudence (fiqh) during the eighth and
+ninth centuries CE.
+
+For a cited, structured treatment of these topics, see the platform's
+Governance Research Lab, which lists each topic with its evidence level and
+source references.
