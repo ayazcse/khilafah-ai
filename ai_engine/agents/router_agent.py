@@ -22,20 +22,9 @@ def _keyword_classify(message: str) -> str:
 
 
 def classify(message: str) -> dict:
-    """Returns {"category": str, "trace_summary": str}."""
-    try:
-        result = chat(
-            messages=[
-                {"role": "system", "content": ROUTER_PROMPT},
-                {"role": "user", "content": message},
-            ],
-            temperature=0.0,
-            max_tokens=10,
-        )
-        category = result["content"].strip().lower()
-        if category not in VALID_CATEGORIES:
-            category = _keyword_classify(message)
-        return {"category": category, "trace_summary": f"Classified query as '{category}'."}
-    except Exception:  # noqa: BLE001 — let graph.py decide whether to re-raise LLMNotConfiguredError upstream
-        category = _keyword_classify(message)
-        return {"category": category, "trace_summary": f"LLM classification unavailable; used keyword fallback -> '{category}'."}
+    """Route common topics locally to avoid an extra model round-trip."""
+    category = _keyword_classify(message)
+    return {
+        "category": category,
+        "trace_summary": f"Used low-latency keyword routing -> '{category}'.",
+    }
