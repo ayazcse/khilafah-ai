@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 from ai_engine.llm_client import chat
-from ai_engine.prompts import ECONOMICS_AGENT_PROMPT
+from ai_engine.prompts import ECONOMICS_AGENT_PROMPT, language_instruction
 from ai_engine.safety import fence_context, sanitize_user_message
 from simulations.economics_models import WAQF_INFO, ZAKAT_DISCLAIMER
 
@@ -16,7 +16,7 @@ def run(message: str, language: str, db=None) -> dict:
 
     result = chat(
         messages=[
-            {"role": "system", "content": ECONOMICS_AGENT_PROMPT},
+            {"role": "system", "content": ECONOMICS_AGENT_PROMPT + " " + language_instruction(language)},
             {
                 "role": "user",
                 "content": f"{context}\n\nUse the reference data above where relevant. Question: {sanitize_user_message(message)}",
