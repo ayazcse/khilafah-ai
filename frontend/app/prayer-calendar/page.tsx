@@ -102,6 +102,7 @@ function countdownLabel(seconds: number) {
 
 export default function PrayerCalendarPage() {
   const [locationLabel, setLocationLabel] = useState("");
+  const [selectedCityName, setSelectedCityName] = useState(CITIES[0].name);
   const [timings, setTimings] = useState<Timings | null>(null);
   const [tomorrowFajr, setTomorrowFajr] = useState("05:00");
   const [hijri, setHijri] = useState<HijriDate | null>(null);
@@ -155,6 +156,11 @@ export default function PrayerCalendarPage() {
       setLoading(false);
     }
   }, []);
+
+  useEffect(() => {
+    const defaultCity = CITIES[0];
+    void loadPrayerTimes(defaultCity, defaultCity.name);
+  }, [loadPrayerTimes]);
 
   const requestGps = () => {
     if (!navigator.geolocation) {
@@ -247,9 +253,12 @@ export default function PrayerCalendarPage() {
           </div>
           <div className="location-controls">
             <label className="sr-only" htmlFor="prayer-city">Choose city</label>
-            <select id="prayer-city" className="input-field" value="" onChange={(event) => {
+            <select id="prayer-city" className="input-field" value={selectedCityName} onChange={(event) => {
               const place = CITIES.find((city) => city.name === event.target.value);
-              if (place) void loadPrayerTimes(place, place.name);
+              if (place) {
+                setSelectedCityName(place.name);
+                void loadPrayerTimes(place, place.name);
+              }
             }}>
               <option value="" disabled>Choose your city</option>
               {CITIES.map((city) => <option key={city.name} value={city.name}>{city.name}</option>)}
