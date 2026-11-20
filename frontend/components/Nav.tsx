@@ -12,6 +12,7 @@ const LINKS = [
   { href: "/governance-lab", label: "Governance" },
   { href: "/economics-lab", label: "Economics" },
   { href: "/academy", label: "Academy" },
+  { href: "/prayer-calendar", label: "Prayer & Calendar" },
 ];
 
 export default function Nav() {

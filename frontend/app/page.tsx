@@ -7,6 +7,7 @@ const FEATURES = [
   { number: "04", icon: "⌘", title: "Governance Research Lab", desc: "Study historical institutions and administrative systems with transparent assumptions.", href: "/governance-lab", tag: "ANALYSE" },
   { number: "05", icon: "◎", title: "Islamic Economics Lab", desc: "Explore zakat, waqf, and public-finance concepts through clear, illustrative tools.", href: "/economics-lab", tag: "ECONOMICS" },
   { number: "06", icon: "✦", title: "Learning Academy", desc: "Build knowledge through structured learning paths, lessons, and source-grounded quizzes.", href: "/academy", tag: "LEARN" },
+  { number: "07", icon: "☾", title: "Prayer & Hijri Calendar", desc: "Check daily prayer times, next-prayer countdown, Hijri dates, and important Islamic occasions.", href: "/prayer-calendar", tag: "DAILY COMPANION" },
 ];
 
 const PILLARS = [

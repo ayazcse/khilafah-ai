@@ -337,3 +337,88 @@ pre, code { overflow-wrap: anywhere; }
   .site-nav .brand-symbol { width: 36px; height: 36px; }
   .site-nav .nav-signin, .site-nav .nav-cta { min-height: 42px; padding-left: 10px; padding-right: 10px; font-size: .78rem; }
 }
+
+
+/* Prayer times and Hijri calendar module */
+.prayer-page { min-height:100vh; background:#0b1722; color:#f2f8fc; padding-bottom:64px; }
+.prayer-hero { padding:clamp(42px,7vw,82px) max(24px,calc((100vw - 1280px)/2)); background:radial-gradient(ellipse at 80% 10%,rgba(24,167,127,.22),transparent 42%),linear-gradient(120deg,#102b3c,#0d2733 58%,#103d3c); border-bottom:1px solid rgba(117,217,189,.2); }
+.prayer-eyebrow,.prayer-section-kicker { color:#75d9bd; font-size:.75rem; font-weight:800; letter-spacing:.16em; }
+.prayer-hero h1 { margin-top:14px; font-family:Georgia,serif; font-size:clamp(2.35rem,5.5vw,4.4rem); line-height:1.08; font-weight:650; }
+.prayer-hero h1 span { color:#78c7f4; }
+.prayer-hero>p { margin-top:14px; color:#c5d5df; font-size:1.08rem; max-width:650px; }
+.prayer-date-strip { display:flex; flex-wrap:wrap; gap:14px; margin-top:30px; }
+.prayer-date-strip>div { display:flex; flex-direction:column; gap:5px; min-width:220px; padding:14px 18px; border:1px solid rgba(197,213,223,.2); border-radius:13px; background:rgba(7,22,33,.42); }
+.prayer-date-strip span { color:#9fb8c7; font-size:.8rem; }
+.prayer-date-strip strong { color:#f2f8fc; font-size:1rem; }
+.prayer-content { width:min(1280px,calc(100% - 40px)); margin:30px auto 0; display:flex; flex-direction:column; gap:20px; }
+.prayer-panel { min-width:0; padding:clamp(20px,3vw,28px); border:1px solid rgba(139,200,239,.2); border-radius:18px; background:linear-gradient(145deg,#142f40,#102433); box-shadow:0 14px 38px rgba(0,0,0,.12); }
+.prayer-panel h2 { margin-top:7px; color:#f2f8fc; font-family:Georgia,serif; font-size:clamp(1.35rem,2.2vw,1.8rem); line-height:1.25; }
+.prayer-muted { margin-top:7px; color:#b6c9d5; font-size:.94rem; line-height:1.65; }
+.location-panel { display:grid; grid-template-columns:minmax(0,1fr) minmax(280px,440px); align-items:center; gap:20px 32px; }
+.location-controls { display:flex; gap:10px; align-items:center; }
+.location-controls select { min-width:0; }
+.gps-button { white-space:nowrap; padding:10px 14px; border-radius:10px; }
+.location-selected,.prayer-error { grid-column:1/-1; margin-top:-7px; color:#9bd8f8; font-size:.9rem; }
+.prayer-error { color:#ffb6a8; }
+.prayer-main-grid { display:grid; grid-template-columns:minmax(0,1.35fr) minmax(280px,.8fr); gap:20px; }
+.panel-heading,.calendar-heading { display:flex; justify-content:space-between; align-items:flex-start; gap:16px; }
+.prayer-loading { color:#78c7f4; font-size:.9rem; }
+.prayer-times-list { display:flex; flex-direction:column; gap:8px; margin-top:20px; }
+.prayer-time-row { display:grid; grid-template-columns:42px minmax(0,1fr) auto auto; gap:12px; align-items:center; min-height:58px; padding:9px 14px; border:1px solid rgba(197,213,223,.12); border-radius:12px; background:rgba(5,20,31,.35); }
+.prayer-time-row.next { border-color:rgba(117,217,189,.58); background:rgba(24,167,127,.13); }
+.prayer-time-icon { display:grid; place-items:center; width:36px; height:36px; border-radius:11px; color:#75d9bd; background:rgba(24,167,127,.15); font-size:1.25rem; }
+.prayer-time-name { color:#d9e7ef; font-weight:650; }
+.prayer-time-row strong { color:#fff; font-size:1.05rem; font-variant-numeric:tabular-nums; }
+.next-tag { padding:4px 7px; color:#06231d; background:#75d9bd; border-radius:5px; font-size:.65rem; font-weight:900; letter-spacing:.08em; }
+.calculation-note,.calendar-caveat { margin-top:16px; color:#a8bdca; font-size:.82rem; line-height:1.6; }
+.prayer-empty { display:grid; justify-items:center; gap:8px; padding:34px 12px; text-align:center; color:#d9e7ef; }
+.prayer-empty>span { color:#75d9bd; font-size:2.5rem; }
+.prayer-empty p { color:#a8bdca; font-size:.9rem; }
+.next-panel { position:relative; overflow:hidden; display:flex; flex-direction:column; justify-content:center; min-height:340px; background:radial-gradient(circle at 95% 8%,rgba(120,199,244,.18),transparent 42%),linear-gradient(145deg,#104d43,#123b63); }
+.next-panel h2 { margin-top:12px; font-size:2.1rem; }
+.prayer-countdown { margin-top:25px; color:#fff; font-size:clamp(2rem,4.5vw,3.4rem); font-weight:750; letter-spacing:.04em; font-variant-numeric:tabular-nums; }
+.countdown-caption { color:#c5d5df; font-size:.9rem; }
+.next-panel-decoration { position:absolute; right:22px; bottom:-40px; color:rgba(255,255,255,.08); font-size:11rem; line-height:1; pointer-events:none; }
+.calendar-heading { align-items:center; flex-wrap:wrap; }
+.calendar-controls { display:flex; align-items:center; gap:12px; }
+.calendar-controls strong { min-width:150px; text-align:center; color:#eaf4fa; }
+.calendar-controls button { width:42px; height:42px; border:1px solid rgba(139,200,239,.35); border-radius:10px; color:#9bd8f8; background:rgba(5,20,31,.45); font-size:1.6rem; line-height:1; }
+.calendar-controls button:hover { background:rgba(24,167,127,.18); }
+.hijri-calendar-grid { display:grid; grid-template-columns:repeat(7,minmax(0,1fr)); gap:7px; margin-top:22px; }
+.calendar-weekday { padding:8px 2px; color:#75d9bd; text-align:center; font-size:.82rem; font-weight:750; }
+.calendar-day,.calendar-blank { min-height:76px; }
+.calendar-day { position:relative; display:flex; flex-direction:column; align-items:flex-start; gap:7px; padding:10px; border:1px solid rgba(197,213,223,.13); border-radius:10px; background:rgba(5,20,31,.3); }
+.calendar-day.today { border-color:#78c7f4; background:rgba(75,155,213,.13); box-shadow:inset 0 0 0 1px rgba(120,199,244,.2); }
+.calendar-day.has-event { border-color:rgba(117,217,189,.42); }
+.gregorian-day { color:#f2f8fc; font-weight:750; }
+.hijri-day { color:#a9c5d4; font-size:.76rem; }
+.calendar-event-dot { position:absolute; right:10px; top:12px; width:7px; height:7px; border-radius:50%; background:#75d9bd; }
+.prayer-bottom-grid { display:grid; grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr); gap:20px; }
+.ramadan-panel { background:radial-gradient(circle at 90% 10%,rgba(24,167,127,.2),transparent 50%),linear-gradient(145deg,#12453f,#102b3c); }
+.ramadan-number { display:block; margin-top:22px; color:#75d9bd; font-size:clamp(2rem,4vw,3rem); font-weight:800; }
+.upcoming-event { display:flex; justify-content:space-between; gap:16px; padding:13px 0; border-bottom:1px solid rgba(197,213,223,.14); color:#dbe8ef; font-size:.9rem; }
+.upcoming-event:first-of-type { margin-top:10px; }
+.upcoming-event strong { flex-shrink:0; color:#9bd8f8; font-variant-numeric:tabular-nums; }
+.prayer-privacy { color:#91aab9; text-align:center; font-size:.82rem; line-height:1.6; }
+@media(max-width:850px) {
+  .location-panel { grid-template-columns:1fr; }
+  .prayer-main-grid,.prayer-bottom-grid { grid-template-columns:1fr; }
+  .next-panel { min-height:270px; }
+}
+@media(max-width:540px) {
+  .prayer-content { width:calc(100% - 24px); margin-top:16px; gap:14px; }
+  .prayer-hero { padding:38px 18px; }
+  .prayer-date-strip>div { min-width:100%; }
+  .location-controls { flex-direction:column; align-items:stretch; }
+  .location-controls select,.location-controls button { width:100%; }
+  .prayer-time-row { grid-template-columns:36px minmax(0,1fr) auto; gap:8px; padding:8px; }
+  .next-tag { grid-column:2/-1; justify-self:start; }
+  .hijri-calendar-grid { gap:4px; }
+  .calendar-day,.calendar-blank { min-height:64px; }
+  .calendar-day { padding:6px; gap:5px; border-radius:7px; }
+  .gregorian-day { font-size:.9rem; }
+  .hijri-day { font-size:.62rem; }
+  .calendar-weekday { font-size:.72rem; }
+  .calendar-event-dot { right:6px; top:8px; width:6px; height:6px; }
+  .upcoming-event { flex-direction:column; gap:3px; }
+}
