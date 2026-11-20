@@ -27,7 +27,7 @@ and what isn't:
 - PostgreSQL + pgvector database with a real Alembic migration (not just
   `create_all`)
 - Document upload → chunking → embedding → pgvector storage → semantic search
-  (Research Studio), with graceful degradation if no OpenAI key is set
+  (Research Studio), with Gemini-powered embeddings and graceful degradation when GEMINI_API_KEY is not configured
 - A LangGraph multi-agent workflow (Query Router → domain agent →
   Source Verification agent) wired to the chat endpoint
 - Governance Research Lab and Economics Lab (zakat calculator, waqf info,
@@ -55,8 +55,7 @@ and what isn't:
   and `docker-compose.yml` were validated for syntax/config correctness
   (`docker compose config`), but a live multi-container build should be your
   first smoke test after extracting this project.
-- The LLM integration is OpenAI's API. No local LLM is required or supported
-  out of the box.
+- The active LLM integration uses Google's Gemini API. Set GEMINI_API_KEY in the backend environment; no local LLM is required.
 
 ---
 
@@ -68,7 +67,7 @@ The short version:
 1. Install Python 3.11+, Node.js 20+, Git, and Docker Desktop.
 2. `docker compose up -d postgres neo4j` (or run Postgres/Neo4j yourself).
 3. `python -m venv .venv && .venv\Scripts\Activate.ps1 && pip install -r requirements.txt`
-4. Copy `.env.example` to `.env` and fill in your `OPENAI_API_KEY`.
+4. Copy `.env.example` to `.env` and fill in your `GEMINI_API_KEY`.
 5. `alembic upgrade head` then `python scripts\seed_db.py`
 6. `uvicorn backend.app.main:app --reload` (backend on :8000)
 7. `cd frontend && npm install && npm run dev` (frontend on :3000)
