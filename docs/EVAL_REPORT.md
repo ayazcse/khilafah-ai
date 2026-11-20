@@ -5,7 +5,7 @@ This report states real, measured results. No score below is invented.
 ## 1. Automated test suite
 
 Run with: `pytest tests/ -v` (repo root, virtual environment activated).
-Uses an isolated SQLite database and a placeholder OpenAI key by design —
+Uses an isolated SQLite database and a placeholder Gemini API key by design —
 no external services required to run it (see `tests/conftest.py`).
 
 **Actual output, captured during this build:**
@@ -24,7 +24,7 @@ project's own logic.
 ### What the test suite actually verifies
 - Registration, login, duplicate-email rejection, wrong-password rejection,
   token-gated `/auth/me`.
-- Chat returns a clean `503` when no OpenAI key is configured (not a crash),
+- Chat returns a clean `503` when no Gemini API key is configured (not a crash),
   and the full response shape (citations, agent trace, conversation id) with
   the agent graph mocked.
 - Document upload degrades gracefully to `status="error_processing"` when
@@ -68,17 +68,17 @@ correctness, answer relevance, response latency, token usage, and estimated
 cost per query, against a small 4-question reproducible test dataset tied to
 the two sample documents in `data/sample_sources/`.
 
-**Actual output from this build environment (no OpenAI key configured):**
+**Actual output from this build environment (no Gemini API key configured):**
 
 ```json
 {
   "retrieval_eval": {
     "status": "skipped",
-    "reason": "OPENAI_API_KEY not configured — embedding-based retrieval cannot run."
+    "reason": "GEMINI_API_KEY not configured — embedding-based retrieval cannot run."
   },
   "agent_workflow_eval": {
     "status": "skipped",
-    "reason": "OPENAI_API_KEY not configured — cannot run the live agent workflow."
+    "reason": "GEMINI_API_KEY not configured — cannot run the live agent workflow."
   }
 }
 ```
