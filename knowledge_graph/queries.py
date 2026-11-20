@@ -98,3 +98,25 @@ def search_entities(query: str, limit: int = 20) -> list[dict]:
             limit=limit,
         )
         return [{"id": r["id"], "name": r["name"], "type": r["type"]} for r in result]
+
+
+def graph_stats() -> dict:
+    """Return live node and relationship counts without exposing graph content."""
+    driver = get_driver()
+    if driver is None:
+        return {"available": False, "nodes": 0, "relationships": 0}
+
+    with driver.session() as session:
+        record = session.run(
+            """
+            MATCH (e:Entity)
+            WITH count(e) AS nodes
+            OPTIONAL MATCH ()-[r]->()
+            RETURN nodes, count(r) AS relationships
+            """
+        ).single()
+    return {
+        "available": True,
+        "nodes": int(record["nodes"]) if record else 0,
+        "relationships": int(record["relationships"]) if record else 0,
+    }

@@ -10,7 +10,17 @@ SCHEMA_FILE = Path(__file__).parent / "schema.cypher"
 
 
 def _apply_schema(session) -> None:
-    statements = [s.strip() for s in SCHEMA_FILE.read_text().split(";") if s.strip() and not s.strip().startswith("//")]
+    # Remove full-line Cypher comments before splitting; otherwise the first
+    # CREATE CONSTRAINT statement is accidentally discarded with its comment.
+    source_lines = [
+        line for line in SCHEMA_FILE.read_text(encoding="utf-8").splitlines()
+        if not line.lstrip().startswith("//")
+    ]
+    statements = [
+        statement.strip()
+        for statement in "\n".join(source_lines).split(";")
+        if statement.strip()
+    ]
     for statement in statements:
         session.run(statement)
 
@@ -18,7 +28,12 @@ def _apply_schema(session) -> None:
 def run_seed() -> dict:
     driver = get_driver()
     if driver is None:
-        return {"nodes_created": 0, "relationships_created": 0, "status": "skipped", "reason": "Neo4j unavailable"}
+        return {
+            "nodes_created": 0,
+            "relationships_created": 0,
+            "status": "skipped",
+            "reason": "Neo4j unavailable",
+        }
 
     nodes_created = 0
     relationships_created = 0
@@ -31,7 +46,7 @@ def run_seed() -> dict:
                 """
                 MERGE (e:Entity {id: $id})
                 ON CREATE SET e.type = $type, e.name = $name, e.period = $period, e.created = true
-                ON MATCH SET e.type = $type, e.name = $name, e.period = $period
+                ON MATCH SET e.type = $type, e.name = $name, e.period = $period, e.created = false
                 RETURN e.created AS created
                 """,
                 id=entity["id"],
@@ -49,6 +64,7 @@ def run_seed() -> dict:
                 MATCH (a:Entity {{id: $source}}), (b:Entity {{id: $target}})
                 MERGE (a)-[r:{rel['type']}]->(b)
                 ON CREATE SET r.created = true
+                ON MATCH SET r.created = false
                 RETURN r.created AS created
                 """,
                 source=rel["source"],
@@ -58,7 +74,11 @@ def run_seed() -> dict:
             if record and record.get("created"):
                 relationships_created += 1
 
-    return {"nodes_created": nodes_created, "relationships_created": relationships_created, "status": "ok"}
+    return {
+        "nodes_created": nodes_created,
+        "relationships_created": relationships_created,
+        "status": "ok",
+    }
 
 
 if __name__ == "__main__":
