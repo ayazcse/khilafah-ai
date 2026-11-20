@@ -18,9 +18,9 @@ export default function Nav() {
   const pathname = usePathname();
   const { user, logout } = useAuth();
   return (
-    <nav className="site-nav sticky top-0 z-40 backdrop-blur-xl border-b">
+    <nav className="site-nav sticky top-0 z-40 backdrop-blur-xl border-b" aria-label="Main navigation">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
-        <div className="flex items-center justify-between min-h-[72px] gap-4">
+        <div className="flex items-center justify-between min-h-[76px] gap-3">
           <Link href="/" className="flex items-center gap-3 shrink-0 group" aria-label="KHILAFAH AI home">
             <span className="brand-symbol grid place-items-center w-10 h-10 rounded-full font-serif text-xl">خ</span>
             <span className="brand-wordmark text-sm tracking-[.12em] font-bold">KHILAFAH <span>AI</span></span>
@@ -31,12 +31,11 @@ export default function Nav() {
           </div>}
           <div className="flex items-center gap-2 sm:gap-3 shrink-0">
             {user ? <>
-              <Link href="/profile" className="nav-utility hidden sm:block text-[13px]">{user.full_name}</Link>
-              <button onClick={logout} className="nav-utility text-[13px]">Sign out</button>
+              <Link href="/profile" className="nav-utility hidden sm:flex text-sm">{user.full_name}</Link>
+              <button onClick={logout} className="nav-utility text-sm px-3 rounded-lg border border-white/20">Sign out</button>
             </> : <>
-              <Link href="/pricing" className="nav-utility hidden sm:block text-[13px]">Plans</Link>
-              <Link href="/login" className="nav-utility text-[13px]">Sign in</Link>
-              <Link href="/register" className="nav-cta text-[13px] font-semibold px-4 py-2.5">Get started ↗</Link>
+              <Link href="/login" aria-label="Sign in to your account" className="nav-signin inline-flex items-center justify-center min-h-11 px-3 sm:px-4 rounded-lg text-sm font-semibold">Sign in</Link>
+              <Link href="/register" aria-label="Create a free account" className="nav-cta inline-flex items-center justify-center min-h-11 px-3 sm:px-5 rounded-lg text-sm font-bold">Create free account <span className="hidden sm:inline ml-1" aria-hidden="true">↗</span></Link>
             </>}
           </div>
         </div>
