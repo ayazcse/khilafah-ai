@@ -76,7 +76,7 @@ function eventForHijri(month: number, day: number) {
 }
 
 function minutesUntil(time: string, now: Date) {
-  const match = time.match(/^(\\d{1,2}):(\\d{2})/);
+  const match = time.match(/^(\d{1,2}):(\d{2})/);
   if (!match) return null;
   const target = new Date(now);
   target.setHours(Number(match[1]), Number(match[2]), 0, 0);
@@ -85,7 +85,7 @@ function minutesUntil(time: string, now: Date) {
 }
 
 function minutesUntilTomorrow(time: string, now: Date) {
-  const match = time.match(/^(\\d{1,2}):(\\d{2})/);
+  const match = time.match(/^(\d{1,2}):(\d{2})/);
   if (!match) return null;
   const target = new Date(now);
   target.setDate(target.getDate() + 1);
