@@ -10,7 +10,13 @@ SCHEMA_FILE = Path(__file__).parent / "schema.cypher"
 
 
 def _apply_schema(session) -> None:
-    statements = [s.strip() for s in SCHEMA_FILE.read_text().split(";") if s.strip() and not s.strip().startswith("//")]
+    # Remove full-line Cypher comments before splitting; otherwise the first
+    # CREATE CONSTRAINT statement is accidentally discarded with its comment.
+    source_lines = [
+        line for line in SCHEMA_FILE.read_text(encoding="utf-8").splitlines()
+        if not line.lstrip().startswith("//")
+    ]
+    statements = [statement.strip() for statement in "\\n".join(source_lines).split(";") if statement.strip()]
     for statement in statements:
         session.run(statement)
 
