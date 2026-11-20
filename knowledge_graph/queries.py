@@ -90,11 +90,11 @@ def search_entities(query: str, limit: int = 20) -> list[dict]:
         result = session.run(
             """
             MATCH (e:Entity)
-            WHERE toLower(e.name) CONTAINS toLower($query)
+            WHERE toLower(e.name) CONTAINS toLower($search_term)
             RETURN e.id AS id, e.name AS name, e.type AS type
             LIMIT $limit
             """,
-            query=query,
+            search_term=query,
             limit=limit,
         )
         return [{"id": r["id"], "name": r["name"], "type": r["type"]} for r in result]
