@@ -12,7 +12,8 @@ from backend.app.database import SessionLocal
 from backend.app.models import User
 from backend.app.security import decode_access_token
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/auth/login", auto_error=False)
+# Keep this endpoint aligned with the OAuth2 form-based token route in auth.py.
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/auth/token", auto_error=False)
 
 
 def get_db() -> Generator[Session, None, None]:

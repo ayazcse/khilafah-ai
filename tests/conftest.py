@@ -52,6 +52,10 @@ app.dependency_overrides[deps.get_db] = _override_get_db
 
 @pytest.fixture()
 def client():
+    # Rate limiting is exercised by the deployed app, not by these endpoint
+    # behavior tests. Disable it here so shared TestClient IP state cannot make
+    # otherwise independent tests order-dependent.
+    app.state.limiter.enabled = False
     return TestClient(app)
 
 
