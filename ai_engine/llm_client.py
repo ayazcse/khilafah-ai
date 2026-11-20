@@ -128,6 +128,52 @@ def chat(
     )
 
 
+def chat_with_images(
+    messages: list[dict],
+    images: list[dict],
+    model: str | None = None,
+    temperature: float = 0.2,
+    max_tokens: int = 1400,
+) -> dict:
+    """Generate a Gemini response with temporary image attachments."""
+    if not is_configured():
+        raise LLMNotConfiguredError("GEMINI_API_KEY is not configured. Add it to your environment.")
+
+    system_parts = []
+    text_parts = []
+    for message in messages:
+        role = message.get("role", "user")
+        content = str(message.get("content", ""))
+        if role == "system":
+            system_parts.append(content)
+        else:
+            text_parts.append(content)
+
+    parts = [types.Part.from_text(text="\n\n".join(text_parts))]
+    for image in images:
+        parts.append(types.Part.from_bytes(data=image["data"], mime_type=image["mime_type"]))
+
+    config = types.GenerateContentConfig(
+        system_instruction="\n\n".join(system_parts) or None,
+        temperature=temperature,
+        max_output_tokens=max_tokens,
+    )
+    response = _get_client().models.generate_content(
+        model=model or settings.GEMINI_CHAT_MODEL,
+        contents=[types.Content(role="user", parts=parts)],
+        config=config,
+    )
+    usage = getattr(response, "usage_metadata", None)
+    return {
+        "content": response.text or "",
+        "usage": {
+            "prompt_tokens": getattr(usage, "prompt_token_count", None),
+            "completion_tokens": getattr(usage, "candidates_token_count", None),
+            "total_tokens": getattr(usage, "total_token_count", None),
+        } if usage else None,
+    }
+
+
 def embed(
     texts: list[str],
     model: str | None = None,

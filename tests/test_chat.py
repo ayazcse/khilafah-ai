@@ -68,3 +68,44 @@ def test_chat_history_empty_for_new_user(client):
     resp = client.get("/api/chat/history", headers=headers)
     assert resp.status_code == 200
     assert resp.json() == []
+
+
+def test_chat_attachment_requires_auth(client):
+    resp = client.post(
+        "/api/chat/attachments",
+        data={"message": "Describe this image.", "language": "en"},
+        files=[("files", ("photo.png", __import__("io").BytesIO(b"fake-image"), "image/png"))],
+    )
+    assert resp.status_code == 401
+
+
+def test_chat_attachment_rejects_unsupported_file(registered_user, client):
+    resp = client.post(
+        "/api/chat/attachments",
+        data={"message": "Analyse this file.", "language": "en"},
+        files=[("files", ("malware.exe", __import__("io").BytesIO(b"binary"), "application/octet-stream"))],
+        headers=registered_user["headers"],
+    )
+    assert resp.status_code == 400
+
+
+def test_chat_image_attachment_uses_multimodal_gemini(registered_user, client, monkeypatch):
+    import ai_engine.llm_client
+
+    def fake_chat_with_images(messages, images, max_tokens=1400, **kwargs):
+        assert "What is visible" in messages[-1]["content"]
+        assert len(images) == 1
+        assert images[0]["mime_type"] == "image/png"
+        return {"content": "The image contains a historical manuscript page.", "usage": {"total_tokens": 20}}
+
+    monkeypatch.setattr(ai_engine.llm_client, "chat_with_images", fake_chat_with_images)
+    resp = client.post(
+        "/api/chat/attachments",
+        data={"message": "What is visible in this image?", "language": "en"},
+        files=[("files", ("manuscript.png", __import__("io").BytesIO(b"not-real-png"), "image/png"))],
+        headers=registered_user["headers"],
+    )
+    assert resp.status_code == 200
+    body = resp.json()
+    assert "manuscript" in body["citations"][0]["title"]
+    assert "historical manuscript" in body["answer"]
