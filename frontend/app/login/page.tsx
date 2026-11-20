@@ -30,40 +30,31 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="max-w-md mx-auto px-6 py-20">
-      <h1 className="text-2xl font-serif font-semibold text-white mb-6">Sign in</h1>
-      <form onSubmit={handleSubmit} className="card space-y-4">
-        {error && <ErrorBanner message={error} />}
-        <div>
-          <label className="label-text">Email</label>
-          <input
-            type="email"
-            required
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="input-field"
-          />
+    <main className="auth-page min-h-[calc(100vh-76px)] flex items-center justify-center px-4 py-12 sm:py-16">
+      <section className="w-full max-w-md">
+        <div className="text-center mb-7">
+          <div className="auth-mark mx-auto mb-4" aria-hidden="true">خ</div>
+          <p className="auth-kicker mb-2">WELCOME BACK</p>
+          <h1 className="text-3xl sm:text-4xl font-semibold text-white mb-3">Sign in</h1>
+          <p className="auth-subtitle">Continue your research and learning journey.</p>
         </div>
-        <div>
-          <label className="label-text">Password</label>
-          <input
-            type="password"
-            required
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="input-field"
-          />
-        </div>
-        <button type="submit" disabled={loading} className="btn-primary w-full">
-          {loading ? "Signing in..." : "Sign in"}
-        </button>
-        <p className="text-white/50 text-sm text-center">
-          No account?{" "}
-          <Link href="/register" className="text-gold hover:underline">
-            Register
-          </Link>
-        </p>
-      </form>
-    </div>
+        <form onSubmit={handleSubmit} className="auth-card space-y-5">
+          {error && <ErrorBanner message={error} />}
+          <div>
+            <label htmlFor="login-email" className="label-text text-base mb-2">Email address</label>
+            <input id="login-email" type="email" autoComplete="email" required value={email} onChange={(e) => setEmail(e.target.value)} className="input-field" placeholder="you@example.com" />
+          </div>
+          <div>
+            <label htmlFor="login-password" className="label-text text-base mb-2">Password</label>
+            <input id="login-password" type="password" autoComplete="current-password" required value={password} onChange={(e) => setPassword(e.target.value)} className="input-field" placeholder="Enter your password" />
+          </div>
+          <button type="submit" disabled={loading} className="btn-primary w-full auth-submit">
+            {loading ? "Signing in..." : "Sign in to your account"}
+          </button>
+          <p className="auth-footnote text-center">New to KHILAFAH AI? <Link href="/register" className="auth-link font-semibold">Create a free account</Link></p>
+          <p className="auth-free-note text-center">Free to use. No paid plans or subscriptions.</p>
+        </form>
+      </section>
+    </main>
   );
 }
