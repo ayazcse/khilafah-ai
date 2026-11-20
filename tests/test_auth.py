@@ -16,6 +16,36 @@ def test_register_and_login(client):
     assert "access_token" in login.json()
 
 
+def test_oauth2_form_token_and_bearer_auth(client):
+    client.post(
+        "/api/auth/register",
+        json={"email": "swagger@example.com", "password": "StrongPass123", "full_name": "Swagger User"},
+    )
+
+    token_response = client.post(
+        "/api/auth/token",
+        data={"username": "swagger@example.com", "password": "StrongPass123"},
+    )
+    assert token_response.status_code == 200
+    token = token_response.json()["access_token"]
+
+    me_response = client.get("/api/auth/me", headers={"Authorization": f"Bearer {token}"})
+    assert me_response.status_code == 200
+    assert me_response.json()["email"] == "swagger@example.com"
+
+
+def test_oauth2_form_token_rejects_invalid_credentials(client):
+    client.post(
+        "/api/auth/register",
+        json={"email": "swagger-invalid@example.com", "password": "StrongPass123", "full_name": "Swagger User"},
+    )
+    response = client.post(
+        "/api/auth/token",
+        data={"username": "swagger-invalid@example.com", "password": "WrongPassword"},
+    )
+    assert response.status_code == 401
+
+
 def test_duplicate_registration_rejected(client):
     payload = {"email": "bob@example.com", "password": "StrongPass123", "full_name": "Bob"}
     first = client.post("/api/auth/register", json=payload)
