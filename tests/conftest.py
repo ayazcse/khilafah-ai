@@ -1,9 +1,4 @@
-"""Shared pytest fixtures: an isolated SQLite test database and a TestClient.
-
-We use SQLite for the test suite instead of Postgres+pgvector so the suite
-runs with zero external services. The pgvector-specific column (DocumentChunk.embedding)
-is exercised separately where needed via mocking, since SQLite has no vector type.
-"""
+"""Shared pytest fixtures: isolated SQLite database and FastAPI TestClient."""
 from __future__ import annotations
 
 import os
@@ -16,19 +11,18 @@ sys.path.insert(0, str(REPO_ROOT))
 os.environ.setdefault("DATABASE_URL", "sqlite:///./test_khilafah.db")
 os.environ.setdefault("SECRET_KEY", "test-secret-key-not-for-production")
 os.environ.setdefault("NEO4J_ENABLED", "false")
-os.environ.setdefault("OPENAI_API_KEY", "sk-your-key-here")  # placeholder -> LLMNotConfiguredError path
+os.environ.setdefault("GEMINI_API_KEY", "")
 
 import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from backend.app import database, deps
+from backend.app import deps
 from backend.app.main import app
 from backend.app.models import Base
 
 TEST_DB_PATH = REPO_ROOT / "test_khilafah.db"
-
 test_engine = create_engine(
     "sqlite:///" + str(TEST_DB_PATH),
     connect_args={"check_same_thread": False},
