@@ -131,6 +131,8 @@ async def chat_with_attachments(
     image_parts: list[dict] = []
     attachment_names: list[str] = []
     citations: list[dict] = []
+    total_upload_bytes = 0
+    total_upload_limit = min(max_bytes * 2, 30 * 1024 * 1024)
 
     for index, upload in enumerate(files, start=1):
         filename = Path(upload.filename or f"attachment-{index}").name
@@ -142,6 +144,9 @@ async def chat_with_attachments(
             raise HTTPException(status_code=400, detail=f"{filename} is empty.")
         if len(content) > max_bytes:
             raise HTTPException(status_code=413, detail=f"{filename} exceeds the {settings.MAX_UPLOAD_MB}MB per-file limit.")
+        total_upload_bytes += len(content)
+        if total_upload_bytes > total_upload_limit:
+            raise HTTPException(status_code=413, detail="The combined attachment size exceeds 30MB. Please attach fewer or smaller files.")
         attachment_names.append(filename)
         citations.append({"source_id": f"attachment-{index}", "title": filename, "source_type": "user_attachment"})
 
