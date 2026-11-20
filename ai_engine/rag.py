@@ -4,7 +4,7 @@ from __future__ import annotations
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from ai_engine.embeddings import embed_texts
+from ai_engine.embeddings import embed_query
 from ai_engine.llm_client import LLMNotConfiguredError, chat
 from ai_engine.safety import fence_context, sanitize_user_message
 
@@ -20,7 +20,7 @@ def search_chunks(
     from backend.app.models import Document, DocumentChunk
 
     query = sanitize_user_message(query)
-    [query_vector] = embed_texts([query])
+    query_vector = embed_query(query)
 
     stmt = (
         select(
