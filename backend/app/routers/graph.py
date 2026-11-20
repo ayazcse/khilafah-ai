@@ -3,7 +3,7 @@ from __future__ import annotations
 
 from fastapi import APIRouter, Depends
 
-from backend.app.deps import get_current_user
+from backend.app.deps import require_admin
 from backend.app.models import User
 from backend.app.schemas import GraphResponse
 
@@ -69,3 +69,29 @@ def search_graph(q: str) -> dict:
         return {"degraded": False, "results": search_entities(q)}
     except Exception as exc:  # noqa: BLE001
         return {"degraded": True, "message": f"Graph query failed: {exc}", "results": []}
+
+
+
+@router.get("/status")
+def graph_status() -> dict:
+    """Operational status and entity counts; does not expose graph records."""
+    try:
+        from knowledge_graph.queries import graph_stats
+
+        return graph_stats()
+    except Exception:  # noqa: BLE001
+        return {"available": False, "nodes": 0, "relationships": 0}
+
+
+@router.post("/seed")
+def seed_graph(admin: User = Depends(require_admin)) -> dict:
+    """Idempotently load the curated demo dataset. Admin-only by design."""
+    try:
+        from knowledge_graph.ingest import run_seed
+
+        result = run_seed()
+        if result.get("status") != "ok":
+            return {"status": "unavailable", "detail": result.get("reason", "Neo4j unavailable")}
+        return {"status": "ok", **result}
+    except Exception:  # noqa: BLE001
+        return {"status": "error", "detail": "Graph ingestion failed. Check backend logs."}
