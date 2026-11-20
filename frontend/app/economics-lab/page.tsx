@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { api, ApiError, ZakatResponse } from "@/lib/api";
 import { ErrorBanner } from "@/components/StateViews";
 
