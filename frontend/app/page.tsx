@@ -14,7 +14,7 @@ const GROUPS = [
 export default function LandingPage() {
   return <div className="landing-shell">
     <section className="hero ux-hero relative overflow-hidden">
-      <div className="hero-image" /><div className="hero-shade" />
+      <div className="hero-image" /><div className="hero-shade" /><div className="hero-ornament hero-ornament-one" aria-hidden="true" /><div className="hero-ornament hero-ornament-two" aria-hidden="true" /><div className="hero-bottom-rule" aria-hidden="true" /><div className="hero-caption" aria-hidden="true"><span>ISLAMIC CIVILIZATION</span><span>KNOWLEDGE · DISCOVERY · LEGACY</span></div>
       <div className="relative z-10 max-w-7xl mx-auto px-5 sm:px-8 lg:px-10 py-20 md:py-24">
         <div className="max-w-3xl">
           <div className="eyebrow mb-5"><span className="eyebrow-line" /> KNOWLEDGE · HISTORY · DISCOVERY</div>
