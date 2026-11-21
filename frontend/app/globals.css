@@ -796,3 +796,16 @@ a:focus-visible,button:focus-visible,summary:focus-visible,input:focus-visible,s
  .ux-mobile-links { grid-template-columns:1fr; max-height:min(65vh,520px); overflow-y:auto; }
  .ux-mobile-links a { min-height:46px; display:flex; align-items:center; }
 }
+
+/* All secondary modules remain visible in spacious, priority-based topic panels. */
+.ux-topic-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; margin-top:24px; }
+.ux-topic-panel { min-width:0; padding:22px; border:1px solid rgba(139,200,239,.2); border-radius:17px; background:linear-gradient(145deg,#142f40,#102433); }
+.ux-topic-heading { display:flex; align-items:flex-start; gap:13px; min-height:76px; }
+.ux-topic-index { display:grid; place-items:center; flex:0 0 36px; width:36px; height:36px; border:1px solid rgba(117,217,189,.35); border-radius:10px; color:#8ce2c9; font-size:.82rem; font-weight:800; }
+.ux-topic-heading h3 { color:#f2f8fc; font-size:1.12rem; font-weight:750; line-height:1.35; }
+.ux-topic-heading p { margin-top:5px; color:#b9ccd8; font-size:.9rem; line-height:1.5; }
+.ux-topic-links { display:grid; gap:8px; margin-top:14px; }
+.ux-topic-links a { display:flex; min-height:48px; align-items:center; justify-content:space-between; gap:12px; padding:11px 12px; border:1px solid rgba(139,200,239,.14); border-radius:10px; color:#dceaf1; background:rgba(5,20,31,.24); font-size:.94rem; line-height:1.4; transition:border-color .2s ease,background .2s ease; }
+.ux-topic-links a span:last-child { color:#8ce2c9; }
+.ux-topic-links a:hover { border-color:rgba(117,217,189,.55); background:rgba(24,167,127,.12); }
+@media (max-width:900px) { .ux-topic-grid { grid-template-columns:1fr; } .ux-topic-heading { min-height:0; } }
