@@ -26,6 +26,31 @@ const SUGGESTIONS = [
   "How did the waqf system support education?",
 ];
 
+
+function formatInline(text: string) {
+  return text.split(/(\*\*[^*]+\*\*|\*[^*]+\*)/g).map((part, index) => {
+    if (part.startsWith("**") && part.endsWith("**")) return <strong key={index} className="font-semibold text-white">{part.slice(2, -2)}</strong>;
+    if (part.startsWith("*") && part.endsWith("*")) return <em key={index}>{part.slice(1, -1)}</em>;
+    return part;
+  });
+}
+
+function AnswerContent({ content }: { content: string }) {
+  const lines = content.replace(/\r\n/g, "\n").split("\n");
+  return <div className="chat-prose">
+    {lines.map((raw, index) => {
+      const line = raw.trim();
+      if (!line) return <div key={index} className="h-2 sm:h-3" />;
+      if (/^###\s+/.test(line)) return <h3 key={index}>{formatInline(line.replace(/^###\s+/, ""))}</h3>;
+      if (/^##\s+/.test(line)) return <h2 key={index}>{formatInline(line.replace(/^##\s+/, ""))}</h2>;
+      if (/^#\s+/.test(line)) return <h2 key={index}>{formatInline(line.replace(/^#\s+/, ""))}</h2>;
+      if (/^[-*]\s+/.test(line)) return <div key={index} className="chat-list-row"><span aria-hidden="true">•</span><p>{formatInline(line.replace(/^[-*]\s+/, ""))}</p></div>;
+      if (/^\d+[.)]\s+/.test(line)) return <div key={index} className="chat-list-row"><span className="chat-list-number">{line.match(/^\d+/)?.[0]}.</span><p>{formatInline(line.replace(/^\d+[.)]\s+/, ""))}</p></div>;
+      return <p key={index}>{formatInline(line)}</p>;
+    })}
+  </div>;
+}
+
 export default function ChatPage() {
   const { user, loading: authLoading } = useAuth();
   const [messages, setMessages] = useState<DisplayMessage[]>([]);
@@ -77,8 +102,8 @@ export default function ChatPage() {
   const selected = LANGUAGES.find((item) => item.id === language)!;
 
   return (
-    <main className="chat-page min-h-[calc(100vh-76px)] w-full min-w-0 overflow-x-hidden px-3 py-5 sm:px-6 sm:py-8">
-      <div className="mx-auto w-full min-w-0 max-w-5xl">
+    <main className="chat-page min-h-[calc(100vh-76px)] w-full min-w-0 overflow-x-hidden px-2 py-3 sm:px-6 sm:py-7">
+      <div className="mx-auto w-full min-w-0 max-w-4xl">
         <header className="mb-5 flex min-w-0 flex-col gap-3 sm:mb-7 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <div className="mb-2 inline-flex items-center gap-2 rounded-full border border-emerald-300/20 bg-emerald-400/10 px-3 py-1 text-xs font-semibold tracking-wide text-emerald-200">
@@ -96,7 +121,7 @@ export default function ChatPage() {
           </div>
         </header>
 
-        <section className="w-full min-w-0 overflow-hidden rounded-2xl border border-slate-600/50 bg-[#102333] shadow-xl shadow-black/20 sm:rounded-3xl">
+        <section className="w-full min-w-0 overflow-hidden rounded-2xl border border-slate-600/50 bg-[#0e1d2b] shadow-2xl shadow-black/25 sm:rounded-3xl">
           <div className="flex min-w-0 flex-col gap-3 border-b border-white/10 bg-gradient-to-r from-emerald-950/70 to-sky-950/50 p-3 sm:flex-row sm:items-center sm:justify-between sm:p-4 sm:px-6">
             <div>
               <p className="text-sm font-semibold text-white">Response language</p>
@@ -115,7 +140,7 @@ export default function ChatPage() {
             </div>
           </div>
 
-          <div className="min-h-[340px] min-w-0 space-y-4 p-3 sm:min-h-[380px] sm:space-y-5 sm:p-7" aria-live="polite">
+          <div className="min-h-[48vh] min-w-0 space-y-5 p-3 sm:min-h-[55vh] sm:space-y-6 sm:p-6 md:p-8" aria-live="polite">
             {messages.length === 0 && (
               <div className="flex min-h-[300px] min-w-0 flex-col items-center justify-center text-center sm:min-h-[330px]">
                 <div className="mb-5 grid h-16 w-16 place-items-center rounded-2xl border border-emerald-300/20 bg-emerald-400/10 text-3xl text-emerald-200">خ</div>
@@ -136,13 +161,13 @@ export default function ChatPage() {
 
             {messages.map((m, i) => (
               <article key={i} className={m.role === "user" ? "flex min-w-0 justify-end" : "flex min-w-0 justify-start"}>
-                <div className={"w-full min-w-0 max-w-full rounded-xl p-3 sm:max-w-[88%] sm:rounded-2xl sm:p-5 " + (m.role === "user"
+                <div className={"w-full min-w-0 max-w-[96%] rounded-2xl p-4 sm:max-w-[88%] sm:p-5 " + (m.role === "user"
                   ? "border border-emerald-300/20 bg-emerald-900/45 text-white"
                   : "border border-sky-300/15 bg-slate-900/65 text-slate-100")}>
                   <div className="mb-2 text-[11px] font-bold uppercase tracking-[.14em] text-slate-400">
                     {m.role === "user" ? "You" : "KHILAFAH AI"}
                   </div>
-                  <p className="whitespace-pre-wrap break-all text-[13px] leading-6 sm:break-words sm:text-[15px] sm:leading-7">{m.content}</p>
+                  {m.role === "assistant" ? <AnswerContent content={m.content} /> : <p className="whitespace-pre-wrap break-words text-[14px] leading-6 sm:text-[15px] sm:leading-7">{m.content}</p>}
                   {m.citations && m.citations.length > 0 && (
                     <div className="mt-5 border-t border-white/10 pt-3">
                       <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-emerald-200">Sources</p>
