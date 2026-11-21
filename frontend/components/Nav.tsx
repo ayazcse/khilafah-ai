@@ -9,6 +9,7 @@ const LINKS = [
   { href: "/research-studio", label: "Research Studio" },
   { href: "/knowledge-graph", label: "Knowledge Graph" },
   { href: "/history-explorer", label: "History" },
+  { href: "/scientific-heritage", label: "Scientific Heritage" },
   { href: "/governance-lab", label: "Governance" },
   { href: "/economics-lab", label: "Economics" },
   { href: "/academy", label: "Academy" },
