@@ -691,3 +691,89 @@ a:focus-visible,button:focus-visible,summary:focus-visible,input:focus-visible,s
   .ux-hero .hero-ornament-two { width:180px; height:235px; right:-48px; top:47%; opacity:.65; }
   .ux-hero .hero-caption { left:22px; right:22px; bottom:16px; flex-wrap:wrap; gap:7px 14px; font-size:.58rem; }
 }
+
+
+/* Gentle tactile motion: hover on desktop, press feedback on touch. */
+.ux-hero .hero-image {
+  animation: uxHeroDrift 24s ease-in-out infinite alternate;
+  transform-origin:center;
+}
+@keyframes uxHeroDrift {
+  0% { transform:scale(1.015) translate3d(0,0,0); }
+  100% { transform:scale(1.075) translate3d(-.5%,.35%,0); }
+}
+.ux-hero .hero-ornament-one { animation: uxArchGlow 7s ease-in-out infinite; }
+.ux-hero .hero-ornament-two { animation: uxArchGlow 7s ease-in-out -3.5s infinite; }
+@keyframes uxArchGlow {
+  0%,100% { opacity:.48; filter:drop-shadow(0 0 0 rgba(117,217,189,0)); }
+  50% { opacity:.95; filter:drop-shadow(0 0 15px rgba(117,217,189,.18)); }
+}
+.ux-core-card {
+  position:relative;
+  overflow:hidden;
+  transform:translateZ(0);
+  transition:transform .28s cubic-bezier(.2,.75,.25,1),border-color .28s ease,box-shadow .28s ease,background .28s ease;
+}
+.ux-core-card::after {
+  content:"";
+  position:absolute;
+  top:-120%;
+  left:-55%;
+  width:38%;
+  height:340%;
+  pointer-events:none;
+  opacity:0;
+  transform:rotate(24deg);
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.09),transparent);
+  transition:transform .7s ease,opacity .25s ease;
+}
+.ux-core-card:hover,.ux-core-card:focus-visible {
+  transform:translateY(-6px);
+  border-color:rgba(117,217,189,.78);
+  box-shadow:0 18px 42px rgba(0,0,0,.24),0 0 0 1px rgba(117,217,189,.08);
+}
+.ux-core-card:hover::after,.ux-core-card:focus-visible::after {
+  opacity:1;
+  transform:translateX(420%) rotate(24deg);
+}
+.ux-core-icon { transition:transform .28s ease,background .28s ease,box-shadow .28s ease; }
+.ux-core-card:hover .ux-core-icon,.ux-core-card:focus-visible .ux-core-icon {
+  transform:translateY(-3px) rotate(-5deg) scale(1.07);
+  background:rgba(24,167,127,.23);
+  box-shadow:0 7px 20px rgba(24,167,127,.14);
+}
+.ux-group { transition:border-color .22s ease,box-shadow .22s ease,transform .22s ease; }
+.ux-group:hover,.ux-group[open] {
+  border-color:rgba(117,217,189,.48);
+  box-shadow:0 12px 30px rgba(0,0,0,.14);
+}
+.ux-group[open] { transform:translateY(-2px); }
+.ux-group-plus { display:inline-block; }
+.ux-group-links a { transition:padding-left .2s ease,color .2s ease,background .2s ease; }
+.ux-group-links a:hover { padding-left:16px; background:rgba(117,217,189,.06); }
+.ux-hero .hero-cta,.ux-hero .hero-cta-secondary {
+  transition:transform .2s ease,box-shadow .2s ease,background .2s ease,border-color .2s ease;
+}
+.ux-hero .hero-cta:hover,.ux-hero .hero-cta-secondary:hover {
+  transform:translateY(-3px);
+  box-shadow:0 10px 25px rgba(0,0,0,.22);
+}
+.ux-hero .hero-cta:active,.ux-hero .hero-cta-secondary:active,
+.ux-core-card:active,.ux-group summary:active {
+  transform:scale(.975);
+}
+.ux-values .ux-value-grid>div { transition:transform .22s ease,border-color .22s ease; }
+.ux-values .ux-value-grid>div:hover { transform:translateY(-3px); border-color:#78c7f4; }
+@media(hover:none) {
+  .ux-core-card:active {
+    border-color:rgba(117,217,189,.8);
+    background:linear-gradient(145deg,#194454,#123044);
+    box-shadow:0 8px 24px rgba(0,0,0,.2);
+  }
+  .ux-core-card:active .ux-core-icon { transform:scale(1.08) rotate(-4deg); }
+  .ux-group summary:active { background:rgba(117,217,189,.08); }
+}
+@media(prefers-reduced-motion:reduce) {
+  .ux-hero .hero-image,.ux-hero .hero-ornament-one,.ux-hero .hero-ornament-two { animation:none!important; }
+  .ux-core-card,.ux-core-icon,.ux-group,.ux-group-links a,.ux-hero .hero-cta,.ux-hero .hero-cta-secondary,.ux-values .ux-value-grid>div { transition:none!important; }
+}
