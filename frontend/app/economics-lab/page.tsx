@@ -97,6 +97,18 @@ export default function EconomicsLabPage() {
         <div className="economics-section-heading"><div><span className="lab-kicker">INTERACTIVE RESEARCH TOOLS</span><h2>Wealth, responsibility & public good</h2><p>Enter your own values to explore the calculations. Nothing here replaces qualified scholarly or financial advice.</p></div><button className={`sound-toggle ${soundEnabled ? "is-on" : ""}`} onClick={() => setSoundEnabled((v) => !v)} aria-pressed={soundEnabled}><span>{soundEnabled ? "♫" : "♪"}</span> Sound {soundEnabled ? "On" : "Off"}</button></div>
         {error && <div className="mb-5"><ErrorBanner message={error} /></div>}
 
+
+        <section className="wealth-research-panel">
+          <div className="lab-kicker">WEALTH, INHERITANCE & SOCIAL RESPONSIBILITY</div>
+          <h2>How wealth circulates through society</h2>
+          <p>Research pathways for understanding distribution, obligations and long-term prosperity. These are educational topics, not personalised legal or financial rulings.</p>
+          <div className="wealth-research-grid">
+            <article><span>01</span><h3>Distribution of wealth</h3><p>Zakat, sadaqah, waqf, public revenue, social support and safeguards against concentration of wealth.</p></article>
+            <article><span>02</span><h3>Inheritance & succession</h3><p>Understand the framework of fara'id, eligible heirs, shares, bequests and the need for qualified guidance in real cases.</p></article>
+            <article><span>03</span><h3>Prosperity & public good</h3><p>Explore how education, healthcare, trade, endowments and responsible public finance can support broad-based prosperity.</p></article>
+          </div>
+        </section>
+
         <section className="economics-feature-grid">
           <article className="economics-feature-card"><span className="economics-feature-icon">✧</span><strong>2.5%</strong><h3>Common zakat rate</h3><p>Often applied to qualifying zakatable wealth after relevant conditions are met. Individual cases can differ.</p></article>
           <article className="economics-feature-card"><span className="economics-feature-icon">◈</span><strong>85g</strong><h3>Gold nisab reference</h3><p>A commonly used gold-weight reference. The selected standard and valuation method matter.</p></article>
