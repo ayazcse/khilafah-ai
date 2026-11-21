@@ -777,3 +777,22 @@ a:focus-visible,button:focus-visible,summary:focus-visible,input:focus-visible,s
   .ux-hero .hero-image,.ux-hero .hero-ornament-one,.ux-hero .hero-ornament-two { animation:none!important; }
   .ux-core-card,.ux-core-icon,.ux-group,.ux-group-links a,.ux-hero .hero-cta,.ux-hero .hero-cta-secondary,.ux-values .ux-value-grid>div { transition:none!important; }
 }
+
+
+/* State-driven navigation: close menus on selection, route change or Escape. */
+.ux-nav-toggle { border:0; cursor:pointer; font:inherit; }
+.ux-chevron { display:inline-block; transition:transform .2s ease; }
+.ux-chevron.is-open { transform:rotate(180deg); }
+.ux-mobile-menu-toggle { display:flex; width:100%; align-items:center; gap:10px; min-height:46px; padding:7px 12px; border:1px solid rgba(117,217,189,.25); border-radius:10px; color:#eaf5f8; background:rgba(16,43,60,.72); font-weight:700; text-align:left; cursor:pointer; }
+.ux-mobile-menu-toggle:hover { border-color:rgba(117,217,189,.6); background:rgba(24,167,127,.14); }
+.ux-mobile-menu-toggle .ux-mobile-menu-hint { margin-left:auto; }
+.ux-nav-popover,.ux-mobile-links { animation:uxMenuIn .16s ease-out both; }
+@keyframes uxMenuIn { from { opacity:0; transform:translateY(-5px); } to { opacity:1; transform:translateY(0); } }
+@media (min-width:768px) { .ux-mobile-menu { display:none !important; } }
+@media (max-width:767px) {
+ .ux-desktop-nav { display:none !important; }
+ .ux-mobile-menu { display:block !important; }
+ .ux-nav-row { min-height:66px; }
+ .ux-mobile-links { grid-template-columns:1fr; max-height:min(65vh,520px); overflow-y:auto; }
+ .ux-mobile-links a { min-height:46px; display:flex; align-items:center; }
+}
