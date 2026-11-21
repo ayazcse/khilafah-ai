@@ -640,3 +640,54 @@ a:focus-visible,button:focus-visible,summary:focus-visible,input:focus-visible,s
  .ux-footer { align-items:flex-start; flex-direction:column; }
 }
 @media(prefers-reduced-motion:reduce) { .ux-core-card,.ux-group-plus { transition:none; } }
+
+
+/* Premium Islamic-architecture treatment for the homepage hero. */
+.ux-hero { min-height: min(720px, calc(100svh - 72px)); display:flex; align-items:center; }
+.ux-hero .hero-image {
+  background-position:center 46%;
+  filter:saturate(.88) contrast(1.06);
+}
+.ux-hero .hero-shade {
+  background:
+    linear-gradient(90deg,rgba(4,17,27,.97) 0%,rgba(4,17,27,.88) 38%,rgba(4,17,27,.34) 78%,rgba(4,17,27,.2) 100%),
+    linear-gradient(0deg,rgba(4,17,27,.76),transparent 46%);
+}
+.ux-hero .hero-ornament {
+  z-index:0;
+  border-color:rgba(117,217,189,.2);
+  border-radius:48% 48% 8px 8px;
+  transform:none;
+}
+.ux-hero .hero-ornament-one {
+  width:min(34vw,430px);
+  height:min(48vw,530px);
+  right:8%;
+  top:50%;
+  transform:translateY(-48%);
+  border-width:1px;
+  box-shadow:0 0 0 12px rgba(117,217,189,.025),0 0 0 26px rgba(117,217,189,.018);
+}
+.ux-hero .hero-ornament-two {
+  width:min(30vw,380px);
+  height:min(43vw,475px);
+  right:calc(8% + 25px);
+  top:50%;
+  transform:translateY(-44%);
+  border-color:rgba(244,215,140,.2);
+}
+.ux-hero .hero-bottom-rule {
+  position:absolute; z-index:2; bottom:0; left:5%; right:5%; height:1px;
+  background:linear-gradient(90deg,transparent,rgba(117,217,189,.5),rgba(244,215,140,.55),transparent);
+}
+.ux-hero .hero-caption {
+  z-index:2; bottom:24px; right:5%; display:flex; gap:18px;
+  color:rgba(224,237,243,.7); font-size:.65rem; letter-spacing:.16em;
+}
+.ux-hero .hero-caption span+span { color:#9bdcc9; }
+@media(max-width:640px) {
+  .ux-hero { min-height:650px; }
+  .ux-hero .hero-ornament-one { width:210px; height:270px; right:-72px; top:44%; opacity:.75; }
+  .ux-hero .hero-ornament-two { width:180px; height:235px; right:-48px; top:47%; opacity:.65; }
+  .ux-hero .hero-caption { left:22px; right:22px; bottom:16px; flex-wrap:wrap; gap:7px 14px; font-size:.58rem; }
+}
