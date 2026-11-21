@@ -39,12 +39,31 @@ export default function LandingPage() {
       </Link>)}</div>
     </section>
     <section className="ux-directory max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
-      <div className="section-kicker">ALL FEATURES</div><h2 className="ux-directory-title">Explore by topic</h2>
-      <p className="ux-directory-copy">The rest of the platform is organised into three simple groups.</p>
-      <div className="ux-groups">{GROUPS.map(group => <details className="ux-group" key={group.title}>
-        <summary><span><strong>{group.title}</strong><small>{group.description}</small></span><span className="ux-group-plus" aria-hidden="true">+</span></summary>
-        <div className="ux-group-links">{group.links.map(link => <Link href={link.href} key={link.href}>{link.label}<span aria-hidden="true">↗</span></Link>)}</div>
-      </details>)}</div>
+      <div className="section-kicker">MORE TO EXPLORE</div>
+      <h2 className="ux-directory-title">Explore every part of the platform</h2>
+      <p className="ux-directory-copy">Features are arranged by what you may want to do next. Every section is visible — no hidden menus or extra scrolling to discover a tool.</p>
+      <div className="ux-topic-grid">
+        <div className="ux-topic-panel">
+          <div className="ux-topic-heading"><span className="ux-topic-index">01</span><div><h3>History & discovery</h3><p>Explore scholars, timelines and connections.</p></div></div>
+          <div className="ux-topic-links">
+            <Link href="/history-explorer"><span>History Explorer</span><span aria-hidden="true">↗</span></Link>
+            <Link href="/knowledge-graph"><span>Civilization Knowledge Graph</span><span aria-hidden="true">↗</span></Link>
+          </div>
+        </div>
+        <div className="ux-topic-panel">
+          <div className="ux-topic-heading"><span className="ux-topic-index">02</span><div><h3>Society & economy</h3><p>Study institutions, governance and ideas.</p></div></div>
+          <div className="ux-topic-links">
+            <Link href="/governance-lab"><span>Governance Research Lab</span><span aria-hidden="true">↗</span></Link>
+            <Link href="/economics-lab"><span>Islamic Economics Lab</span><span aria-hidden="true">↗</span></Link>
+          </div>
+        </div>
+        <div className="ux-topic-panel">
+          <div className="ux-topic-heading"><span className="ux-topic-index">03</span><div><h3>Everyday tools</h3><p>Useful information for daily life.</p></div></div>
+          <div className="ux-topic-links">
+            <Link href="/prayer-calendar"><span>Prayer Times & Hijri Calendar</span><span aria-hidden="true">↗</span></Link>
+          </div>
+        </div>
+      </div>
     </section>
     <section className="ux-values"><div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
       <div className="section-kicker">OUR PROMISE</div><h2 className="section-title font-serif">Knowledge for <em>everyone.</em></h2>

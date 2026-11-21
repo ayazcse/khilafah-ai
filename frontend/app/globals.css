@@ -777,3 +777,70 @@ a:focus-visible,button:focus-visible,summary:focus-visible,input:focus-visible,s
   .ux-hero .hero-image,.ux-hero .hero-ornament-one,.ux-hero .hero-ornament-two { animation:none!important; }
   .ux-core-card,.ux-core-icon,.ux-group,.ux-group-links a,.ux-hero .hero-cta,.ux-hero .hero-cta-secondary,.ux-values .ux-value-grid>div { transition:none!important; }
 }
+
+
+/* State-driven navigation: close menus on selection, route change or Escape. */
+.ux-nav-toggle { border:0; cursor:pointer; font:inherit; }
+.ux-chevron { display:inline-block; transition:transform .2s ease; }
+.ux-chevron.is-open { transform:rotate(180deg); }
+.ux-mobile-menu-toggle { display:flex; width:100%; align-items:center; gap:10px; min-height:46px; padding:7px 12px; border:1px solid rgba(117,217,189,.25); border-radius:10px; color:#eaf5f8; background:rgba(16,43,60,.72); font-weight:700; text-align:left; cursor:pointer; }
+.ux-mobile-menu-toggle:hover { border-color:rgba(117,217,189,.6); background:rgba(24,167,127,.14); }
+.ux-mobile-menu-toggle .ux-mobile-menu-hint { margin-left:auto; }
+.ux-nav-popover,.ux-mobile-links { animation:uxMenuIn .16s ease-out both; }
+@keyframes uxMenuIn { from { opacity:0; transform:translateY(-5px); } to { opacity:1; transform:translateY(0); } }
+@media (min-width:768px) { .ux-mobile-menu { display:none !important; } }
+@media (max-width:767px) {
+ .ux-desktop-nav { display:none !important; }
+ .ux-mobile-menu { display:block !important; }
+ .ux-nav-row { min-height:66px; }
+ .ux-mobile-links { grid-template-columns:1fr; max-height:min(65vh,520px); overflow-y:auto; }
+ .ux-mobile-links a { min-height:46px; display:flex; align-items:center; }
+}
+
+/* All secondary modules remain visible in spacious, priority-based topic panels. */
+.ux-topic-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; margin-top:24px; }
+.ux-topic-panel { min-width:0; padding:22px; border:1px solid rgba(139,200,239,.2); border-radius:17px; background:linear-gradient(145deg,#142f40,#102433); }
+.ux-topic-heading { display:flex; align-items:flex-start; gap:13px; min-height:76px; }
+.ux-topic-index { display:grid; place-items:center; flex:0 0 36px; width:36px; height:36px; border:1px solid rgba(117,217,189,.35); border-radius:10px; color:#8ce2c9; font-size:.82rem; font-weight:800; }
+.ux-topic-heading h3 { color:#f2f8fc; font-size:1.12rem; font-weight:750; line-height:1.35; }
+.ux-topic-heading p { margin-top:5px; color:#b9ccd8; font-size:.9rem; line-height:1.5; }
+.ux-topic-links { display:grid; gap:8px; margin-top:14px; }
+.ux-topic-links a { display:flex; min-height:48px; align-items:center; justify-content:space-between; gap:12px; padding:11px 12px; border:1px solid rgba(139,200,239,.14); border-radius:10px; color:#dceaf1; background:rgba(5,20,31,.24); font-size:.94rem; line-height:1.4; transition:border-color .2s ease,background .2s ease; }
+.ux-topic-links a span:last-child { color:#8ce2c9; }
+.ux-topic-links a:hover { border-color:rgba(117,217,189,.55); background:rgba(24,167,127,.12); }
+@media (max-width:900px) { .ux-topic-grid { grid-template-columns:1fr; } .ux-topic-heading { min-height:0; } }
+
+
+/* ChatGPT-style responsive conversation and readable Markdown answer typography. */
+@media (max-width:767px) {
+  .ux-nav-row { min-height:62px; }
+  .ux-desktop-nav { display:none !important; }
+  .ux-mobile-menu { display:block !important; }
+  .ux-mobile-links { grid-template-columns:1fr; max-height:58vh; overflow-y:auto; }
+  .ux-mobile-links a { min-height:46px; display:flex; align-items:center; }
+  .site-nav .max-w-7xl { padding-left:14px; padding-right:14px; }
+  .brand-wordmark { font-size:12px !important; letter-spacing:.08em !important; }
+}
+@media (min-width:768px) { .ux-mobile-menu { display:none !important; } }
+.chat-prose { min-width:0; color:#dce7ef; font-size:14px; line-height:1.85; overflow-wrap:anywhere; }
+.chat-prose p { margin:0 0 12px; }
+.chat-prose h2 { margin:22px 0 10px; color:#f4f8fb; font-size:1.13rem; font-weight:750; line-height:1.4; }
+.chat-prose h3 { margin:20px 0 9px; color:#8ce2c9; font-size:1rem; font-weight:750; line-height:1.45; }
+.chat-prose h2:first-child,.chat-prose h3:first-child { margin-top:0; }
+.chat-list-row { display:flex; align-items:flex-start; gap:10px; margin:5px 0 9px; padding-left:2px; }
+.chat-list-row > span { flex:0 0 auto; color:#71d8b9; font-weight:700; }
+.chat-list-row p { margin:0; min-width:0; }
+.chat-list-number { min-width:1.4em; }
+@media (min-width:640px) { .chat-prose { font-size:15px; line-height:1.9; } .chat-prose p { margin-bottom:14px; } }
+
+
+/* Additional research pathways: consistent spacious cards and accessible reading widths. */
+.governance-pathways,.wealth-research-panel { margin:28px 0 34px; padding:clamp(18px,3vw,30px); border:1px solid rgba(117,217,189,.2); border-radius:20px; background:linear-gradient(145deg,#112b3c,#0d202e); }
+.governance-pathways h2,.wealth-research-panel h2 { margin-top:8px; color:#f2f8fc; font-size:clamp(1.45rem,3vw,2rem); font-weight:750; line-height:1.25; }
+.governance-pathways-intro,.wealth-research-panel>p { max-width:780px; margin-top:10px; color:#b9ccd8; font-size:.95rem; line-height:1.75; }
+.governance-pathway-grid,.wealth-research-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:13px; margin-top:22px; }
+.governance-pathway-grid article,.wealth-research-grid article { min-width:0; padding:17px; border:1px solid rgba(139,200,239,.15); border-radius:14px; background:rgba(4,17,27,.28); }
+.governance-pathway-grid article>span,.wealth-research-grid article>span { color:#7ce0c2; font-size:.78rem; font-weight:800; letter-spacing:.08em; }
+.governance-pathway-grid h3,.wealth-research-grid h3 { margin-top:9px; color:#eff7fb; font-size:1rem; font-weight:700; line-height:1.45; }
+.governance-pathway-grid p,.wealth-research-grid p { margin-top:7px; color:#b9ccd8; font-size:.88rem; line-height:1.7; }
+@media(max-width:800px) { .governance-pathway-grid,.wealth-research-grid { grid-template-columns:1fr; } }
