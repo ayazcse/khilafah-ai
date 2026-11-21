@@ -61,6 +61,21 @@ export default function GovernanceLabPage() {
           </div>
         </header>
 
+
+        <section className="governance-pathways">
+          <div className="lab-kicker">SOCIETY, JUSTICE & PUBLIC LIFE</div>
+          <h2>Build a just and flourishing society</h2>
+          <p className="governance-pathways-intro">Six research pathways requested for this project. Explore historical principles, institutions, differing interpretations and modern questions without assuming every period followed one identical model.</p>
+          <div className="governance-pathway-grid">
+            <article><span>01</span><h3>Equality, social justice & harmony</h3><p>Social responsibility, dignity, public welfare, mutual rights, humility and peaceful coexistence.</p></article>
+            <article><span>02</span><h3>Justice system</h3><p>Courts, judges, legal reasoning, accountability, due process and access to justice.</p></article>
+            <article><span>03</span><h3>Mosque, education & public assembly</h3><p>How mosques served as places of worship, learning and community consultation, alongside the development of other educational and governing institutions.</p></article>
+            <article><span>04</span><h3>Leadership selection & Shura</h3><p>Consultation, allegiance, community participation and the historically varied ways Muslim rulers were selected. Compare evidence rather than labelling every process modern democracy.</p></article>
+            <article><span>05</span><h3>Public responsibility & institutions</h3><p>How leadership, scholars, local communities and public officials shared responsibilities in different historical settings.</p></article>
+            <article><span>06</span><h3>Harmony & civic conduct</h3><p>Neighbourly rights, protection of communities, conflict resolution, trust and ethical public conduct.</p></article>
+          </div>
+        </section>
+
         <section className="governance-toolbar">
           <div className="governance-toolbar-copy"><span className="lab-kicker">THE RESEARCH LIBRARY</span><h2>Explore governance topics</h2><p>Search the collection or filter by evidence classification.</p></div>
           <div className="governance-controls">
