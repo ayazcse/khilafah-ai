@@ -7,7 +7,7 @@ import { api } from "@/lib/api";
 import { EmptyState, Loading, ErrorBanner } from "@/components/StateViews";
 
 type Topic = "All" | "General" | "History" | "Science" | "Quran & Learning" | "Research" | "Society & Economy";
-type Author = { id: string; full_name: string };
+type Author = { id: string; full_name: string; avatar_url?: string | null };
 type Post = {
   id: string; body: string; topic: Exclude<Topic, "All">; created_at: string;
   author: Author; like_count: number; comment_count: number;
@@ -164,8 +164,8 @@ export default function CommunityPage() {
             <div className="space-y-4">{posts.map(post => <article key={post.id} className="rounded-2xl border border-white/10 bg-[#112433] p-4 sm:p-5 shadow-lg">
               <div className="flex items-start justify-between gap-3">
                 <div className="flex items-center gap-3 min-w-0">
-                  <div className="w-10 h-10 shrink-0 rounded-full bg-gradient-to-br from-emerald-400/25 to-sky-400/20 border border-white/10 grid place-items-center font-semibold text-emerald-100">{post.author.full_name.slice(0,1).toUpperCase()}</div>
-                  <div className="min-w-0"><div className="font-semibold truncate">{post.author.full_name}</div><div className="text-xs text-slate-500">{timeAgo(post.created_at)} · {post.topic}</div></div>
+                  <Link href={`/members/${post.author.id}`} aria-label={`View ${post.author.full_name} profile`} className="w-10 h-10 shrink-0 rounded-full overflow-hidden bg-gradient-to-br from-emerald-400/25 to-sky-400/20 border border-white/10 grid place-items-center font-semibold text-emerald-100">{post.author.avatar_url ? <img src={post.author.avatar_url} alt="" className="w-full h-full object-cover" referrerPolicy="no-referrer" /> : post.author.full_name.slice(0,1).toUpperCase()}</Link>
+                  <div className="min-w-0"><Link href={`/members/${post.author.id}`} className="font-semibold truncate hover:text-emerald-200">{post.author.full_name}</Link><div className="text-xs text-slate-500">{timeAgo(post.created_at)} · {post.topic}</div></div>
                 </div>
                 <div className="flex items-center gap-2 shrink-0">
                   {!post.is_mine && <button disabled={busy === post.author.id} onClick={() => toggleFollow(post)} className="text-xs rounded-full border border-emerald-300/30 px-3 py-1.5 text-emerald-200 hover:bg-emerald-300/10">{post.following_author ? "Following" : "Follow"}</button>}
