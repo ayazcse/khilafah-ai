@@ -143,11 +143,11 @@ def add_candidate(call_id: uuid.UUID, payload: IceCandidate, db: Session = Depen
     bucket = call.caller_candidates if user.id == call.caller_id else call.callee_candidates
     if len(bucket) >= MAX_CANDIDATES:
         raise HTTPException(429, "ICE candidate limit reached")
-    bucket.append(candidate)
+    updated_bucket = [*bucket, candidate]
     if user.id == call.caller_id:
-        call.caller_candidates = bucket
+        call.caller_candidates = updated_bucket
     else:
-        call.callee_candidates = bucket
+        call.callee_candidates = updated_bucket
     db.commit()
     return {"stored": True}
 
