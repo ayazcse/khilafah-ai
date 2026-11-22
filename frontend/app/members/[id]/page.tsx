@@ -68,7 +68,7 @@ export default function MemberPage() {
             {member.avatar_url ? <img src={member.avatar_url} alt="" className="w-full h-full object-cover" referrerPolicy="no-referrer"/> : member.full_name.slice(0,1).toUpperCase()}
           </div>
           <div className="flex-1"><p className="text-xs tracking-widest uppercase text-emerald-200">KHILAFAH Connect member</p><h1 className="text-3xl font-serif font-semibold text-white mt-1">{member.full_name}</h1><p className="text-sm text-slate-300 mt-2">{member.bio || "This member has not added a bio yet."}</p></div>
-          {!member.is_me && <button disabled={busy} onClick={toggleFollow} className="rounded-xl border border-emerald-200/30 px-5 py-2.5 text-sm font-semibold text-emerald-100 hover:bg-emerald-300/10">{busy?"Please wait…":member.is_following?"Following · Unfollow":"Follow"}</button>}
+          {!member.is_me && <div className="flex flex-wrap gap-2"><button disabled={busy} onClick={toggleFollow} className="rounded-xl border border-emerald-200/30 px-5 py-2.5 text-sm font-semibold text-emerald-100 hover:bg-emerald-300/10">{busy?"Please wait…":member.is_following?"Following · Unfollow":"Follow"}</button><Link href={`/inbox?member=${encodeURIComponent(member.id)}`} className="btn-primary inline-flex items-center justify-center px-5 py-2.5">Message</Link></div>}
           {member.is_me && <Link href="/profile" className="btn-primary">Edit profile</Link>}
         </div>
         <div className="grid grid-cols-3 gap-3 mt-7">
