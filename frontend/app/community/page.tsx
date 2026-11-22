@@ -125,7 +125,7 @@ export default function CommunityPage() {
   }
 
   if (authLoading) return <Loading />;
-  if (!user) return <div className="max-w-3xl mx-auto px-5 py-16"><EmptyState title="Join KHILAFAH Connect" description="Sign in to share ideas, follow researchers and take part in topic-based discussions." /><div className="text-center mt-5"><Link className="btn-primary inline-flex" href="/login">Sign in to continue</Link></div></div>;
+  if (!user) return <div className="max-w-3xl mx-auto px-5 py-16"><EmptyState title="Join KHALAF Connect" description="Sign in to share ideas, follow researchers and take part in topic-based discussions." /><div className="text-center mt-5"><Link className="btn-primary inline-flex" href="/login">Sign in to continue</Link></div></div>;
 
   return <div className="min-h-screen bg-[#0b1722] text-[#f2f8fc]">
     <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
