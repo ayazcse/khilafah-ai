@@ -2,7 +2,7 @@ import Link from "next/link";
 
 const CORE = [
   { icon: "✧", title: "AI Research Assistant", desc: "Ask questions and explore Islamic history with clear, source-aware answers.", href: "/chat", label: "Start asking" },
-  { icon: "◎", title: "KHILAFAH Connect", desc: "Meet curious learners, share ideas and join respectful topic-based discussions.", href: "/community", label: "Join community" },
+  { icon: "◎", title: "KHALAF Connect", desc: "Meet curious learners, share ideas and join respectful topic-based discussions.", href: "/community", label: "Join community" },
   { icon: "۞", title: "Quran Explorer", desc: "Read Quran ayah by ayah with Arabic text and Roman Urdu and Urdu translations.", href: "/quran", label: "Read Quran" },
   { icon: "⌕", title: "Research Studio", desc: "Work with your own PDFs and documents in one research space.", href: "/research-studio", label: "Open studio" },
   { icon: "✦", title: "Scientific Heritage", desc: "Discover scholars, ideas and scientific traditions across history.", href: "/scientific-heritage", label: "Discover science" },
