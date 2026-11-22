@@ -296,3 +296,12 @@ def get_member_network(
             CommunityFollow, CommunityFollow.followed_id == User.id
         ).filter(CommunityFollow.follower_id == user_id).order_by(User.full_name.asc()).limit(200).all()
     return {"members": [_member_out(member, current_user.id, db) for member in rows]}
+
+
+@router.get("/me/profile")
+def get_my_profile(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+) -> dict:
+    member = db.get(User, current_user.id)
+    return _member_out(member, current_user.id, db)
