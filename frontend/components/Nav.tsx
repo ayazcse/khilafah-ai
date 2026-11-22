@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "@/lib/auth";
 
 const LINKS = [
-  { href: "/dashboard", label: "Dashboard" }, { href: "/chat", label: "AI Research Assistant" }, { href: "/community", label: "KHILAFAH Connect" }, { href: "/inbox", label: "Private Inbox" }, { href: "/quran", label: "Quran Explorer" },
+  { href: "/dashboard", label: "Dashboard" }, { href: "/chat", label: "AI Research Assistant" }, { href: "/community", label: "KHALAF Connect" }, { href: "/inbox", label: "Private Inbox" }, { href: "/quran", label: "Quran Explorer" },
   { href: "/research-studio", label: "Research Studio" }, { href: "/evidence-review", label: "Evidence Review Lab" }, { href: "/scientific-heritage", label: "Scientific Heritage" },
   { href: "/academy", label: "Learning Academy" }, { href: "/history-explorer", label: "History Explorer" },
   { href: "/knowledge-graph", label: "Knowledge Graph" }, { href: "/governance-lab", label: "Governance Lab" },
@@ -28,9 +28,9 @@ export default function Nav() {
   return <nav className="site-nav sticky top-0 z-40 backdrop-blur-xl border-b" aria-label="Main navigation">
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
       <div className="ux-nav-row">
-        <Link href="/" onClick={closeMenus} className="flex items-center gap-3 shrink-0 group" aria-label="KHILAFAH AI home">
-          <span className="brand-symbol grid place-items-center w-10 h-10 rounded-full font-serif text-xl">خ</span>
-          <span className="brand-wordmark text-sm tracking-[.12em] font-bold">KHILAFAH <span>AI</span></span>
+        <Link href="/" onClick={closeMenus} className="flex items-center gap-3 shrink-0 group" aria-label="KHALAF home">
+          <span className="brand-symbol grid place-items-center w-10 h-10 rounded-full font-serif text-xl">خَلَف</span>
+          <span className="brand-wordmark text-sm tracking-[.12em] font-bold">KHALAF</span>
         </Link>
         {user && <div className="ux-desktop-nav">
           <Link href="/dashboard" onClick={closeMenus} className={"nav-link " + (pathname === "/dashboard" ? "active" : "")}>Dashboard</Link>

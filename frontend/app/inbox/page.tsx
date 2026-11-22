@@ -78,7 +78,7 @@ export default function InboxPage(){
   <div className="max-w-6xl mx-auto">
    <CallControls conversationId={active?.status === "accepted" ? active.id : undefined}/>
    <header className="flex items-center justify-between gap-3 mb-5">
-    <div><p className="text-[11px] uppercase tracking-[.22em] text-emerald-300 font-semibold">KHILAFAH CONNECT</p><h1 className="text-2xl sm:text-3xl font-serif text-white mt-1">Messages</h1></div>
+    <div><p className="text-[11px] uppercase tracking-[.22em] text-emerald-300 font-semibold">KHALAF CONNECT</p><h1 className="text-2xl sm:text-3xl font-serif text-white mt-1">Messages</h1></div>
     <Link href="/community" className="text-sm rounded-full border border-white/15 px-4 py-2 text-slate-300 hover:text-emerald-200 hover:border-emerald-300/30">Explore people</Link>
    </header>
    {error&&<p role="alert" className="mb-3 rounded-xl border border-red-400/30 bg-red-950/30 p-3 text-sm text-red-200">{error}</p>}
