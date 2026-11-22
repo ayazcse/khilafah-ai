@@ -64,7 +64,7 @@ export default function QuranExplorerPage() {
   const [transliteration, setTransliteration] = useState<Verse[]>([]);
   const [audioAyahs, setAudioAyahs] = useState<AudioAyah[]>([]);
   const [bookmarks, setBookmarks] = useState<Bookmark[]>([]);
-  const [pendingAyah, setPendingAyah] = useState<number | null>(null);
+  const [pendingAyah, setPendingAyah] = useState<{ surah: number; ayah: number } | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [search, setSearch] = useState("");
@@ -121,10 +121,12 @@ export default function QuranExplorerPage() {
   const audioByAyah = useMemo(() => new Map(audioAyahs.map((v) => [v.numberInSurah, v.audio])), [audioAyahs]);
 
   useEffect(() => {
-    if (loading || pendingAyah === null) return;
-    const target = document.getElementById(`ayah-${pendingAyah}`);
-    target?.scrollIntoView({ behavior: "smooth", block: "center" });
-    setPendingAyah(null);
+    if (loading || pendingAyah === null || pendingAyah.surah !== surah) return;
+    const target = document.getElementById(`ayah-${pendingAyah.ayah}`);
+    if (target) {
+      target.scrollIntoView({ behavior: "smooth", block: "center" });
+      setPendingAyah(null);
+    }
   }, [loading, pendingAyah, surah]);
 
   const toggleBookmark = (ayah: number) => {
@@ -135,8 +137,8 @@ export default function QuranExplorerPage() {
   };
 
   const openBookmark = (item: Bookmark) => {
-    if (item.surah === surah) setPendingAyah(item.ayah);
-    else { setPendingAyah(item.ayah); setSurah(item.surah); }
+    setPendingAyah({ surah: item.surah, ayah: item.ayah });
+    if (item.surah !== surah) setSurah(item.surah);
   };
 
   return <main className="min-h-screen bg-[#071a19] text-slate-100">
