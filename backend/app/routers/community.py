@@ -45,7 +45,7 @@ def _post_out(post: CommunityPost, user_id: uuid.UUID, db: Session) -> dict:
     return {
         "id": str(post.id), "body": post.body, "topic": post.topic,
         "created_at": post.created_at.isoformat(),
-        "author": {"id": str(post.author.id), "full_name": post.author.full_name},
+        "author": {"id": str(post.author.id), "full_name": post.author.full_name, "avatar_url": post.author.avatar_url},
         "like_count": likes, "comment_count": comments, "liked_by_me": liked,
         "following_author": following, "is_mine": post.author_id == user_id,
     }
