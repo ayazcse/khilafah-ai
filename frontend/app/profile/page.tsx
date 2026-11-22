@@ -66,7 +66,7 @@ export default function ProfilePage() {
         <div><p className="text-xs tracking-widest uppercase text-emerald-200">Your member profile</p><h1 className="text-2xl sm:text-3xl font-serif font-semibold text-white">{user.full_name}</h1><p className="text-sm text-slate-300">KHILAFAH Connect</p></div>
       </div>
       <div className="grid grid-cols-3 gap-3 mt-6 text-center">
-        {[["Posts",profile?.post_count],["Followers",profile?.follower_count],["Following",profile?.following_count]].map(([label,value]) => <div key={String(label)} className="rounded-xl bg-black/15 border border-white/10 p-3"><div className="text-xl font-semibold text-white">{value ?? "—"}</div><div className="text-xs text-slate-300">{label}</div></div>)}
+        <div className="rounded-xl bg-black/15 border border-white/10 p-3"><div className="text-xl font-semibold text-white">{profile?.post_count ?? "—"}</div><div className="text-xs text-slate-300">Posts</div></div><div className="rounded-xl bg-black/15 border border-white/10 p-3"><div className="text-xl font-semibold text-white">{profile?.follower_count ?? "—"}</div><div className="text-xs text-slate-300">Followers</div></div><div className="rounded-xl bg-black/15 border border-white/10 p-3"><div className="text-xl font-semibold text-white">{profile?.following_count ?? "—"}</div><div className="text-xs text-slate-300">Following</div></div>
       </div>
     </header>
     {error && <ErrorBanner message={error} />}
