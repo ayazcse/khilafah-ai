@@ -1,7 +1,8 @@
 import Link from "next/link";
 
 const CORE = [
-  { icon: "✧", title: "AI Research Assistant", desc: "Ask questions and explore Islamic history with clear, source-aware answers.", href: "/chat", label: "Start asking" },\n  { icon: "۞", title: "Quran Explorer", desc: "Read Quran ayah by ayah with Arabic text and Roman Urdu and Urdu translations.", href: "/quran", label: "Read Quran" },
+  { icon: "✧", title: "AI Research Assistant", desc: "Ask questions and explore Islamic history with clear, source-aware answers.", href: "/chat", label: "Start asking" },
+  { icon: "۞", title: "Quran Explorer", desc: "Read Quran ayah by ayah with Arabic text and Roman Urdu and Urdu translations.", href: "/quran", label: "Read Quran" },
   { icon: "⌕", title: "Research Studio", desc: "Work with your own PDFs and documents in one research space.", href: "/research-studio", label: "Open studio" },
   { icon: "✦", title: "Scientific Heritage", desc: "Discover scholars, ideas and scientific traditions across history.", href: "/scientific-heritage", label: "Discover science" },
   { icon: "▤", title: "Learning Academy", desc: "Learn through structured topics, lessons and quizzes.", href: "/academy", label: "Start learning" },
@@ -61,7 +62,8 @@ export default function LandingPage() {
         <div className="ux-topic-panel">
           <div className="ux-topic-heading"><span className="ux-topic-index">03</span><div><h3>Everyday tools</h3><p>Useful information for daily life.</p></div></div>
           <div className="ux-topic-links">
-            <Link href="/prayer-calendar"><span>Prayer Times & Hijri Calendar</span><span aria-hidden="true">↗</span></Link>\n            <Link href="/quran"><span>Quran Explorer</span><span aria-hidden="true">↗</span></Link>
+            <Link href="/prayer-calendar"><span>Prayer Times & Hijri Calendar</span><span aria-hidden="true">↗</span></Link>
+            <Link href="/quran"><span>Quran Explorer</span><span aria-hidden="true">↗</span></Link>
           </div>
         </div>
       </div>
