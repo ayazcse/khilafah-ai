@@ -191,3 +191,108 @@ def report_post(
     db.add(CommunityReport(reporter_id=current_user.id, post_id=post_id, reason=payload.reason.strip()))
     db.commit()
     return {"submitted": True, "message": "Report sent to the moderation queue."}
+
+
+class ProfileUpdate(BaseModel):
+    bio: str = Field(default="", max_length=240)
+    avatar_url: str | None = Field(default=None, max_length=500)
+    interests: list[str] = Field(default_factory=list, max_length=8)
+
+
+def _member_out(member: User, viewer_id: uuid.UUID, db: Session) -> dict:
+    followers = db.query(func.count(CommunityFollow.id)).filter(
+        CommunityFollow.followed_id == member.id
+    ).scalar() or 0
+    following = db.query(func.count(CommunityFollow.id)).filter(
+        CommunityFollow.follower_id == member.id
+    ).scalar() or 0
+    post_count = db.query(func.count(CommunityPost.id)).filter(
+        CommunityPost.author_id == member.id
+    ).scalar() or 0
+    is_following = db.query(CommunityFollow.id).filter(
+        CommunityFollow.follower_id == viewer_id,
+        CommunityFollow.followed_id == member.id,
+    ).first() is not None
+    return {
+        "id": str(member.id),
+        "full_name": member.full_name,
+        "bio": member.bio or "",
+        "avatar_url": member.avatar_url,
+        "interests": member.interests or [],
+        "joined_at": member.created_at.isoformat(),
+        "follower_count": followers,
+        "following_count": following,
+        "post_count": post_count,
+        "is_following": is_following,
+        "is_me": member.id == viewer_id,
+    }
+
+
+@router.patch("/me/profile")
+def update_my_profile(
+    payload: ProfileUpdate,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+) -> dict:
+    bio = payload.bio.strip()
+    if payload.avatar_url and not payload.avatar_url.startswith("https://"):
+        raise HTTPException(status_code=422, detail="Profile image URL must use HTTPS")
+    interests = []
+    for item in payload.interests:
+        clean = item.strip()
+        if clean and clean not in interests:
+            interests.append(clean[:40])
+    current_user.bio = bio or None
+    current_user.avatar_url = payload.avatar_url.strip() if payload.avatar_url else None
+    current_user.interests = interests[:8]
+    db.commit()
+    db.refresh(current_user)
+    return _member_out(current_user, current_user.id, db)
+
+
+@router.get("/members/{user_id}")
+def get_member_profile(
+    user_id: uuid.UUID,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+) -> dict:
+    member = db.get(User, user_id)
+    if not member:
+        raise HTTPException(status_code=404, detail="Member not found")
+    return _member_out(member, current_user.id, db)
+
+
+@router.get("/members/{user_id}/posts")
+def get_member_posts(
+    user_id: uuid.UUID,
+    offset: int = Query(default=0, ge=0, le=10000),
+    limit: int = Query(default=20, ge=1, le=50),
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+) -> dict:
+    if not db.get(User, user_id):
+        raise HTTPException(status_code=404, detail="Member not found")
+    posts = db.query(CommunityPost).options(joinedload(CommunityPost.author)).filter(
+        CommunityPost.author_id == user_id
+    ).order_by(CommunityPost.created_at.desc()).offset(offset).limit(limit).all()
+    return {"posts": [_post_out(post, current_user.id, db) for post in posts]}
+
+
+@router.get("/members/{user_id}/network")
+def get_member_network(
+    user_id: uuid.UUID,
+    kind: Literal["followers", "following"] = Query(default="followers"),
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+) -> dict:
+    if not db.get(User, user_id):
+        raise HTTPException(status_code=404, detail="Member not found")
+    if kind == "followers":
+        rows = db.query(User).join(
+            CommunityFollow, CommunityFollow.follower_id == User.id
+        ).filter(CommunityFollow.followed_id == user_id).order_by(User.full_name.asc()).limit(200).all()
+    else:
+        rows = db.query(User).join(
+            CommunityFollow, CommunityFollow.followed_id == User.id
+        ).filter(CommunityFollow.follower_id == user_id).order_by(User.full_name.asc()).limit(200).all()
+    return {"members": [_member_out(member, current_user.id, db) for member in rows]}
