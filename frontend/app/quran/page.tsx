@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 
 type Verse = { number: number; text: string };
-type EditionResponse = { quran?: Verse[]; data?: Verse[]; verses?: Verse[] } | Verse[];
+type EditionResponse = { quran?: Verse[]; data?: Verse[]; verses?: Verse[]; chapter?: Verse[] } | Verse[];
 type Surah = { number: number; name: string; englishName: string; numberOfAyahs: number };
 
 const API = "https://cdn.jsdelivr.net/gh/fawazahmed0/quran-api@1/editions";
@@ -19,7 +19,7 @@ const FALLBACK_EDITIONS = {
 };
 
 function extractVerses(payload: EditionResponse): Verse[] {
-  const rows = Array.isArray(payload) ? payload : payload.quran || payload.data || payload.verses || [];
+  const rows = Array.isArray(payload) ? payload : payload.quran || payload.data || payload.verses || payload.chapter || [];
   return rows.map((row: any, index) => ({
     number: Number(row.ayah || row.numberInSurah || row.verse || row.number || index + 1),
     text: String(row.text || row.translation || ""),
