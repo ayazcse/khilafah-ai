@@ -5,8 +5,8 @@ import Nav from "@/components/Nav";
 
 export const metadata: Metadata = {
   title: {
-    default: "KHILAFAH AI — Explore Islamic Civilization",
-    template: "%s | KHILAFAH AI",
+    default: "KHALAF — Knowledge & Connection",
+    template: "%s | KHALAF",
   },
   description: "Preserving Knowledge. Understanding Civilization. Engineering the Future.",
   icons: {
@@ -15,8 +15,8 @@ export const metadata: Metadata = {
     apple: "/icon.svg",
   },
   openGraph: {
-    title: "KHILAFAH AI",
-    description: "A research-focused AI platform for exploring Islamic civilization.",
+    title: "KHALAF",
+    description: "A connected platform for knowledge, community, learning and Islamic civilization research.",
     type: "website",
   },
 };
