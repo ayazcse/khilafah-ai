@@ -64,6 +64,7 @@ export default function QuranExplorerPage() {
   const [transliteration, setTransliteration] = useState<Verse[]>([]);
   const [audioAyahs, setAudioAyahs] = useState<AudioAyah[]>([]);
   const [bookmarks, setBookmarks] = useState<Bookmark[]>([]);
+  const [bookmarksReady, setBookmarksReady] = useState(false);
   const [pendingAyah, setPendingAyah] = useState<{ surah: number; ayah: number } | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -75,14 +76,22 @@ export default function QuranExplorerPage() {
   useEffect(() => {
     try {
       const saved = window.localStorage.getItem("khilafah-quran-bookmarks-v1");
-      if (saved) setBookmarks(JSON.parse(saved));
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed)) setBookmarks(parsed.filter((item) =>
+          Number.isInteger(item?.surah) && item.surah >= 1 && item.surah <= 114 &&
+          Number.isInteger(item?.ayah) && item.ayah >= 1
+        ));
+      }
     } catch { /* Ignore malformed or unavailable local storage. */ }
+    finally { setBookmarksReady(true); }
   }, []);
 
   useEffect(() => {
+    if (!bookmarksReady) return;
     try { window.localStorage.setItem("khilafah-quran-bookmarks-v1", JSON.stringify(bookmarks)); }
     catch { /* Browser storage may be disabled or full. */ }
-  }, [bookmarks]);
+  }, [bookmarks, bookmarksReady]);
 
   useEffect(() => {
     fetch("https://api.alquran.cloud/v1/surah")
