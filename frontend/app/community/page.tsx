@@ -134,7 +134,7 @@ export default function CommunityPage() {
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-5">
           <div><h1 className="font-serif text-4xl sm:text-5xl font-semibold">KHILAFAH <span className="text-sky-300">Connect</span></h1>
           <p className="text-slate-200/80 mt-3 max-w-2xl">A thoughtful space to exchange knowledge, discuss ideas and learn from one another.</p></div>
-          <div className="text-sm text-emerald-100/80 border border-emerald-100/20 rounded-xl px-4 py-3">Learn respectfully · Share responsibly</div>
+          <div className="flex flex-wrap items-center gap-2"><Link href="/stories" className="rounded-full border border-emerald-300/30 px-4 py-2 text-sm text-emerald-100 hover:bg-emerald-300/10">Stories & Snaps</Link><div className="text-sm text-emerald-100/80 border border-emerald-100/20 rounded-xl px-4 py-3">Learn respectfully · Share responsibly</div></div>
         </div>
       </header>
 
