@@ -5,7 +5,7 @@ import uuid
 from datetime import datetime
 from typing import Literal
 
-from fastapi import APIRouter, Depends, HTTPException, Query, status
+from fastapi import APIRouter, Depends, HTTPException, Query, Response, status
 from pydantic import BaseModel, Field
 from sqlalchemy import func
 from sqlalchemy.orm import Session, joinedload
@@ -85,11 +85,11 @@ def create_post(
     return _post_out(post, current_user.id, db)
 
 
-@router.delete("/posts/{post_id}", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete("/posts/{post_id}", status_code=status.HTTP_204_NO_CONTENT, response_class=Response)
 def delete_post(
     post_id: uuid.UUID, db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
-) -> None:
+) -> Response:
     post = db.get(CommunityPost, post_id)
     if not post:
         raise HTTPException(status_code=404, detail="Post not found")
@@ -97,6 +97,7 @@ def delete_post(
         raise HTTPException(status_code=403, detail="You can only remove your own post")
     db.delete(post)
     db.commit()
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
 
 
 @router.post("/posts/{post_id}/like")
