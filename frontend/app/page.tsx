@@ -2,6 +2,7 @@ import Link from "next/link";
 
 const CORE = [
   { icon: "✧", title: "AI Research Assistant", desc: "Ask questions and explore Islamic history with clear, source-aware answers.", href: "/chat", label: "Start asking" },
+  { icon: "۞", title: "Quran Explorer", desc: "Read Quran ayah by ayah with Arabic text and Roman Urdu and Urdu translations.", href: "/quran", label: "Read Quran" },
   { icon: "⌕", title: "Research Studio", desc: "Work with your own PDFs and documents in one research space.", href: "/research-studio", label: "Open studio" },
   { icon: "✦", title: "Scientific Heritage", desc: "Discover scholars, ideas and scientific traditions across history.", href: "/scientific-heritage", label: "Discover science" },
   { icon: "▤", title: "Learning Academy", desc: "Learn through structured topics, lessons and quizzes.", href: "/academy", label: "Start learning" },
@@ -9,7 +10,7 @@ const CORE = [
 const GROUPS = [
   { title: "History & discovery", description: "Explore people, places, events and connections.", links: [{ label: "History Explorer", href: "/history-explorer" }, { label: "Civilization Knowledge Graph", href: "/knowledge-graph" }, { label: "Scientific Heritage", href: "/scientific-heritage" }] },
   { title: "Society & economy", description: "Study institutions, governance and economic ideas.", links: [{ label: "Governance Research Lab", href: "/governance-lab" }, { label: "Islamic Economics Lab", href: "/economics-lab" }] },
-  { title: "Everyday tools", description: "Useful dates and daily prayer information.", links: [{ label: "Prayer Times & Hijri Calendar", href: "/prayer-calendar" }] },
+  { title: "Everyday tools", description: "Useful dates and daily prayer information.", links: [{ label: "Prayer Times & Hijri Calendar", href: "/prayer-calendar" }, { label: "Quran Explorer", href: "/quran" }] },
 ];
 export default function LandingPage() {
   return <div className="landing-shell">
@@ -62,6 +63,7 @@ export default function LandingPage() {
           <div className="ux-topic-heading"><span className="ux-topic-index">03</span><div><h3>Everyday tools</h3><p>Useful information for daily life.</p></div></div>
           <div className="ux-topic-links">
             <Link href="/prayer-calendar"><span>Prayer Times & Hijri Calendar</span><span aria-hidden="true">↗</span></Link>
+            <Link href="/quran"><span>Quran Explorer</span><span aria-hidden="true">↗</span></Link>
           </div>
         </div>
       </div>
