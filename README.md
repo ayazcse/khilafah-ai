@@ -1,8 +1,8 @@
-# KHILAFAH AI
+# KHALAF
 
-**Preserving Knowledge. Understanding Civilization. Engineering the Future.**
+**KHALAF — The Next Generation of Knowledge & Connection.**
 
-An educational, research-focused AI platform for exploring Islamic civilization
+A connected educational, research and community platform for exploring Islamic civilization
 history, historical governance, and Islamic economics — with citations,
 uncertainty labeling, and a clear separation between established historical
 fact, disputed claims, academic interpretation, and illustrative simulation.
@@ -14,6 +14,10 @@ or academic citations — where a specific citation can't be confidently
 verified, content is labeled as general academic consensus instead.
 
 ---
+
+## Brand identity
+
+**KHALAF (خَلَف)** is an Arabic-rooted name meaning a successor or one who comes after. The brand represents a new generation of knowledge, connection, learning and civilizational research. The existing repository slug and deployment identifiers are intentionally retained during this safe visual rebrand.
 
 ## What's actually implemented
 
