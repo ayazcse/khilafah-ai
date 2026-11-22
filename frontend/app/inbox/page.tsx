@@ -99,7 +99,7 @@ export default function InboxPage(){
       <div className="px-4 sm:px-5 py-3.5 border-b border-white/10 flex items-center gap-3 bg-[#112736]">
        <button type="button" onClick={()=>setMobileThread(false)} className="md:hidden text-slate-300 text-xl pr-1" aria-label="Back to conversations">←</button>
        <Link href={active?"/members/"+active.other_member.id:"/community"}><Avatar member={selectedMember} size="lg"/></Link>
-       <div className="min-w-0 flex-1"><Link href={active?"/members/"+active.other_member.id:"/community"} className="font-semibold text-white hover:text-emerald-200">{selectedMember.full_name}</Link><p className="text-xs text-slate-400">{active?.status==="pending"?"Message request":active?.status==="blocked"?"Conversation unavailable":"KHILAFAH Connect member"}</p></div>
+       <div className="min-w-0 flex-1"><Link href={active?"/members/"+active.other_member.id:"/community"} className="font-semibold text-white hover:text-emerald-200">{selectedMember.full_name}</Link><p className="text-xs text-slate-400">{active?.status==="pending"?"Message request":active?.status==="blocked"?"Conversation unavailable":"KHALAF Connect member"}</p></div>
        <span className="hidden sm:inline text-[10px] uppercase tracking-wider text-emerald-200/70">Private chat</span>
       </div>
       <div className="flex-1 min-h-0 overflow-y-auto p-4 sm:p-6 space-y-4">
