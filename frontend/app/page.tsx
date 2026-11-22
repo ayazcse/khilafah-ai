@@ -78,9 +78,9 @@ export default function LandingPage() {
       </div>
     </div></section>
     <footer className="ux-footer max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
-      <div className="footer-brand"><span className="brand-mark">خ</span><span>KHILAFAH <b>AI</b></span></div>
+      <div className="footer-brand"><span className="brand-mark">خ</span><span>KHALAF</span></div>
       <p>Preserving knowledge. Understanding civilization. Engineering the future.</p>
-      <span className="footer-copy">© {new Date().getFullYear()} KHILAFAH AI</span>
+      <span className="footer-copy">© {new Date().getFullYear()} KHALAF</span>
     </footer>
   </div>;
 }
