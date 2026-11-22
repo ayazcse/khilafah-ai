@@ -47,6 +47,7 @@ export default function LandingPage() {
           <div className="ux-topic-heading"><span className="ux-topic-index">01</span><div><h3>History & discovery</h3><p>Explore scholars, timelines and connections.</p></div></div>
           <div className="ux-topic-links">
             <Link href="/history-explorer"><span>History Explorer</span><span aria-hidden="true">↗</span></Link>
+            <Link href="/evidence-review"><span>Evidence Review Lab</span><span aria-hidden="true">↗</span></Link>
             <Link href="/knowledge-graph"><span>Civilization Knowledge Graph</span><span aria-hidden="true">↗</span></Link>
           </div>
         </div>
