@@ -1,4 +1,4 @@
-"""KHILAFAH AI — FastAPI application entrypoint."""
+"""KHALAF — FastAPI application entrypoint."""
 from __future__ import annotations
 
 import logging
@@ -19,11 +19,11 @@ from backend.app.routers import (
 )
 
 logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger("khilafah_ai")
+logger = logging.getLogger("khalaf")
 
 app = FastAPI(
-    title="KHILAFAH AI",
-    description="Preserving Knowledge. Understanding Civilization. Engineering the Future.",
+    title="KHALAF",
+    description="The Next Generation of Knowledge & Connection.",
     version="0.1.0",
 )
 
@@ -91,6 +91,6 @@ def health() -> dict:
 
 @app.get("/")
 def root() -> dict:
-    return {"name": "KHILAFAH AI",
-            "tagline": "Preserving Knowledge. Understanding Civilization. Engineering the Future.",
+    return {"name": "KHALAF",
+            "tagline": "The Next Generation of Knowledge & Connection.",
             "docs": "/docs", "health": "/api/health"}
