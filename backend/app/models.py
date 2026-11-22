@@ -240,3 +240,26 @@ class InboxCall(Base):
     callee_candidates: Mapped[list] = mapped_column(JSON, nullable=False, default=list)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=_utcnow)
     expires_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+
+
+class CommunityStory(Base):
+    __tablename__ = "community_stories"
+    id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=_uuid)
+    author_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
+    media_type: Mapped[str] = mapped_column(String(10), nullable=False, default="text")
+    media_url: Mapped[str | None] = mapped_column(String(1000), nullable=True)
+    caption: Mapped[str] = mapped_column(String(500), nullable=False, default="")
+    audience: Mapped[str] = mapped_column(String(12), nullable=False, default="all")
+    view_once: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=_utcnow, nullable=False)
+    expires_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False, index=True)
+    author: Mapped["User"] = relationship()
+
+
+class CommunityStoryView(Base):
+    __tablename__ = "community_story_views"
+    id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=_uuid)
+    story_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("community_stories.id", ondelete="CASCADE"), nullable=False, index=True)
+    viewer_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
+    viewed_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=_utcnow, nullable=False)
+    __table_args__ = (UniqueConstraint("story_id", "viewer_id", name="uq_story_viewer"),)
