@@ -41,7 +41,7 @@ def test_call_signaling_requires_accepted_conversation_and_participants(client):
     assert client.post(f"/api/calls/{call_id}/candidates", headers=caller, json={"candidate": {"candidate": "candidate:1"}}).status_code == 200
     caller_view = client.get(f"/api/calls/{call_id}", headers=caller).json()
     callee_view = client.get(f"/api/calls/{call_id}", headers=callee).json()
-    assert caller_view["remote_candidates"] == [{"candidate": "candidate:1"}]
+    assert caller_view["local_candidates"] == [{"candidate": "candidate:1"}]
     assert callee_view["remote_candidates"] == [{"candidate": "candidate:1"}]
     assert client.post(f"/api/calls/{call_id}/end", headers=callee).json()["status"] == "ended"
 
