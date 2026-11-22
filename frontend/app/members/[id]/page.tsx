@@ -72,7 +72,7 @@ export default function MemberPage() {
           {member.is_me && <Link href="/profile" className="btn-primary">Edit profile</Link>}
         </div>
         <div className="grid grid-cols-3 gap-3 mt-7">
-          {[["Posts",member.post_count],["Followers",member.follower_count],["Following",member.following_count]].map(([label,value])=><div key={String(label)} className="rounded-xl bg-black/15 border border-white/10 p-3 text-center"><div className="text-xl font-semibold text-white">{value}</div><div className="text-xs text-slate-300">{label}</div></div>)}
+          <div className="rounded-xl bg-black/15 border border-white/10 p-3 text-center"><div className="text-xl font-semibold text-white">{member.post_count}</div><div className="text-xs text-slate-300">Posts</div></div><div className="rounded-xl bg-black/15 border border-white/10 p-3 text-center"><div className="text-xl font-semibold text-white">{member.follower_count}</div><div className="text-xs text-slate-300">Followers</div></div><div className="rounded-xl bg-black/15 border border-white/10 p-3 text-center"><div className="text-xl font-semibold text-white">{member.following_count}</div><div className="text-xs text-slate-300">Following</div></div>
         </div>
         {member.interests.length>0 && <div className="flex flex-wrap gap-2 mt-5">{member.interests.map(item=><span key={item} className="rounded-full border border-emerald-200/20 bg-emerald-200/5 px-3 py-1 text-xs text-emerald-100">{item}</span>)}</div>}
         <p className="text-xs text-slate-400 mt-5">Member since {new Date(member.joined_at).toLocaleDateString()}</p>
