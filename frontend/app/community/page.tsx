@@ -130,9 +130,9 @@ export default function CommunityPage() {
   return <div className="min-h-screen bg-[#0b1722] text-[#f2f8fc]">
     <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
       <header className="mb-8 rounded-3xl border border-emerald-300/15 bg-gradient-to-br from-[#123d39] via-[#102d3c] to-[#102033] p-6 sm:p-9">
-        <div className="text-xs tracking-[.22em] uppercase text-emerald-200 font-semibold mb-3">KHILAFAH AI · COMMUNITY</div>
+        <div className="text-xs tracking-[.22em] uppercase text-emerald-200 font-semibold mb-3">KHALAF · COMMUNITY</div>
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-5">
-          <div><h1 className="font-serif text-4xl sm:text-5xl font-semibold">KHILAFAH <span className="text-sky-300">Connect</span></h1>
+          <div><h1 className="font-serif text-4xl sm:text-5xl font-semibold">KHALAF <span className="text-sky-300">Connect</span></h1>
           <p className="text-slate-200/80 mt-3 max-w-2xl">A thoughtful space to exchange knowledge, discuss ideas and learn from one another.</p></div>
           <div className="flex flex-wrap items-center gap-2"><Link href="/stories" className="rounded-full border border-emerald-300/30 px-4 py-2 text-sm text-emerald-100 hover:bg-emerald-300/10">Stories & Snaps</Link><div className="text-sm text-emerald-100/80 border border-emerald-100/20 rounded-xl px-4 py-3">Learn respectfully · Share responsibly</div></div>
         </div>
