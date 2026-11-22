@@ -87,7 +87,7 @@ export default function EconomicsLabPage() {
         <header className="economics-hero">
           <div className="economics-hero-art" aria-hidden="true"><span className="coin coin-one">◉</span><span className="coin coin-two">◉</span><span className="coin coin-three">◉</span><span className="coin coin-four">◉</span><div className="coin-orbit" /></div>
           <div className="economics-hero-content">
-            <div className="lab-kicker"><span className="lab-kicker-dot" /> KHILAFAH AI · RESEARCH DOMAIN 02</div>
+            <div className="lab-kicker"><span className="lab-kicker-dot" /> KHALAF · RESEARCH DOMAIN 02</div>
             <h1>Islamic <span>Economics</span> Lab</h1>
             <p>Explore zakat principles, waqf institutions and historical public-finance ideas through interactive, clearly labelled educational tools.</p>
             <div className="economics-hero-tags"><span>01 · Zakat calculator</span><span>02 · Public finance</span><span>03 · Waqf research</span></div>

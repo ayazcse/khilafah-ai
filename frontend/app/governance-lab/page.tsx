@@ -45,13 +45,13 @@ export default function GovernanceLabPage() {
   }
 
   if (loading) return <Loading label="Preparing governance research workspace…" />;
-  if (!topics.length) return <main className="governance-page"><div className="governance-shell"><header className="governance-hero"><p className="lab-kicker">KHILAFAH AI · RESEARCH DOMAIN 01</p><h1>Governance <span>& institutions</span></h1><p>Explore administrative systems, public institutions and historical governance models through source-aware research.</p></header>{error ? <ErrorBanner message={error} /> : <EmptyState title="No governance topics yet" description="Reference data has not been loaded into this research module." />}</div></main>;
+  if (!topics.length) return <main className="governance-page"><div className="governance-shell"><header className="governance-hero"><p className="lab-kicker">KHALAF · RESEARCH DOMAIN 01</p><h1>Governance <span>& institutions</span></h1><p>Explore administrative systems, public institutions and historical governance models through source-aware research.</p></header>{error ? <ErrorBanner message={error} /> : <EmptyState title="No governance topics yet" description="Reference data has not been loaded into this research module." />}</div></main>;
 
   return (
     <main className="governance-page">
       <div className="governance-shell">
         <header className="governance-hero">
-          <div className="lab-kicker"><span className="lab-kicker-dot" /> KHILAFAH AI · RESEARCH DOMAIN 01</div>
+          <div className="lab-kicker"><span className="lab-kicker-dot" /> KHALAF · RESEARCH DOMAIN 01</div>
           <h1>Governance <span>& institutions</span></h1>
           <p>Study how historical societies organised leadership, public administration, justice and institutions—with evidence levels and source trails kept visible.</p>
           <div className="governance-metrics">

@@ -108,7 +108,7 @@ export default function ChatPage() {
           <div>
             <div className="mb-2 inline-flex items-center gap-2 rounded-full border border-emerald-300/20 bg-emerald-400/10 px-3 py-1 text-xs font-semibold tracking-wide text-emerald-200">
               <span className="h-2 w-2 rounded-full bg-emerald-300" />
-              KHILAFAH AI · RESEARCH ASSISTANT
+              KHALAF · AI RESEARCH ASSISTANT
             </div>
             <h1 className="text-[1.65rem] font-semibold leading-tight tracking-tight text-white sm:text-4xl">Ask. Explore. Understand.</h1>
             <p className="mt-2 max-w-2xl text-[13px] leading-5 text-slate-300 sm:text-base sm:leading-6">
@@ -165,7 +165,7 @@ export default function ChatPage() {
                   ? "border border-emerald-300/20 bg-emerald-900/45 text-white"
                   : "border border-sky-300/15 bg-slate-900/65 text-slate-100")}>
                   <div className="mb-2 text-[11px] font-bold uppercase tracking-[.14em] text-slate-400">
-                    {m.role === "user" ? "You" : "KHILAFAH AI"}
+                    {m.role === "user" ? "You" : "KHALAF"}
                   </div>
                   {m.role === "assistant" ? <AnswerContent content={m.content} /> : <p className="whitespace-pre-wrap break-words text-[14px] leading-6 sm:text-[15px] sm:leading-7">{m.content}</p>}
                   {m.citations && m.citations.length > 0 && (
