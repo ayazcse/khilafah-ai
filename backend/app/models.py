@@ -223,3 +223,20 @@ class InboxBlock(Base):
     blocked_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=False)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=_utcnow)
     __table_args__ = (UniqueConstraint("blocker_id", "blocked_id", name="uq_inbox_block_pair"),)
+
+
+class InboxCall(Base):
+    """Short-lived WebRTC signaling state; media itself is never stored here."""
+    __tablename__ = "inbox_calls"
+    id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=_uuid)
+    conversation_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("inbox_conversations.id", ondelete="CASCADE"), nullable=False, index=True)
+    caller_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=False, index=True)
+    callee_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=False, index=True)
+    call_type: Mapped[str] = mapped_column(String(10), nullable=False)
+    status: Mapped[str] = mapped_column(String(20), nullable=False, default="ringing")
+    offer_json: Mapped[dict] = mapped_column(JSON, nullable=False)
+    answer_json: Mapped[dict | None] = mapped_column(JSON, nullable=True)
+    caller_candidates: Mapped[list] = mapped_column(JSON, nullable=False, default=list)
+    callee_candidates: Mapped[list] = mapped_column(JSON, nullable=False, default=list)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=_utcnow)
+    expires_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
