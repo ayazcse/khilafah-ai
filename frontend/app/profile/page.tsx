@@ -24,7 +24,7 @@ export default function ProfilePage() {
   const [error, setError] = useState("");
 
   async function loadProfile() {
-    const result = await api.get<Profile>("/community/members/me");
+    const result = await api.get<Profile>("/community/me/profile");
     setProfile(result);
     setBio(result.bio);
     setAvatarUrl(result.avatar_url || "");
