@@ -28,6 +28,8 @@ export default function InboxPage(){
  const [busy,setBusy]=useState(false);
  const [error,setError]=useState("");
  const [mobileThread,setMobileThread]=useState(false);
+ const [conversationQuery,setConversationQuery]=useState("");
+ const [messageQuery,setMessageQuery]=useState("");
 
  async function load(){const d=await api.get<{conversations:Conversation[]}>("/inbox/conversations");setItems(d.conversations);}
  async function open(row:Conversation){
@@ -35,6 +37,20 @@ export default function InboxPage(){
   if(row.status==="accepted"){try{const d=await api.get<{messages:Message[]}>("/inbox/conversations/"+row.id+"/messages");setMessages(d.messages);}catch{setError("Could not load messages.");}}
  }
  useEffect(()=>{if(user)load().catch(()=>setError("Inbox could not be loaded."));},[user]);
+ useEffect(()=>{
+  if(!user)return;
+  const timer=window.setInterval(async()=>{
+   try{
+    const d=await api.get<{conversations:Conversation[]}>("/inbox/conversations");
+    setItems(d.conversations);
+    if(active?.status==="accepted"&&active.id){
+     const latest=await api.get<{messages:Message[]}>("/inbox/conversations/"+active.id+"/messages");
+     setMessages(latest.messages);
+    }
+   }catch{/* Keep the current thread visible during temporary network failures. */}
+  },10000);
+  return ()=>window.clearInterval(timer);
+ },[user,active?.id,active?.status]);
  useEffect(()=>{
   if(!user)return;
   const memberId=new URLSearchParams(window.location.search).get("member");
@@ -85,7 +101,7 @@ export default function InboxPage(){
      <div className="px-5 py-4 border-b border-white/10"><div className="flex items-center justify-between"><h2 className="font-semibold text-white">Your messages</h2><span className="text-xs text-slate-500">{items.length} chats</span></div><p className="text-xs text-slate-500 mt-1">Private conversations & requests</p></div>
      <div className="overflow-y-auto flex-1">
       {items.length===0&&!newChatMember&&<div className="p-6 text-center text-sm text-slate-500">No conversations yet. Visit a member profile and tap Message to start.</div>}
-      {items.map(row=><button key={row.id} onClick={()=>open(row)} className={"w-full text-left flex items-center gap-3 px-4 py-3.5 border-b border-white/5 transition "+(active?.id===row.id?"bg-emerald-400/10":"hover:bg-white/[.04]")}>
+      {items.filter(row=>(row.other_member.full_name+" "+(row.last_message?.body||"")).toLowerCase().includes(conversationQuery.toLowerCase())).map(row=><button key={row.id} onClick={()=>open(row)} className={"w-full text-left flex items-center gap-3 px-4 py-3.5 border-b border-white/5 transition "+(active?.id===row.id?"bg-emerald-400/10":"hover:bg-white/[.04]")}>
        <Avatar member={row.other_member}/>
        <span className="min-w-0 flex-1"><span className="flex items-center justify-between gap-2"><span className="text-sm font-semibold text-white truncate">{row.other_member.full_name}</span>{row.is_request&&<span className="text-[10px] rounded-full bg-amber-300/10 text-amber-200 px-2 py-1">Request</span>}</span><span className="block text-xs text-slate-400 truncate mt-1">{row.last_message?.body||"Start a conversation"}</span></span>
       </button>)}
@@ -104,7 +120,7 @@ export default function InboxPage(){
        {newChatMember&&<div className="max-w-md mx-auto text-center py-10"><Avatar member={newChatMember} size="lg"/><h3 className="text-lg font-semibold text-white mt-3">{newChatMember.full_name}</h3><p className="text-sm text-slate-400 mt-2">Send a message request to start a private conversation. They can accept or decline.</p></div>}
        {active?.is_request&&<div className="max-w-lg mx-auto rounded-2xl bg-amber-300/10 border border-amber-200/20 p-4"><p className="text-sm text-amber-100">This person wants to message you. Accept the request to continue the conversation.</p><div className="flex gap-2 mt-3"><button type="button" disabled={busy} onClick={()=>respond("accept")} className="btn-primary">Accept request</button><button type="button" disabled={busy} onClick={()=>respond("decline")} className="rounded-lg border border-white/20 px-4 py-2 text-sm text-white">Decline</button></div></div>}
        {active?.status==="accepted"&&messages.length===0&&<p className="text-center text-sm text-slate-500 py-10">This is the beginning of your conversation.</p>}
-       {active?.status==="accepted"&&messages.map(m=><div key={m.id} className={"flex "+(m.sender_id===user.id?"justify-end":"justify-start")}><div className={"max-w-[82%] sm:max-w-[70%] rounded-2xl px-4 py-3 text-sm shadow "+(m.sender_id===user.id?"bg-emerald-700 text-white rounded-br-md":"bg-[#1b3445] text-slate-100 rounded-bl-md")}><p className="whitespace-pre-wrap break-words leading-6">{m.body}</p><time className="block text-[10px] opacity-55 mt-2 text-right">{new Date(m.created_at).toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"})}</time></div></div>)}
+       {active?.status==="accepted"&&messages.filter(m=>m.body.toLowerCase().includes(messageQuery.toLowerCase())).length===0&&<p className="text-center text-xs text-slate-500 py-4">{messageQuery?"No matching messages.":"This is the beginning of your conversation."}</p>}\n       {active?.status==="accepted"&&messages.filter(m=>m.body.toLowerCase().includes(messageQuery.toLowerCase())).map(m=><div key={m.id} className={"flex "+(m.sender_id===user.id?"justify-end":"justify-start")}><div className={"max-w-[82%] sm:max-w-[70%] rounded-2xl px-4 py-3 text-sm shadow "+(m.sender_id===user.id?"bg-emerald-700 text-white rounded-br-md":"bg-[#1b3445] text-slate-100 rounded-bl-md")}><p className="whitespace-pre-wrap break-words leading-6">{m.body}</p><time className="block text-[10px] opacity-55 mt-2 text-right">{new Date(m.created_at).toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"})}</time></div></div>)}
        {active?.status==="pending"&&!active.is_request&&<p className="text-center text-sm text-slate-400 py-8">Message request sent. You can chat when they accept.</p>}
        {active?.status==="blocked"&&<p className="text-center text-sm text-slate-400 py-8">This conversation is unavailable.</p>}
       </div>
