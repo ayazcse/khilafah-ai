@@ -63,7 +63,7 @@ export default function ProfilePage() {
         <div className="w-16 h-16 rounded-full overflow-hidden bg-emerald-400/15 border border-emerald-300/30 grid place-items-center text-2xl text-emerald-100 font-semibold">
           {profile?.avatar_url ? <img src={profile.avatar_url} alt="" className="w-full h-full object-cover" referrerPolicy="no-referrer" /> : user.full_name.slice(0,1).toUpperCase()}
         </div>
-        <div><p className="text-xs tracking-widest uppercase text-emerald-200">Your member profile</p><h1 className="text-2xl sm:text-3xl font-serif font-semibold text-white">{user.full_name}</h1><p className="text-sm text-slate-300">KHILAFAH Connect</p></div>
+        <div><p className="text-xs tracking-widest uppercase text-emerald-200">Your member profile</p><h1 className="text-2xl sm:text-3xl font-serif font-semibold text-white">{user.full_name}</h1><p className="text-sm text-slate-300">KHALAF Connect</p></div>
       </div>
       <div className="grid grid-cols-3 gap-3 mt-6 text-center">
         <div className="rounded-xl bg-black/15 border border-white/10 p-3"><div className="text-xl font-semibold text-white">{profile?.post_count ?? "—"}</div><div className="text-xs text-slate-300">Posts</div></div><div className="rounded-xl bg-black/15 border border-white/10 p-3"><div className="text-xl font-semibold text-white">{profile?.follower_count ?? "—"}</div><div className="text-xs text-slate-300">Followers</div></div><div className="rounded-xl bg-black/15 border border-white/10 p-3"><div className="text-xl font-semibold text-white">{profile?.following_count ?? "—"}</div><div className="text-xs text-slate-300">Following</div></div>
