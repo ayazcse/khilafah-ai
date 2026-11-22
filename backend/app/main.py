@@ -15,7 +15,7 @@ from backend.app.config import settings
 from backend.app.database import SessionLocal
 from backend.app.rate_limit import limiter
 from backend.app.routers import (
-    academy, admin, auth, chat, community, documents, economics, feedback, governance, graph, inbox,
+    academy, admin, auth, calls, chat, community, documents, economics, feedback, governance, graph, inbox,
 )
 
 logging.basicConfig(level=logging.INFO)
@@ -62,6 +62,7 @@ app.include_router(admin.router, prefix="/api")
 app.include_router(feedback.router, prefix="/api")
 app.include_router(community.router, prefix="/api")
 app.include_router(inbox.router, prefix="/api")
+app.include_router(calls.router, prefix="/api")
 
 
 @app.get("/api/health")
