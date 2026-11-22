@@ -69,7 +69,7 @@ export default function EvidenceReviewPage() {
   function exportResearchLog() {
     const payload = {
       exported_at: new Date().toISOString(),
-      platform: "KHILAFAH AI Evidence Review Workspace",
+      platform: "KHALAF Evidence Review Workspace",
       note: "This is a researcher-maintained evidence log, not an automated fact-check or scholarly verdict.",
       summary: stats,
       evidence: items,
@@ -78,7 +78,7 @@ export default function EvidenceReviewPage() {
     const url = URL.createObjectURL(blob);
     const anchor = document.createElement("a");
     anchor.href = url;
-    anchor.download = "khilafah-ai-evidence-log.json";
+    anchor.download = "khalaf-evidence-log.json";
     anchor.click();
     URL.revokeObjectURL(url);
     setMessage("Research log exported as JSON.");
