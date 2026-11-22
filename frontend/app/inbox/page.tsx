@@ -76,6 +76,7 @@ export default function InboxPage(){
  const selectedMember=active?.other_member||newChatMember;
  return <main className="min-h-[calc(100vh-72px)] bg-[#0b1722] text-[#f2f8fc] px-3 sm:px-6 py-5 sm:py-8">
   <div className="max-w-6xl mx-auto">
+   <CallControls conversationId={active?.status === "accepted" ? active.id : undefined}/>
    <header className="flex items-center justify-between gap-3 mb-5">
     <div><p className="text-[11px] uppercase tracking-[.22em] text-emerald-300 font-semibold">KHILAFAH CONNECT</p><h1 className="text-2xl sm:text-3xl font-serif text-white mt-1">Messages</h1></div>
     <Link href="/community" className="text-sm rounded-full border border-white/15 px-4 py-2 text-slate-300 hover:text-emerald-200 hover:border-emerald-300/30">Explore people</Link>
