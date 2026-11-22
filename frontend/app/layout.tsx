@@ -8,7 +8,7 @@ export const metadata: Metadata = {
     default: "KHALAF — Knowledge & Connection",
     template: "%s | KHALAF",
   },
-  description: "Preserving Knowledge. Understanding Civilization. Engineering the Future.",
+  description: "KHALAF — The Next Generation of Knowledge & Connection.",
   icons: {
     icon: "/icon.svg",
     shortcut: "/icon.svg",
