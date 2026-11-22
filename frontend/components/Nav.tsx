@@ -6,7 +6,7 @@ import { useAuth } from "@/lib/auth";
 
 const LINKS = [
   { href: "/dashboard", label: "Dashboard" }, { href: "/chat", label: "AI Research Assistant" },
-  { href: "/research-studio", label: "Research Studio" }, { href: "/scientific-heritage", label: "Scientific Heritage" },
+  { href: "/research-studio", label: "Research Studio" }, { href: "/evidence-review", label: "Evidence Review Lab" }, { href: "/scientific-heritage", label: "Scientific Heritage" },
   { href: "/academy", label: "Learning Academy" }, { href: "/history-explorer", label: "History Explorer" },
   { href: "/knowledge-graph", label: "Knowledge Graph" }, { href: "/governance-lab", label: "Governance Lab" },
   { href: "/economics-lab", label: "Economics Lab" }, { href: "/prayer-calendar", label: "Prayer Times & Calendar" },
