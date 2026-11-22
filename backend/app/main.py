@@ -15,15 +15,7 @@ from backend.app.config import settings
 from backend.app.database import SessionLocal
 from backend.app.rate_limit import limiter
 from backend.app.routers import (
-    academy,
-    admin,
-    auth,
-    chat,
-    documents,
-    economics,
-    feedback,
-    governance,
-    graph,
+    academy, admin, auth, chat, community, documents, economics, feedback, governance, graph,
 )
 
 logging.basicConfig(level=logging.INFO)
@@ -49,20 +41,14 @@ app.add_middleware(
 
 @app.exception_handler(Exception)
 async def unhandled_exception_handler(request: Request, exc: Exception) -> JSONResponse:
-    # Never leak stack traces or internal details to the client.
     logger.exception("Unhandled exception on %s %s", request.method, request.url.path)
-    return JSONResponse(
-        status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-        content={"detail": "An internal error occurred. Please try again later."},
-    )
+    return JSONResponse(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                        content={"detail": "An internal error occurred. Please try again later."})
 
 
 @app.exception_handler(RequestValidationError)
 async def validation_exception_handler(request: Request, exc: RequestValidationError) -> JSONResponse:
-    return JSONResponse(
-        status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-        content={"detail": exc.errors()},
-    )
+    return JSONResponse(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, content={"detail": exc.errors()})
 
 
 app.include_router(auth.router, prefix="/api")
@@ -74,6 +60,7 @@ app.include_router(economics.router, prefix="/api")
 app.include_router(academy.router, prefix="/api")
 app.include_router(admin.router, prefix="/api")
 app.include_router(feedback.router, prefix="/api")
+app.include_router(community.router, prefix="/api")
 
 
 @app.get("/api/health")
@@ -85,29 +72,22 @@ def health() -> dict:
             db.execute(text("SELECT 1"))
         finally:
             db.close()
-    except Exception:  # noqa: BLE001
+    except Exception:
         db_status = "error"
-
     neo4j_status = "disabled"
     if settings.NEO4J_ENABLED:
         try:
             from knowledge_graph.neo4j_client import is_available
-
             neo4j_status = "ok" if is_available() else "error"
         except ImportError:
             neo4j_status = "error"
-        except Exception:  # noqa: BLE001
+        except Exception:
             neo4j_status = "error"
-
-    overall = "ok" if db_status == "ok" else "degraded"
-    return {"status": overall, "database": db_status, "neo4j": neo4j_status}
+    return {"status": "ok" if db_status == "ok" else "degraded", "database": db_status, "neo4j": neo4j_status}
 
 
 @app.get("/")
 def root() -> dict:
-    return {
-        "name": "KHILAFAH AI",
-        "tagline": "Preserving Knowledge. Understanding Civilization. Engineering the Future.",
-        "docs": "/docs",
-        "health": "/api/health",
-    }
+    return {"name": "KHILAFAH AI",
+            "tagline": "Preserving Knowledge. Understanding Civilization. Engineering the Future.",
+            "docs": "/docs", "health": "/api/health"}
