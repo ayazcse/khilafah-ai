@@ -844,3 +844,22 @@ a:focus-visible,button:focus-visible,summary:focus-visible,input:focus-visible,s
 .governance-pathway-grid h3,.wealth-research-grid h3 { margin-top:9px; color:#eff7fb; font-size:1rem; font-weight:700; line-height:1.45; }
 .governance-pathway-grid p,.wealth-research-grid p { margin-top:7px; color:#b9ccd8; font-size:.88rem; line-height:1.7; }
 @media(max-width:800px) { .governance-pathway-grid,.wealth-research-grid { grid-template-columns:1fr; } }
+
+
+/* KHALAF experience polish: predictable focus, touch targets and readable controls. */
+:where(a, button, input, textarea, select, summary, [role="button"]):focus-visible {
+  outline: 3px solid rgba(120, 199, 244, .9);
+  outline-offset: 3px;
+}
+:where(button, .btn-primary, .btn-secondary) { min-height: 44px; }
+:where(input, textarea, select) { font: inherit; }
+:where(input, textarea, select):disabled, button:disabled { cursor: not-allowed; opacity: .62; }
+:where(a, button) { -webkit-tap-highlight-color: transparent; }
+:where(p, li, label, button, a) { overflow-wrap: anywhere; }
+.brand-symbol { font-size: 1rem; letter-spacing: -.04em; }
+.brand-wordmark { letter-spacing: .16em; }
+@media (max-width: 640px) {
+  .card { padding: 1rem; }
+  .input-field { min-height: 46px; }
+  .btn-primary, .btn-secondary { min-height: 46px; }
+}
