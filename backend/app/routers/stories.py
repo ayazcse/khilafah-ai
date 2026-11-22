@@ -107,7 +107,10 @@ def list_stories(
 @router.post("/{story_id}/view")
 def view_story(story_id: uuid.UUID, db: Session = Depends(get_db), user: User = Depends(get_current_user)):
     story = db.query(CommunityStory).options(joinedload(CommunityStory.author)).filter_by(id=story_id).first()
-    if not story or story.expires_at <= datetime.now(timezone.utc):
+    expires_at = story.expires_at if story else None
+    if expires_at is not None and expires_at.tzinfo is None:
+        expires_at = expires_at.replace(tzinfo=timezone.utc)
+    if not story or expires_at <= datetime.now(timezone.utc):
         raise HTTPException(404, "Story not found or expired")
     if not _can_view(db, story, user.id):
         raise HTTPException(404, "Story not found")
