@@ -48,7 +48,10 @@ def _participant_call(db: Session, call_id: uuid.UUID, user_id: uuid.UUID) -> In
     conversation = db.get(InboxConversation, call.conversation_id)
     if not conversation or conversation.status != "accepted" or _blocked(db, call.caller_id, call.callee_id):
         raise HTTPException(403, "Call is no longer available")
-    if call.status in ("ringing", "accepted") and call.expires_at <= datetime.now(timezone.utc):
+    expires_at = call.expires_at
+    if expires_at.tzinfo is None:
+        expires_at = expires_at.replace(tzinfo=timezone.utc)
+    if call.status in ("ringing", "accepted") and expires_at <= datetime.now(timezone.utc):
         call.status = "expired"
         db.commit()
         raise HTTPException(410, "Call invitation expired")
