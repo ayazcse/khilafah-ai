@@ -76,6 +76,7 @@ export default function InboxPage(){
  const selectedMember=active?.other_member||newChatMember;
  return <main className="min-h-[calc(100vh-72px)] bg-[#0b1722] text-[#f2f8fc] px-3 sm:px-6 py-5 sm:py-8">
   <div className="max-w-6xl mx-auto">
+   <CallControls conversationId={active?.status === "accepted" ? active.id : undefined}/>
    <header className="flex items-center justify-between gap-3 mb-5">
     <div><p className="text-[11px] uppercase tracking-[.22em] text-emerald-300 font-semibold">KHILAFAH CONNECT</p><h1 className="text-2xl sm:text-3xl font-serif text-white mt-1">Messages</h1></div>
     <Link href="/community" className="text-sm rounded-full border border-white/15 px-4 py-2 text-slate-300 hover:text-emerald-200 hover:border-emerald-300/30">Explore people</Link>
@@ -99,7 +100,6 @@ export default function InboxPage(){
        <button type="button" onClick={()=>setMobileThread(false)} className="md:hidden text-slate-300 text-xl pr-1" aria-label="Back to conversations">←</button>
        <Link href={active?"/members/"+active.other_member.id:"/community"}><Avatar member={selectedMember} size="lg"/></Link>
        <div className="min-w-0 flex-1"><Link href={active?"/members/"+active.other_member.id:"/community"} className="font-semibold text-white hover:text-emerald-200">{selectedMember.full_name}</Link><p className="text-xs text-slate-400">{active?.status==="pending"?"Message request":active?.status==="blocked"?"Conversation unavailable":"KHILAFAH Connect member"}</p></div>
-       {active?.status === "accepted" && <CallControls conversationId={active.id}/>}
        <span className="hidden sm:inline text-[10px] uppercase tracking-wider text-emerald-200/70">Private chat</span>
       </div>
       <div className="flex-1 min-h-0 overflow-y-auto p-4 sm:p-6 space-y-4">

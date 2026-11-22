@@ -10,24 +10,28 @@ type SignalCall = {
 };
 
 const ICE_SERVERS: RTCConfiguration = {
-  iceServers: [{ urls: "stun:stun.l.google.com:19302" }],
+  iceServers: [{ urls: "stun:stun.l.google.com:19302" }, { urls: "stun:stun1.l.google.com:19302" }],
 };
 
 function waitForIce(pc: RTCPeerConnection): Promise<void> {
   if (pc.iceGatheringState === "complete") return Promise.resolve();
   return new Promise(resolve => {
-    const done = () => {
-      if (pc.iceGatheringState === "complete") {
-        pc.removeEventListener("icegatheringstatechange", done);
-        resolve();
-      }
+    let settled = false;
+    const finish = () => {
+      if (settled) return;
+      settled = true;
+      pc.removeEventListener("icegatheringstatechange", done);
+      window.clearTimeout(timeout);
+      resolve();
     };
+    const done = () => { if (pc.iceGatheringState === "complete") finish(); };
+    const timeout = window.setTimeout(finish, 10000);
     pc.addEventListener("icegatheringstatechange", done);
-    window.setTimeout(resolve, 8000);
+    done();
   });
 }
 
-export default function CallControls({ conversationId }: { conversationId: string }) {
+export default function CallControls({ conversationId }: { conversationId?: string }) {
   const [call, setCall] = useState<SignalCall | null>(null);
   const [incoming, setIncoming] = useState<SignalCall | null>(null);
   const [phase, setPhase] = useState("");
@@ -82,7 +86,7 @@ export default function CallControls({ conversationId }: { conversationId: strin
     const timer = window.setInterval(async () => {
       try {
         const data = await api.get<{ calls: SignalCall[] }>("/calls/incoming");
-        const match = data.calls.find(item => item.conversation_id === conversationId);
+        const match = data.calls[0];
         if (match) setIncoming(match);
       } catch { /* inbox remains usable if call polling is unavailable */ }
     }, 2500);
@@ -90,13 +94,19 @@ export default function CallControls({ conversationId }: { conversationId: strin
   }, [call, incoming, conversationId]);
 
   async function start(kind: "audio" | "video") {
+    if (!conversationId) return;
     setError(""); setPhase("Requesting device permission…");
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: kind === "video" });
       streamRef.current = stream;
       const pc = new RTCPeerConnection(ICE_SERVERS); pcRef.current = pc;
       stream.getTracks().forEach(track => pc.addTrack(track, stream));
-      pc.ontrack = event => { if (remoteRef.current) remoteRef.current.srcObject = event.streams[0]; };
+      pc.ontrack = event => { if (remoteRef.current && event.streams[0]) remoteRef.current.srcObject = event.streams[0]; };
+      pc.onconnectionstatechange = () => {
+        if (pc.connectionState === "connected") setPhase("Connected");
+        if (pc.connectionState === "failed") setError("Network could not connect this call. Try another network; some networks require a TURN relay.");
+        if (pc.connectionState === "disconnected") setPhase("Reconnecting…");
+      };
       if (localRef.current) localRef.current.srcObject = stream;
       const offer = await pc.createOffer(); await pc.setLocalDescription(offer); await waitForIce(pc);
       const created = await api.post<SignalCall>("/calls", {
@@ -117,7 +127,12 @@ export default function CallControls({ conversationId }: { conversationId: strin
       streamRef.current = stream;
       const pc = new RTCPeerConnection(ICE_SERVERS); pcRef.current = pc;
       stream.getTracks().forEach(track => pc.addTrack(track, stream));
-      pc.ontrack = event => { if (remoteRef.current) remoteRef.current.srcObject = event.streams[0]; };
+      pc.ontrack = event => { if (remoteRef.current && event.streams[0]) remoteRef.current.srcObject = event.streams[0]; };
+      pc.onconnectionstatechange = () => {
+        if (pc.connectionState === "connected") setPhase("Connected");
+        if (pc.connectionState === "failed") setError("Network could not connect this call. Try another network; some networks require a TURN relay.");
+        if (pc.connectionState === "disconnected") setPhase("Reconnecting…");
+      };
       if (localRef.current) localRef.current.srcObject = stream;
       await pc.setRemoteDescription(new RTCSessionDescription(incoming.offer));
       const answer = await pc.createAnswer(); await pc.setLocalDescription(answer); await waitForIce(pc);
@@ -145,7 +160,7 @@ export default function CallControls({ conversationId }: { conversationId: strin
   }
 
   return <div className="flex flex-wrap items-center gap-2">
-    {!call && !incoming && <>
+    {!call && !incoming && conversationId && <>
       <button type="button" onClick={() => start("audio")} className="rounded-full border border-emerald-300/30 px-3 py-2 text-xs text-emerald-100 hover:bg-emerald-300/10" aria-label="Start voice call">☎ Voice</button>
       <button type="button" onClick={() => start("video")} className="rounded-full border border-sky-300/30 px-3 py-2 text-xs text-sky-100 hover:bg-sky-300/10" aria-label="Start video call">▣ Video</button>
     </>}
@@ -163,7 +178,7 @@ export default function CallControls({ conversationId }: { conversationId: strin
     {(call || incoming) && <div className="fixed z-50 bottom-4 right-4 w-64 rounded-2xl border border-white/15 bg-[#0b1722] p-2 shadow-2xl">
       <video ref={remoteRef} autoPlay playsInline className="w-full aspect-video rounded-lg bg-black object-cover" />
       <video ref={localRef} autoPlay muted playsInline className="absolute bottom-12 right-4 w-20 aspect-video rounded-md border border-white/30 bg-black object-cover" />
-      <p className="text-[10px] text-slate-400 px-1 pt-1">Call media is peer-to-peer when network conditions permit. Some networks may prevent connection without a TURN relay.</p>
+      <p className="text-[10px] text-slate-400 px-1 pt-1">Media is peer-to-peer. STUN fallback is enabled; restrictive networks may still require a TURN relay.</p>
     </div>}
     {error && <span role="alert" className="text-xs text-red-300">{error}</span>}
   </div>;
