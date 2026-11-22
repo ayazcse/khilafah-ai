@@ -51,7 +51,7 @@ export default function LoginPage() {
           <button type="submit" disabled={loading} className="btn-primary w-full auth-submit">
             {loading ? "Signing in..." : "Sign in to your account"}
           </button>
-          <p className="auth-footnote text-center">New to KHILAFAH AI? <Link href="/register" className="auth-link font-semibold">Create a free account</Link></p>
+          <p className="auth-footnote text-center">New to KHALAF? <Link href="/register" className="auth-link font-semibold">Create a free account</Link></p>
           <p className="auth-free-note text-center">Free to use. No paid plans or subscriptions.</p>
         </form>
       </section>
