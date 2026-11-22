@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "@/lib/auth";
 
 const LINKS = [
-  { href: "/dashboard", label: "Dashboard" }, { href: "/chat", label: "AI Research Assistant" }, { href: "/community", label: "KHILAFAH Connect" }, { href: "/quran", label: "Quran Explorer" },
+  { href: "/dashboard", label: "Dashboard" }, { href: "/chat", label: "AI Research Assistant" }, { href: "/community", label: "KHILAFAH Connect" }, { href: "/inbox", label: "Private Inbox" }, { href: "/quran", label: "Quran Explorer" },
   { href: "/research-studio", label: "Research Studio" }, { href: "/evidence-review", label: "Evidence Review Lab" }, { href: "/scientific-heritage", label: "Scientific Heritage" },
   { href: "/academy", label: "Learning Academy" }, { href: "/history-explorer", label: "History Explorer" },
   { href: "/knowledge-graph", label: "Knowledge Graph" }, { href: "/governance-lab", label: "Governance Lab" },
