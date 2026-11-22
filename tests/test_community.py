@@ -4,7 +4,8 @@ import uuid
 
 
 def _register(client, label: str):
-    email = f"{label}-{uuid.uuid4().hex[:8]}@example.com"
+    slug = label.lower().replace(" ", "-")
+    email = f"{slug}-{uuid.uuid4().hex[:8]}@example.com"
     payload = {"email": email, "password": "StrongPass123", "full_name": label}
     registered = client.post("/api/auth/register", json=payload)
     assert registered.status_code in (200, 201)
