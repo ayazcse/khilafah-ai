@@ -394,3 +394,101 @@ body:has(aside.k-sidebar) :where(input, select, textarea, button) {
     max-width: 100%;
   }
 }
+
+
+/* Immersive, responsive Islamic architecture backdrop for account entry screens. */
+.auth-page,
+.k-dashboard-empty {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  min-height: calc(100svh - 76px);
+  background: #041b17 !important;
+}
+.auth-page::before,
+.k-dashboard-empty::before {
+  content: "";
+  position: absolute;
+  z-index: -2;
+  inset: -2%;
+  background-image:
+    linear-gradient(90deg,rgba(2,17,15,.82),rgba(3,25,21,.58) 48%,rgba(2,17,15,.72)),
+    linear-gradient(0deg,rgba(2,16,14,.52),rgba(2,16,14,.08)),
+    url("https://images.unsplash.com/photo-1757034056566-a61fe495ede3?auto=format&fit=crop&fm=jpg&ixlib=rb-4.1.0&q=85&w=2400");
+  background-position: center, center, center 52%;
+  background-size: cover;
+  background-repeat: no-repeat;
+  transform: scale(1.025);
+  animation: khalaf-mosque-drift 32s ease-in-out infinite alternate;
+}
+.auth-page::after,
+.k-dashboard-empty::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 50% 40%,rgba(7,48,39,.08),rgba(1,14,12,.46) 78%),
+    linear-gradient(180deg,rgba(1,16,14,.18),rgba(1,16,14,.36));
+}
+.auth-page > section {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 460px);
+  padding-block: clamp(18px,4vh,42px);
+}
+.auth-page .auth-card {
+  background: linear-gradient(145deg,rgba(5,35,29,.88),rgba(3,23,21,.92)) !important;
+  border-color: rgba(231,195,119,.38) !important;
+  box-shadow: 0 28px 90px rgba(0,0,0,.4),inset 0 1px rgba(255,255,255,.06);
+  backdrop-filter: blur(22px) saturate(130%);
+}
+.auth-page .auth-mark {
+  background: rgba(7,42,34,.76) !important;
+  border-color: rgba(232,195,119,.7) !important;
+}
+.k-dashboard-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  width: 100%;
+  padding: clamp(28px,6vw,80px) 20px;
+  text-align: center;
+}
+.k-dashboard-empty p {
+  width: min(100%,540px);
+  margin: 0;
+  padding: clamp(24px,4vw,38px);
+  border: 1px solid rgba(231,195,119,.35);
+  border-radius: 22px;
+  background: rgba(3,31,26,.76);
+  box-shadow: 0 24px 80px rgba(0,0,0,.34);
+  color: #f7f0df;
+  font-size: clamp(1.1rem,2vw,1.45rem);
+  backdrop-filter: blur(20px);
+}
+.k-dashboard-empty .btn-primary {
+  min-width: 150px;
+  min-height: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 28px;
+}
+@keyframes khalaf-mosque-drift {
+  from { transform: scale(1.025) translate3d(-.3%,0,0); }
+  to { transform: scale(1.09) translate3d(.3%,-.5%,0); }
+}
+@media (max-width: 640px) {
+  .auth-page,.k-dashboard-empty { min-height: calc(100svh - 64px); }
+  .auth-page { align-items: flex-start; padding-top: clamp(22px,5vh,44px); padding-bottom: 28px; }
+  .auth-page > section { max-width: 440px; }
+  .auth-page::before,.k-dashboard-empty::before { background-position:center,center,58% center; }
+  .k-dashboard-empty { padding: 32px 18px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .auth-page::before,.k-dashboard-empty::before { animation: none; transform: none; }
+}
