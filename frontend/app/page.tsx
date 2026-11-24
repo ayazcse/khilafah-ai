@@ -30,7 +30,7 @@ export default function LandingPage() {
         </div>
       </div>
     </section>
-    <section className="ux-section max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
+    <section id="platform" className="ux-section max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
       <div className="ux-section-heading">
         <div><div className="section-kicker">GET STARTED</div><h2 className="section-title font-serif">What would you like to <em>explore?</em></h2></div>
         <p className="section-intro">Start with one of the main spaces. You can find all other tools below.</p>
@@ -69,7 +69,7 @@ export default function LandingPage() {
         </div>
       </div>
     </section>
-    <section className="ux-values"><div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
+    <section id="principles" className="ux-values"><div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
       <div className="section-kicker">OUR PROMISE</div><h2 className="section-title font-serif">Knowledge for <em>everyone.</em></h2>
       <div className="ux-value-grid">
         <div><strong>Easy to follow</strong><p>Clear language, helpful structure and readable text.</p></div>
