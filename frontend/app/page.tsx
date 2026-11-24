@@ -77,10 +77,42 @@ export default function LandingPage() {
         <div><strong>Made to explore</strong><p>For curious learners of every age and experience level.</p></div>
       </div>
     </div></section>
-    <footer className="ux-footer max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
-      <div className="footer-brand"><span className="brand-mark">خ</span><span>KHALAF</span></div>
-      <p>Preserving knowledge. Understanding civilization. Engineering the future.</p>
-      <span className="footer-copy">© {new Date().getFullYear()} KHALAF</span>
+    <footer className="ux-footer" aria-label="Site footer">
+      <div className="ux-footer-main">
+        <div className="ux-footer-brand">
+          <Link href="/" className="footer-brand"><span className="brand-mark">خ</span><span>KHALAF</span></Link>
+          <p className="ux-footer-manifesto">Preserving knowledge. Understanding civilization. Engineering the future.</p>
+          <p className="ux-footer-note">A welcoming space for thoughtful learning, careful research and meaningful connection.</p>
+          <Link href="/register" className="ux-footer-cta">Join KHALAF <span aria-hidden="true">↗</span></Link>
+        </div>
+        <nav className="ux-footer-column" aria-label="Platform links">
+          <h3>Platform</h3>
+          <Link href="/chat">AI Research Assistant</Link>
+          <Link href="/research-studio">Research Studio</Link>
+          <Link href="/community">KHALAF Connect</Link>
+          <Link href="/inbox">Private Inbox</Link>
+        </nav>
+        <nav className="ux-footer-column" aria-label="Knowledge links">
+          <h3>Knowledge</h3>
+          <Link href="/quran">Quran Explorer</Link>
+          <Link href="/academy">Learning Academy</Link>
+          <Link href="/history-explorer">History Explorer</Link>
+          <Link href="/scientific-heritage">Scientific Heritage</Link>
+        </nav>
+        <nav className="ux-footer-column" aria-label="Research links">
+          <h3>Research</h3>
+          <Link href="/evidence-review">Evidence Review Lab</Link>
+          <Link href="/knowledge-graph">Knowledge Graph</Link>
+          <Link href="/governance-lab">Governance Lab</Link>
+          <Link href="/economics-lab">Islamic Economics Lab</Link>
+          <Link href="/prayer-calendar">Prayer & Calendar</Link>
+        </nav>
+      </div>
+      <div className="ux-footer-bottom">
+        <span>© {new Date().getFullYear()} KHALAF. Built for curious minds.</span>
+        <span className="ux-footer-bottom-links"><Link href="/">Home</Link><Link href="/login">Sign in</Link><Link href="/register">Create account</Link></span>
+        <span className="ux-footer-arabic" lang="ar" dir="rtl">خَلَف · معرفة · حضارة</span>
+      </div>
     </footer>
   </div>;
 }
