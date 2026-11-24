@@ -290,3 +290,43 @@ body:has(.k-sidebar) main{margin-left:264px;min-height:calc(100vh - 72px)}
 .ux-footer>p{margin:0;font-size:12px;line-height:1.6}
 @media(max-width:850px){.ux-section-heading{grid-template-columns:1fr;gap:12px}.ux-core-grid,.ux-topic-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.ux-footer{grid-template-columns:1fr 1fr}.ux-footer .footer-copy{grid-column:1/-1}}
 @media(max-width:560px){.ux-core-grid,.ux-topic-grid,.ux-value-grid{grid-template-columns:1fr}.ux-core-card{min-height:190px}.ux-topic-panel{padding:18px}.ux-footer{grid-template-columns:1fr;gap:13px}.ux-footer .footer-copy{grid-column:auto}.ux-values{padding:48px 0}}
+
+
+/* Workspace horizontal-overflow fix: reserve the sidebar only on the outer app shell.
+   Nested route <main> elements must stay inside that content column. */
+html, body { max-width: 100%; overflow-x: clip; }
+body:has(.k-sidebar) { overflow-x: clip; }
+body:has(.k-sidebar) > main {
+  width: calc(100% - 264px);
+  max-width: calc(100% - 264px);
+  min-width: 0;
+  margin-left: 264px;
+  box-sizing: border-box;
+}
+body:has(.k-sidebar) > main > main {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  margin-left: 0 !important;
+  box-sizing: border-box;
+}
+body:has(.k-sidebar) main :where(section, article, aside, header, form, .grid, .flex) {
+  min-width: 0;
+}
+body:has(.k-sidebar) main :where(img, video, iframe, canvas, table) {
+  max-width: 100%;
+}
+@media (max-width: 1100px) {
+  body:has(.k-sidebar) > main {
+    width: calc(100% - 238px);
+    max-width: calc(100% - 238px);
+    margin-left: 238px;
+  }
+}
+@media (max-width: 900px) {
+  body:has(.k-sidebar) > main {
+    width: 100%;
+    max-width: 100%;
+    margin-left: 0;
+  }
+}
