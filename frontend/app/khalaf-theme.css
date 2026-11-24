@@ -330,3 +330,67 @@ body:has(.k-sidebar) main :where(img, video, iframe, canvas, table) {
     margin-left: 0;
   }
 }
+
+
+/* Global workspace viewport contract — applies to every authenticated route. */
+html, body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: clip;
+}
+*, *::before, *::after { box-sizing: border-box; }
+body:has(aside.k-sidebar) {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: clip;
+}
+/* The one outer main is the only element offset by the fixed sidebar. */
+body:has(aside.k-sidebar) > main {
+  display: block;
+  width: calc(100% - 264px);
+  max-width: calc(100% - 264px);
+  min-width: 0;
+  margin: 0 0 0 264px !important;
+  padding: 0;
+  overflow-x: clip;
+}
+/* Route components may render their own <main>; never offset those again. */
+body:has(aside.k-sidebar) main:not(body > main) {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  overflow-x: clip;
+}
+body:has(aside.k-sidebar) main > * {
+  min-width: 0;
+  max-width: 100%;
+}
+body:has(aside.k-sidebar) :where(.grid, .flex, section, article, form, header, footer, aside) {
+  min-width: 0;
+}
+body:has(aside.k-sidebar) :where(img, video, iframe, canvas, table, pre) {
+  max-width: 100%;
+}
+body:has(aside.k-sidebar) :where(input, select, textarea, button) {
+  max-width: 100%;
+}
+@media (max-width: 1100px) and (min-width: 901px) {
+  body:has(aside.k-sidebar) > main {
+    width: calc(100% - 238px);
+    max-width: calc(100% - 238px);
+    margin-left: 238px !important;
+  }
+}
+@media (max-width: 900px) {
+  body:has(aside.k-sidebar) > main {
+    width: 100%;
+    max-width: 100%;
+    margin-left: 0 !important;
+  }
+  body:has(aside.k-sidebar) .k-topbar {
+    width: 100%;
+    max-width: 100%;
+  }
+}
