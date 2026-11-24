@@ -1,64 +1,103 @@
 "use client";
+
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useAuth } from "@/lib/auth";
 
-const LINKS = [
-  { href: "/dashboard", label: "Dashboard" }, { href: "/chat", label: "AI Research Assistant" }, { href: "/community", label: "KHALAF Connect" }, { href: "/inbox", label: "Private Inbox" }, { href: "/quran", label: "Quran Explorer" },
-  { href: "/research-studio", label: "Research Studio" }, { href: "/evidence-review", label: "Evidence Review Lab" }, { href: "/scientific-heritage", label: "Scientific Heritage" },
-  { href: "/academy", label: "Learning Academy" }, { href: "/history-explorer", label: "History Explorer" },
-  { href: "/knowledge-graph", label: "Knowledge Graph" }, { href: "/governance-lab", label: "Governance Lab" },
-  { href: "/economics-lab", label: "Economics Lab" }, { href: "/prayer-calendar", label: "Prayer Times & Calendar" },
+const GROUPS = [
+  { title: "Workspace", items: [
+    { href: "/dashboard", label: "Dashboard", icon: "⌂" },
+    { href: "/chat", label: "AI Research", icon: "✧" },
+    { href: "/research-studio", label: "Research Studio", icon: "⌕" },
+    { href: "/evidence-review", label: "Evidence Review", icon: "◈" },
+  ]},
+  { title: "Community", items: [
+    { href: "/community", label: "KHALAF Connect", icon: "◎" },
+    { href: "/inbox", label: "Private Inbox", icon: "✉" },
+  ]},
+  { title: "Knowledge", items: [
+    { href: "/quran", label: "Quran Explorer", icon: "۞" },
+    { href: "/academy", label: "Learning Academy", icon: "▤" },
+    { href: "/scientific-heritage", label: "Scientific Heritage", icon: "✥" },
+    { href: "/history-explorer", label: "History Explorer", icon: "◷" },
+    { href: "/knowledge-graph", label: "Knowledge Graph", icon: "⌘" },
+  ]},
+  { title: "Research Labs", items: [
+    { href: "/governance-lab", label: "Governance Lab", icon: "⚖" },
+    { href: "/economics-lab", label: "Economics Lab", icon: "◇" },
+    { href: "/prayer-calendar", label: "Prayer & Calendar", icon: "☾" },
+  ]},
 ];
+
 export default function Nav() {
   const pathname = usePathname();
   const { user, logout } = useAuth();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [exploreOpen, setExploreOpen] = useState(false);
-  const activeExplore = LINKS.some(link => link.href !== "/dashboard" && link.href !== "/chat" && pathname === link.href);
-  useEffect(() => { setMobileOpen(false); setExploreOpen(false); }, [pathname]);
+  const sidebarRef = useRef<HTMLElement>(null);
+  const activeExplore = GROUPS.slice(1).some(group => group.items.some(item => item.href === pathname));
+
   useEffect(() => {
-    if (!mobileOpen && !exploreOpen) return;
-    const closeOnEscape = (event: KeyboardEvent) => { if (event.key === "Escape") { setMobileOpen(false); setExploreOpen(false); } };
-    window.addEventListener("keydown", closeOnEscape);
-    return () => window.removeEventListener("keydown", closeOnEscape);
-  }, [mobileOpen, exploreOpen]);
+    setMobileOpen(false);
+    setExploreOpen(false);
+  }, [pathname]);
+
+  useEffect(() => {
+    if (!exploreOpen && !mobileOpen) return;
+    const onPointerDown = (event: PointerEvent) => {
+      if (sidebarRef.current && !sidebarRef.current.contains(event.target as Node)) {
+        setExploreOpen(false);
+        if (window.matchMedia("(max-width: 900px)").matches) setMobileOpen(false);
+      }
+    };
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") { setExploreOpen(false); setMobileOpen(false); }
+    };
+    document.addEventListener("pointerdown", onPointerDown);
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("pointerdown", onPointerDown);
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [exploreOpen, mobileOpen]);
+
   const closeMenus = () => { setMobileOpen(false); setExploreOpen(false); };
-  return <nav className="site-nav sticky top-0 z-40 backdrop-blur-xl border-b" aria-label="Main navigation">
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
-      <div className="ux-nav-row">
-        <Link href="/" onClick={closeMenus} className="flex items-center gap-3 shrink-0 group" aria-label="KHALAF home">
-          <span className="brand-symbol grid place-items-center w-10 h-10 rounded-full font-serif text-xl">خَلَف</span>
-          <span className="brand-wordmark text-sm tracking-[.12em] font-bold">KHALAF</span>
-        </Link>
-        {user && <div className="ux-desktop-nav">
-          <Link href="/dashboard" onClick={closeMenus} className={"nav-link " + (pathname === "/dashboard" ? "active" : "")}>Dashboard</Link>
-          <Link href="/chat" onClick={closeMenus} className={"nav-link " + (pathname === "/chat" ? "active" : "")}>AI Research</Link>
-          <div className="ux-nav-menu">
-            <button type="button" className={"nav-link ux-nav-toggle " + (activeExplore ? "active" : "")} aria-expanded={exploreOpen} aria-controls="ux-explore-menu" onClick={() => setExploreOpen(open => !open)}>
-              Explore <span aria-hidden="true" className={exploreOpen ? "ux-chevron is-open" : "ux-chevron"}>⌄</span>
+  const brand = <Link href={user ? "/dashboard" : "/"} onClick={closeMenus} className="k-brand" aria-label="KHALAF home">
+    <span className="k-brand-mark">خَلَف</span><span className="k-brand-name">KHALAF</span>
+  </Link>;
+
+  if (!user) return <header className="site-nav k-public-header"><div className="k-public-inner">{brand}<div className="k-public-actions"><Link href="/login" className="nav-signin">Sign in</Link><Link href="/register" className="nav-cta">Create account</Link></div></div></header>;
+
+  return <>
+    <div className={mobileOpen ? "k-sidebar-backdrop is-visible" : "k-sidebar-backdrop"} onClick={closeMenus} aria-hidden="true" />
+    <aside ref={sidebarRef} className={mobileOpen ? "k-sidebar is-open" : "k-sidebar"} aria-label="Main sidebar">
+      <div className="k-sidebar-brand">{brand}<button type="button" className="k-sidebar-close" onClick={closeMenus} aria-label="Close sidebar">×</button></div>
+      <div className="k-sidebar-scroll">
+        {GROUPS.map((group, index) => <section className="k-nav-group" key={group.title}>
+          <p className="k-nav-heading">{group.title}</p>
+          {group.items.map(item => <Link key={item.href} href={item.href} onClick={closeMenus} className={pathname === item.href ? "k-side-link is-active" : "k-side-link"} aria-current={pathname === item.href ? "page" : undefined}>
+            <span className="k-side-icon" aria-hidden="true">{item.icon}</span><span>{item.label}</span>
+          </Link>)}
+          {index === 0 && <div className="k-explore-wrap">
+            <button type="button" className={activeExplore ? "k-side-link k-explore-trigger is-active" : "k-side-link k-explore-trigger"} aria-expanded={exploreOpen} aria-controls="k-explore-submenu" onClick={() => setExploreOpen(value => !value)}>
+              <span className="k-side-icon" aria-hidden="true">✧</span><span>Explore all</span><span className={exploreOpen ? "k-side-chevron is-open" : "k-side-chevron"}>⌄</span>
             </button>
-            {exploreOpen && <div id="ux-explore-menu" className="ux-nav-popover">{LINKS.filter(link => link.href !== "/dashboard" && link.href !== "/chat").map(link => <Link key={link.href} href={link.href} onClick={closeMenus} aria-current={pathname === link.href ? "page" : undefined}>{link.label}</Link>)}</div>}
-          </div>
-        </div>}
-        <div className="flex items-center gap-2 sm:gap-3 shrink-0">
-          {user ? <>
-            {user.role === "admin" && <Link href="/admin" onClick={closeMenus} className="nav-utility hidden sm:inline-flex">Admin</Link>}
-            <Link href="/profile" onClick={closeMenus} className="nav-utility hidden md:inline-flex text-sm">{user.full_name}</Link>
-            <button onClick={() => { closeMenus(); logout(); }} className="nav-utility text-sm px-3 rounded-lg border border-white/20 min-h-11">Sign out</button>
-          </> : <>
-            <Link href="/login" onClick={closeMenus} aria-label="Sign in to your account" className="nav-signin inline-flex items-center justify-center min-h-11 px-3 sm:px-4 rounded-lg text-sm font-semibold">Sign in</Link>
-            <Link href="/register" onClick={closeMenus} aria-label="Create a free account" className="nav-cta inline-flex items-center justify-center min-h-11 px-3 sm:px-5 rounded-lg text-sm font-bold">Create account <span className="hidden sm:inline ml-1" aria-hidden="true">↗</span></Link>
-          </>}
-        </div>
+            {exploreOpen && <div id="k-explore-submenu" className="k-explore-submenu">
+              {GROUPS.slice(1).flatMap(g => g.items).map(item => <Link key={item.href} href={item.href} onClick={closeMenus} className={pathname === item.href ? "k-sub-link is-active" : "k-sub-link"}>{item.label}</Link>)}
+            </div>}
+          </div>}
+        </section>)}
       </div>
-      {user && <div className="ux-mobile-menu">
-        <button type="button" className="ux-mobile-menu-toggle" aria-expanded={mobileOpen} aria-controls="ux-mobile-links" onClick={() => setMobileOpen(open => !open)}>
-          <span aria-hidden="true">{mobileOpen ? "✕" : "☰"}</span> {mobileOpen ? "Close menu" : "Menu"} <span className="ux-mobile-menu-hint">All sections</span>
-        </button>
-        {mobileOpen && <div id="ux-mobile-links" className="ux-mobile-links">{LINKS.map(link => <Link key={link.href} href={link.href} onClick={closeMenus} aria-current={pathname === link.href ? "page" : undefined} className={pathname === link.href ? "active" : ""}>{link.label}</Link>)}{user.role === "admin" && <Link href="/admin" onClick={closeMenus}>Admin</Link>}</div>}
-      </div>}
-    </div>
-  </nav>;
+      <div className="k-sidebar-bottom">
+        {user.role === "admin" && <Link href="/admin" onClick={closeMenus} className="k-side-link"><span className="k-side-icon">⚙</span>Admin panel</Link>}
+        <Link href="/profile" onClick={closeMenus} className="k-profile-link"><span className="k-avatar">{user.full_name?.charAt(0)?.toUpperCase() || "U"}</span><span className="k-profile-copy"><strong>{user.full_name}</strong><small>{user.role === "admin" ? "Administrator" : "Member"}</small></span></Link>
+      </div>
+    </aside>
+    <header className="k-topbar">
+      <button type="button" className="k-menu-button" onClick={() => setMobileOpen(true)} aria-label="Open navigation" aria-expanded={mobileOpen}>☰</button>
+      <div className="k-breadcrumb"><span>Workspace</span><b>/</b><strong>{[...GROUPS.flatMap(g => g.items)].find(item => item.href === pathname)?.label || (pathname === "/admin" ? "Admin" : "KHALAF")}</strong></div>
+      <div className="k-topbar-actions"><span className="k-topbar-greeting">Peace, {user.full_name?.split(" ")[0]}</span><button type="button" onClick={() => { closeMenus(); logout(); }} className="k-signout">Sign out <span aria-hidden="true">↗</span></button></div>
+    </header>
+  </>;
 }
