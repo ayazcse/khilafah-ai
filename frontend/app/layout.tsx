@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import "./khalaf-theme.css";
 import { AuthProvider } from "@/lib/auth";
 import Nav from "@/components/Nav";
 
