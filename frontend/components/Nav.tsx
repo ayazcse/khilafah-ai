@@ -30,17 +30,31 @@ const GROUPS = [
   ]},
 ];
 
+const PUBLIC_EXPLORE = [
+  { href: "/chat", label: "AI Research Assistant" },
+  { href: "/community", label: "KHALAF Connect" },
+  { href: "/quran", label: "Quran Explorer" },
+  { href: "/research-studio", label: "Research Studio" },
+  { href: "/academy", label: "Learning Academy" },
+  { href: "/knowledge-graph", label: "Knowledge Graph" },
+];
+
 export default function Nav() {
   const pathname = usePathname();
   const { user, logout } = useAuth();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [exploreOpen, setExploreOpen] = useState(false);
+  const [publicMobileOpen, setPublicMobileOpen] = useState(false);
+  const [publicExploreOpen, setPublicExploreOpen] = useState(false);
   const sidebarRef = useRef<HTMLElement>(null);
+  const publicNavRef = useRef<HTMLElement>(null);
   const activeExplore = GROUPS.slice(1).some(group => group.items.some(item => item.href === pathname));
 
   useEffect(() => {
     setMobileOpen(false);
     setExploreOpen(false);
+    setPublicMobileOpen(false);
+    setPublicExploreOpen(false);
   }, [pathname]);
 
   useEffect(() => {
@@ -62,12 +76,61 @@ export default function Nav() {
     };
   }, [exploreOpen, mobileOpen]);
 
+  useEffect(() => {
+    if (!publicMobileOpen && !publicExploreOpen) return;
+    const onPointerDown = (event: PointerEvent) => {
+      if (publicNavRef.current && !publicNavRef.current.contains(event.target as Node)) {
+        setPublicMobileOpen(false);
+        setPublicExploreOpen(false);
+      }
+    };
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setPublicMobileOpen(false);
+        setPublicExploreOpen(false);
+      }
+    };
+    document.addEventListener("pointerdown", onPointerDown);
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("pointerdown", onPointerDown);
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [publicMobileOpen, publicExploreOpen]);
+
   const closeMenus = () => { setMobileOpen(false); setExploreOpen(false); };
-  const brand = <Link href={user ? "/dashboard" : "/"} onClick={closeMenus} className="k-brand" aria-label="KHALAF home">
+  const closePublicMenus = () => { setPublicMobileOpen(false); setPublicExploreOpen(false); };
+  const brand = <Link href={user ? "/dashboard" : "/"} onClick={user ? closeMenus : closePublicMenus} className="k-brand" aria-label="KHALAF home">
     <span className="k-brand-mark">خَلَف</span><span className="k-brand-name">KHALAF</span>
   </Link>;
 
-  if (!user) return <header className="site-nav k-public-header"><div className="k-public-inner">{brand}<div className="k-public-actions"><Link href="/login" className="nav-signin">Sign in</Link><Link href="/register" className="nav-cta">Create account</Link></div></div></header>;
+  if (!user) return <header ref={publicNavRef} className="site-nav k-public-header">
+    <div className="k-public-inner">
+      {brand}
+      <nav className="k-public-links" aria-label="Main navigation">
+        <Link href="/" onClick={closePublicMenus} className={pathname === "/" ? "is-current" : ""}>Home</Link>
+        <a href="/#platform" onClick={closePublicMenus}>Platform</a>
+        <div className="k-public-explore">
+          <button type="button" onClick={() => setPublicExploreOpen(value => !value)} aria-expanded={publicExploreOpen} aria-controls="k-public-explore-menu">Explore <span className={publicExploreOpen ? "is-rotated" : ""}>⌄</span></button>
+          {publicExploreOpen && <div id="k-public-explore-menu" className="k-public-explore-menu">
+            <p>DISCOVER KHALAF</p>
+            {PUBLIC_EXPLORE.map(item => <Link key={item.href} href={item.href} onClick={closePublicMenus}>{item.label}<span>↗</span></Link>)}
+          </div>}
+        </div>
+        <a href="/#principles" onClick={closePublicMenus}>Our principles</a>
+      </nav>
+      <div className="k-public-actions"><Link href="/login" onClick={closePublicMenus} className="nav-signin">Sign in</Link><Link href="/register" onClick={closePublicMenus} className="nav-cta">Get started <span aria-hidden="true">↗</span></Link></div>
+      <button type="button" className="k-public-menu-button" onClick={() => setPublicMobileOpen(value => !value)} aria-label={publicMobileOpen ? "Close navigation" : "Open navigation"} aria-expanded={publicMobileOpen}>{publicMobileOpen ? "×" : "☰"}</button>
+    </div>
+    {publicMobileOpen && <div className="k-public-mobile-menu">
+      <Link href="/" onClick={closePublicMenus}>Home</Link>
+      <a href="/#platform" onClick={closePublicMenus}>Platform</a>
+      <button type="button" onClick={() => setPublicExploreOpen(value => !value)} aria-expanded={publicExploreOpen}>Explore <span>{publicExploreOpen ? "−" : "+"}</span></button>
+      {publicExploreOpen && <div className="k-public-mobile-submenu">{PUBLIC_EXPLORE.map(item => <Link key={item.href} href={item.href} onClick={closePublicMenus}>{item.label}</Link>)}</div>}
+      <a href="/#principles" onClick={closePublicMenus}>Our principles</a>
+      <div className="k-public-mobile-actions"><Link href="/login" onClick={closePublicMenus}>Sign in</Link><Link href="/register" onClick={closePublicMenus} className="nav-cta">Create account ↗</Link></div>
+    </div>}
+  </header>;
 
   return <>
     <div className={mobileOpen ? "k-sidebar-backdrop is-visible" : "k-sidebar-backdrop"} onClick={closeMenus} aria-hidden="true" />
