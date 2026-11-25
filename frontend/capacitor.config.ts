@@ -3,7 +3,7 @@ import type { CapacitorConfig } from "@capacitor/cli";
 const config: CapacitorConfig = {
   appId: "org.khalaf.app",
   appName: "KHALAF",
-  webDir: "out",
+  webDir: "public",
   server: {
     // KHALAF currently uses Next.js server rendering and hosted APIs.
     // Load the production web app inside the native Android WebView.
