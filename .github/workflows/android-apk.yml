@@ -2,6 +2,13 @@ name: Build KHALAF Android APK
 
 on:
   workflow_dispatch:
+  pull_request:
+    branches: [main]
+    paths:
+      - "frontend/capacitor.config.ts"
+      - "frontend/package.json"
+      - "frontend/package-lock.json"
+      - ".github/workflows/android-apk.yml"
   push:
     branches: [main]
     paths:
